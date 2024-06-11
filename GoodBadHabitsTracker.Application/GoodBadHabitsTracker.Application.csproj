@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GoodBadHabitsTracker.Infrastructure\GoodBadHabitsTracker.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
