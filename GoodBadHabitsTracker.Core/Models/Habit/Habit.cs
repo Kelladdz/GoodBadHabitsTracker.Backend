@@ -14,6 +14,8 @@ namespace GoodBadHabitsTracker.Core.Models.Habit
         public string IconPath { get; set; } = default!;
         public bool IsGood { get; init; }
         public DateOnly StartDate { get; set; }
+        public User User { get; init; } = default!;
+        public Guid UserId { get; init; }
         public List<DayResult> DayResults { get; init; } = new();
         public List<Comment> Comments { get; init; } = new();
     }
