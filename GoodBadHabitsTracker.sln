@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodBadHabitsTracker.WebApi", "GoodBadHabitsTracker.WebApi\GoodBadHabitsTracker.WebApi.csproj", "{EFA92730-DFEA-4863-A7DA-0AB88923EAE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodBadHabitsTracker.Application", "GoodBadHabitsTracker.Application\GoodBadHabitsTracker.Application.csproj", "{0C3A2DEC-0581-4885-B7C1-4141DA83DFAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodBadHabitsTracker.Core", "GoodBadHabitsTracker.Core\GoodBadHabitsTracker.Core.csproj", "{070C0C12-966E-4DBD-9B23-1DB430490F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodBadHabitsTracker.Infrastructure", "GoodBadHabitsTracker.Infrastructure\GoodBadHabitsTracker.Infrastructure.csproj", "{C9AA91E3-1C04-436B-96B6-4CD2F5115003}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFA92730-DFEA-4863-A7DA-0AB88923EAE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA92730-DFEA-4863-A7DA-0AB88923EAE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA92730-DFEA-4863-A7DA-0AB88923EAE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA92730-DFEA-4863-A7DA-0AB88923EAE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C3A2DEC-0581-4885-B7C1-4141DA83DFAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C3A2DEC-0581-4885-B7C1-4141DA83DFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C3A2DEC-0581-4885-B7C1-4141DA83DFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C3A2DEC-0581-4885-B7C1-4141DA83DFAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{070C0C12-966E-4DBD-9B23-1DB430490F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{070C0C12-966E-4DBD-9B23-1DB430490F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{070C0C12-966E-4DBD-9B23-1DB430490F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{070C0C12-966E-4DBD-9B23-1DB430490F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9AA91E3-1C04-436B-96B6-4CD2F5115003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9AA91E3-1C04-436B-96B6-4CD2F5115003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9AA91E3-1C04-436B-96B6-4CD2F5115003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9AA91E3-1C04-436B-96B6-4CD2F5115003}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
