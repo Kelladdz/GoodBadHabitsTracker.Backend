@@ -13,10 +13,13 @@ namespace GoodBadHabitsTracker.Core.Models.Habit
         {
             IsGood = false;
         }
+        public User User { get; init; } = default!;
+        public Guid UserId { get; init; }
         public bool IsQuit { get; private init; } = false;
         public bool IsTimeBased { get; set; }
         public int Quantity { get; set; }
         public Frequencies Frequency { get; set; } = default!;
-
+        public Group? Group { get; set; }
+        public Guid GroupId { get; set; }
     }
 }

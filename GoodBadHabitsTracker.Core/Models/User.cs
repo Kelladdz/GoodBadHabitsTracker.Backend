@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -9,22 +10,19 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Core.Models
 {
-    public class User
+    public class User : IdentityUser<Guid>
     {
-        public Guid Id { get; private init; } = Guid.NewGuid();
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
-        public UserRole Role { get; set; } = default!;
-        public List<GoodHabit> GoodHabits { get; init; } = new();
-        public List<QuitHabit> QuitHabits { get; init; } = new();
-        public List<LimitHabit> LimitHabits { get; init; } = new();
+        public ICollection<GoodHabit> GoodHabits { get; init; } = new List<GoodHabit>();
+        public ICollection<QuitHabit> QuitHabits { get; init; } = new List<QuitHabit>();
+        public ICollection<LimitHabit> LimitHabits { get; init; } = new List<LimitHabit>();
+        public ICollection<Group> Groups { get; init; } = new List<Group>();
         public string ImagePath { get; set; } = default!;
         public string DisplayName { get; set; } = default!;
         public string RefreshToken { get; set; } = default!;
-        public DateTime? RefreshTokenExpirationDate { get; init; } 
-        public string Email { get; set; } = default!;
-        public byte[] Hash { get; set; } = [];
-        public byte[] Salt { get; set; } = [];
+        public DateTime? RefreshTokenExpirationDate { get; init; }
+        public override string Email { get; set; } = default!;
     }
 }
 
