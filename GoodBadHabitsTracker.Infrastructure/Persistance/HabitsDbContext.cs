@@ -25,64 +25,56 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<GoodHabit>()
-                .HasBaseType(typeof(Habit));
-            builder.Entity<GoodHabit>()
-                .ToTable("Good Habits");
-            builder.Entity<GoodHabit>()
-                .HasOne(habit => habit.User)
-                .WithMany(user => user.GoodHabits)
-                .HasForeignKey(habit => habit.UserId)
-                .OnDelete(DeleteBehavior.Restrict); ;
-            builder.Entity<GoodHabit>()
-                .HasOne(habit => habit.Group)
-                .WithMany(group => group.GoodHabits)
-                .HasForeignKey(habit => habit.GroupId);
-            builder.Entity<GoodHabit>()
-                .HasIndex(habit => habit.Name);
+            builder.Entity<GoodHabit>(habit =>
+            {
+                habit.HasBaseType(typeof(Habit));
+                habit.ToTable("Good Habits");
+                habit.HasOne(h => h.User)
+                    .WithMany(user => user.GoodHabits)
+                    .HasForeignKey(h => h.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                habit.HasOne(h => h.Group)
+                    .WithMany(group => group.GoodHabits)
+                    .HasForeignKey(h => h.GroupId);
+                habit.HasIndex(h => h.Name);
+            });
 
+            builder.Entity<QuitHabit>(habit =>
+            {
+                habit.HasBaseType(typeof(Habit));
+                habit.ToTable("Quit Habits");
+                habit.HasOne(h => h.User)
+                    .WithMany(user => user.QuitHabits)
+                    .HasForeignKey(h => h.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                habit.HasOne(h => h.Group)
+                    .WithMany(group => group.QuitHabits)
+                    .HasForeignKey(h => h.GroupId);
+                habit.HasIndex(h => h.Name);
+            });
 
-            builder.Entity<QuitHabit>()
-                .HasBaseType(typeof(Habit));
-            builder.Entity<QuitHabit>()
-                .ToTable("Quit Habits");
-            builder.Entity<QuitHabit>()
-                .HasOne(habit => habit.User)
-                .WithMany(user => user.QuitHabits)
-                .HasForeignKey(habit => habit.UserId)
-                .OnDelete(DeleteBehavior.Restrict); ;
-            builder.Entity<QuitHabit>()
-                .HasOne(habit => habit.Group)
-                .WithMany(group => group.QuitHabits)
-                .HasForeignKey(habit => habit.GroupId);
-            builder.Entity<GoodHabit>()
-                .HasIndex(habit => habit.Name);
+            builder.Entity<LimitHabit>(habit =>
+            {
+                habit.HasBaseType(typeof(Habit));
+                habit.ToTable("Limit Habits");
+                habit.HasOne(h => h.User)
+                    .WithMany(user => user.LimitHabits)
+                    .HasForeignKey(h => h.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                habit.HasOne(h => h.Group)
+                    .WithMany(group => group.LimitHabits)
+                    .HasForeignKey(h => h.GroupId);
+                habit.HasIndex(h => h.Name);
+            });
 
-            builder.Entity<LimitHabit>()
-                .HasBaseType(typeof(Habit));
-            builder.Entity<LimitHabit>()
-                .ToTable("Limit Habits");
-            builder.Entity<LimitHabit>()
-                .HasOne(habit => habit.User)
-                .WithMany(user => user.LimitHabits)
-                .HasForeignKey(habit => habit.UserId)
-                .OnDelete(DeleteBehavior.Restrict); ;
-            builder.Entity<LimitHabit>()
-                .HasOne(habit => habit.Group)
-                .WithMany(group => group.LimitHabits)
-                .HasForeignKey(habit => habit.GroupId);
-            builder.Entity<GoodHabit>()
-                .HasIndex(habit => habit.Name);
-
-            builder.Entity<Habit>()
-                .HasKey(habit => habit.Id);
-            builder.Entity<Habit>()
-                .Property(habit => habit.Name)
-                .IsRequired();
-            builder.Entity<Habit>()
-                .OwnsMany(habit => habit.DayResults);
-            builder.Entity<Habit>()
-                .OwnsMany(habit => habit.Comments);
+            builder.Entity<Habit>(habit =>
+            {
+                habit.HasKey(h => h.Id);
+                habit.Property(h => h.Name)
+                    .IsRequired();
+                habit.OwnsMany(h => h.DayResults);
+                habit.OwnsMany(h => h.Comments);
+            });
         }
     }
 }
