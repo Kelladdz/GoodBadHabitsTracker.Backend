@@ -19,7 +19,7 @@ namespace GoodBadHabitsTracker.Core.Models.Habit
         public bool IsTimeBased { get; set; }
         public int Quantity { get; set; }
         public Frequencies Frequency { get; set; }
-        public string RepeatMode { get; set; } = default!;
+        public RepeatModes RepeatMode { get; set; }
         public List<string> RepeatDaysOfWeek { get; init; } = new();
         public List<int> RepeatDaysOfMonth { get; init; } = new();
         public int RepeatInterval { get; set; }
