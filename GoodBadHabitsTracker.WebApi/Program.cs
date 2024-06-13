@@ -2,6 +2,7 @@ using GoodBadHabitsTracker.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,6 +16,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHsts();
 app.UseHttpsRedirection();
+
+app.MapControllers();
+app.UseRouting();
+
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GoodBadHabitsTracker.Core.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
 {
@@ -23,7 +24,10 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddUserStore<UserStore<User, UserRole, HabitsDbContext, Guid>>()
                 .AddRoles<UserRole>()
                 .AddRoleStore<RoleStore<UserRole, HabitsDbContext, Guid>>();
-
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddCookie();
+            services.AddAuthorization();
+                
         }
     }
 }
