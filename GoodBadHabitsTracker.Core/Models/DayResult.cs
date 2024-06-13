@@ -6,10 +6,5 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Core.Models
 {
-    public class DayResult
-    {
-        public int Progress { get; set; }
-        public string Status { get; set; } = default!;
-        public DateOnly Date { get; init; }
-    }   
+    public record DayResult(int Progress, string Status, DateOnly Date);
 }

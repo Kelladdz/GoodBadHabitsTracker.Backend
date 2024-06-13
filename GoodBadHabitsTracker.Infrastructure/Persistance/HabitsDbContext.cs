@@ -27,8 +27,11 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
 
             builder.Entity<GoodHabit>(habit =>
             {
-                habit.HasBaseType(typeof(Habit));
                 habit.ToTable("Good Habits");
+                habit.Property(h => h.Name)
+                    .IsRequired();
+                habit.OwnsMany(h => h.DayResults);
+                habit.OwnsMany(h => h.Comments);
                 habit.HasOne(h => h.User)
                     .WithMany(user => user.GoodHabits)
                     .HasForeignKey(h => h.UserId)
@@ -41,8 +44,11 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
 
             builder.Entity<QuitHabit>(habit =>
             {
-                habit.HasBaseType(typeof(Habit));
                 habit.ToTable("Quit Habits");
+                habit.Property(h => h.Name)
+                    .IsRequired();
+                habit.OwnsMany(h => h.DayResults);
+                habit.OwnsMany(h => h.Comments);
                 habit.HasOne(h => h.User)
                     .WithMany(user => user.QuitHabits)
                     .HasForeignKey(h => h.UserId)
@@ -55,8 +61,11 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
 
             builder.Entity<LimitHabit>(habit =>
             {
-                habit.HasBaseType(typeof(Habit));
                 habit.ToTable("Limit Habits");
+                habit.Property(h => h.Name)
+                    .IsRequired();
+                habit.OwnsMany(h => h.DayResults);
+                habit.OwnsMany(h => h.Comments);
                 habit.HasOne(h => h.User)
                     .WithMany(user => user.LimitHabits)
                     .HasForeignKey(h => h.UserId)
@@ -67,14 +76,8 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
                 habit.HasIndex(h => h.Name);
             });
 
-            builder.Entity<Habit>(habit =>
-            {
-                habit.HasKey(h => h.Id);
-                habit.Property(h => h.Name)
-                    .IsRequired();
-                habit.OwnsMany(h => h.DayResults);
-                habit.OwnsMany(h => h.Comments);
-            });
+            builder.Entity<Habit>()
+                .UseTpcMappingStrategy();
         }
     }
 }

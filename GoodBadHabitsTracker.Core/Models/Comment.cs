@@ -6,9 +6,5 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Core.Models
 {
-    public class Comment
-    {
-        public string Body { get; init; } = default!;
-        public DateOnly Date { get; init; }
-    }
+    public record Comment(string Body, DateOnly Date);
 }
