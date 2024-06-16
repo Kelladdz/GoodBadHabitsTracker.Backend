@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GoodBadHabitsTracker.Core\GoodBadHabitsTracker.Core.csproj" />
     <ProjectReference Include="..\GoodBadHabitsTracker.Infrastructure\GoodBadHabitsTracker.Infrastructure.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>GoodBadHabitsTracker.Application.Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
 
 </Project>

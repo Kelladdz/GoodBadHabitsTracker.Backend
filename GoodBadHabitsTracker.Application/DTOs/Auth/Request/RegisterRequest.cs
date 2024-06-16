@@ -9,9 +9,9 @@ namespace GoodBadHabitsTracker.Application.DTOs.Auth.Request
 {
     public class RegisterRequest
     {
-        public string? Email { get; init; }
-        public string? Name { get; init; }
-        public string? Password { get; init; }
-        public string? ConfirmPassword { get; init; }
+        public string Email { get; init; } = default!;
+        public string UserName { get; init; } = default!;
+        public string Password { get; init; } = default!;
+        public string ConfirmPassword { get; init; } = default!;
     }
 }
