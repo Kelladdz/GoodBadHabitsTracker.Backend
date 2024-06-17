@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Win32;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using GoodBadHabitsTracker.Application.Commands.Auth.Register;
+using GoodBadHabitsTracker.Application.Exceptions;
+using System.Net;
+using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
 
 namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
 {
@@ -50,5 +53,37 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             routeValues["id"].Should().BeAssignableTo<Guid>();
             value.Should().BeAssignableTo<User>();
         }
-   }
+
+        [Fact]
+        public async void Register_InvalidRequest_ReturnsBadRequest()
+        {
+            //ARRANGE
+            var request = _dataGenerator.SeedValidRegisterRequest();
+            _controller.ModelState.AddModelError("Email", $"Email '{request.Email}' is already taken.");
+
+            _mediatorMock.Setup(x => x.Send(It.IsAny<Command>(), default)).ThrowsAsync(new AppException(HttpStatusCode.BadRequest, $"Failed to create user: Email '{request.Email}' is already taken."));
+
+            //ACT
+            Func<Task> action = async () => await _controller.Register(request, default);
+
+            //ASSERT
+            _controller.ModelState.ErrorCount.Should().BeGreaterThan(0);
+            action.Should().ThrowAsync<AppException>();
+        }
+
+        [Fact]
+        public async void Register_NullRequest_ReturnsBadRequest()
+        {
+            //ARRANGE
+            RegisterRequest request = null;
+
+            _mediatorMock.Setup(x => x.Send(It.IsAny<Command>(), default)).ReturnsAsync((User)null);
+
+            //ACT
+            Func<Task> action = async () => await _controller.Register(request, default);
+
+            //ASSERT
+            action.Should().ThrowAsync<HttpRequestException>();
+        }
+    }
 }
