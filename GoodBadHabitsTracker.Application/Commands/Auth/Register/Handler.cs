@@ -27,7 +27,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
             var createUserResult = await userManager.CreateAsync(user, command.Request.Password);
             cancellationToken.ThrowIfCancellationRequested();
             if (!createUserResult.Succeeded) 
-                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to create user: " + string.Join(", ", createUserResult.Errors));
+                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to create user: " + string.Join(", ", createUserResult.Errors.Select(e => e.Description)));
 
             var isRoleExists = await roleManager.RoleExistsAsync("User");
             if (!isRoleExists)
@@ -36,12 +36,12 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
 
                 var createRoleResult = await roleManager.CreateAsync(role);
                 if (!createRoleResult.Succeeded)
-                    throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to create role: " + string.Join(", ", createRoleResult.Errors));
+                    throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to create role: " + string.Join(", ", createRoleResult.Errors.Select(e => e.Description)));
             }
 
             var addToRoleResult = await userManager.AddToRoleAsync(user, "User");
             if (!addToRoleResult.Succeeded)
-                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to add user to role: " + string.Join(", ", addToRoleResult.Errors));
+                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to add user to role: " + string.Join(", ", addToRoleResult.Errors.Select(e => e.Description)));
 
             return user;
         }
