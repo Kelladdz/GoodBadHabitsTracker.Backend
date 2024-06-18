@@ -11,6 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using GoodBadHabitsTracker.Core.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using GoodBadHabitsTracker.Infrastructure.Configurations;
+using GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Services.RefreshTokenHandler;
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
 {
@@ -24,10 +27,12 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddUserStore<UserStore<User, UserRole, HabitsDbContext, Guid>>()
                 .AddRoles<UserRole>()
                 .AddRoleStore<RoleStore<UserRole, HabitsDbContext, Guid>>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddCookie();
-            services.AddAuthorization();
-                
+
+            services.AddTransient<IAccessTokenHandler, AccessTokenHandler>();
+            services.AddTransient<IRefreshTokenHandler, RefreshTokenHandler>();
+
+            services.AddJwt(configuration);
+
         }
     }
 }
