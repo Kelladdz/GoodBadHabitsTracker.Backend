@@ -1,5 +1,6 @@
 ﻿using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
+using GoodBadHabitsTracker.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +17,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler
 {
     internal sealed class AccessTokenHandler(IOptions<JwtSettings> jwtSettings, IConfiguration configuration) : IAccessTokenHandler
     {
+        private readonly JwtSettings _jwtSettings = jwtSettings.Value;
         public string GenerateAccessToken(UserSession userSession, out string userFingerprint)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]!));
@@ -30,7 +32,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler
             new Claim(JwtRegisteredClaimNames.Sub, userSession.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Name, userSession.UserName),
             new Claim(JwtRegisteredClaimNames.Email, userSession.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, _jwtSettings.Jti),
             new Claim("roles", string.Join(", ", userSession.Roles)),
             new Claim("userFingerprint", userFingerprintHash),
             new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
@@ -43,11 +45,11 @@ namespace GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Issuer = "https://localhost:7154",
-                Audience = "https://localhost:8080",
-                SigningCredentials = credentials,
-                Expires = DateTime.UtcNow.AddMinutes(15),
-                NotBefore = DateTime.UtcNow,
+                Issuer = _jwtSettings.Issuer,
+                Audience = _jwtSettings.Audience,
+                SigningCredentials = _jwtSettings.SigningCredentials,
+                Expires = _jwtSettings.Expiration,
+                NotBefore = _jwtSettings.NotBefore,
                 Subject = claimsIdentity
             };
 
