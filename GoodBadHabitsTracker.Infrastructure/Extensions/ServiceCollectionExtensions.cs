@@ -1,6 +1,5 @@
 ﻿using GoodBadHabitsTracker.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,10 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GoodBadHabitsTracker.Core.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using GoodBadHabitsTracker.Infrastructure.Configurations;
-using GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler;
-using GoodBadHabitsTracker.Infrastructure.Services.RefreshTokenHandler;
+using GoodBadHabitsTracker.Core.Interfaces;
+using GoodBadHabitsTracker.Infrastructure.Security.AccessTokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Security.RefreshTokenHandler;
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
 {
@@ -28,11 +26,15 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddRoles<UserRole>()
                 .AddRoleStore<RoleStore<UserRole, HabitsDbContext, Guid>>();
 
-            services.AddTransient<IAccessTokenHandler, AccessTokenHandler>();
+            services.AddTransient<IAccessTokenHandler, Handler>();
             services.AddTransient<IRefreshTokenHandler, RefreshTokenHandler>();
 
             services.AddJwt(configuration);
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Jwt", policy =>
+                    policy.RequireClaim("authenticationMethod", "EmailPassword"));
+            });
         }
     }
 }

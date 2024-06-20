@@ -1,5 +1,7 @@
 ﻿using Bogus;
 using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
+using GoodBadHabitsTracker.Application.Exceptions;
+using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -79,13 +81,34 @@ namespace GoodBadHabitsTracker.TestMisc
             return jwtToken.ToString();
         }
 
-        public string SeedRandomToken()
+        public string SeedRandomString()
         {
             var tokenGenerator = new Faker<string>()
                 .CustomInstantiator(f => f.Random.String2(32));
 
             var token = (string)tokenGenerator;
             return token;
+        }
+
+        public UserSession SeedUserSession()
+        {
+            var userName = new Faker<string>().CustomInstantiator(f => f.Internet.UserName()).Generate();
+            var email = new Faker<string>().CustomInstantiator(f => f.Internet.Email()).Generate();
+
+            return new UserSession(Guid.NewGuid(), userName, email, ["User"]);
+        }
+
+        public Dictionary<string, string> SeedConfiguration()
+        {
+            var configurationGenerator = new Faker<Dictionary<string, string>>()
+                .CustomInstantiator(f => new Dictionary<string, string>
+                {
+                    { "JwtSettings:Issuer", $"{f.Internet.Url}:{f.Internet.Port}" },
+                    { "JwtSettings:Audience", $"{f.Internet.Url}:{f.Internet.Port}" },
+                    { "JwtSettings:Key", f.Random.String2(32) },
+                });
+
+            return configurationGenerator.Generate();
         }
     }
 }

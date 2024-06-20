@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
-using GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Security.AccessTokenHandler;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -68,7 +68,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                         }
 
                         var jwtSettings = Options.Create(new JwtSettings());
-                        if (userFingerprintHash != new AccessTokenHandler(jwtSettings, configuration).GenerateUserFingerprintHash(context.Request.Cookies["__Secure-Fgp"].Replace("__Secure-Fgp=", "", StringComparison.InvariantCultureIgnoreCase)))
+                        if (userFingerprintHash != new Handler(jwtSettings).GenerateUserFingerprintHash(context.Request.Cookies["__Secure-Fgp"].Replace("__Secure-Fgp=", "", StringComparison.InvariantCultureIgnoreCase)))
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                             return Task.CompletedTask;

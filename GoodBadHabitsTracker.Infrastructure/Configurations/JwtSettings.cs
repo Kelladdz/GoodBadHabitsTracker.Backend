@@ -17,7 +17,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Configurations
         public DateTime IssuedAt => DateTime.UtcNow;
         public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(15);
         public DateTime Expiration => IssuedAt.Add(ValidFor);
-        public string JtiGenerator { get; set; } = Guid.NewGuid().ToString();
+        public string Jti { get; set; } = Guid.NewGuid().ToString();
         public SigningCredentials? SigningCredentials { get; set; }
     }
 }

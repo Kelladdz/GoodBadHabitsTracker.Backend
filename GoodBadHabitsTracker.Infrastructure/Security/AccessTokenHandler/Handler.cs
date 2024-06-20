@@ -13,17 +13,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler
+namespace GoodBadHabitsTracker.Infrastructure.Security.AccessTokenHandler
 {
-    internal sealed class AccessTokenHandler(IOptions<JwtSettings> jwtSettings, IConfiguration configuration) : IAccessTokenHandler
+    internal sealed class Handler(IOptions<JwtSettings> jwtSettings) : IAccessTokenHandler
     {
         private readonly JwtSettings _jwtSettings = jwtSettings.Value;
         public string GenerateAccessToken(UserSession userSession, out string userFingerprint)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]!));
-
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
             userFingerprint = GenerateUserFingerprint();
             var userFingerprintHash = GenerateUserFingerprintHash(userFingerprint);
 
@@ -41,8 +37,6 @@ namespace GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler
 
             var claimsIdentity = new ClaimsIdentity(claims);
 
-
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = _jwtSettings.Issuer,
@@ -52,7 +46,6 @@ namespace GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler
                 NotBefore = _jwtSettings.NotBefore,
                 Subject = claimsIdentity
             };
-
 
             var handler = new JwtSecurityTokenHandler();
             var token = handler.CreateToken(tokenDescriptor);

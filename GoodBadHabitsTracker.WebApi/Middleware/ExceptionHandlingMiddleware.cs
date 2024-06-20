@@ -13,7 +13,7 @@ namespace GoodBadHabitsTracker.WebApi.Middleware
             formatString: "{Message}"
         );
 
-        public async Task Invoke(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext)
         {
             try
             {

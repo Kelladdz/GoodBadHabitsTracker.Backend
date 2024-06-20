@@ -24,4 +24,10 @@
     <ProjectReference Include="..\GoodBadHabitsTracker.Core\GoodBadHabitsTracker.Core.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>GoodBadHabitsTracker.Infrastructure.Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
 </Project>

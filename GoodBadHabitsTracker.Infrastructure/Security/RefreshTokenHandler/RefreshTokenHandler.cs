@@ -4,8 +4,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using GoodBadHabitsTracker.Core.Interfaces;
 
-namespace GoodBadHabitsTracker.Infrastructure.Services.RefreshTokenHandler
+namespace GoodBadHabitsTracker.Infrastructure.Security.RefreshTokenHandler
 {
     internal sealed class RefreshTokenHandler : IRefreshTokenHandler
     {

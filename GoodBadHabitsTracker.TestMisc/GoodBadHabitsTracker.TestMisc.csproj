@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <ProjectReference Include="..\GoodBadHabitsTracker.WebApi\GoodBadHabitsTracker.WebApi.csproj" />
+	  <ProjectReference Include="..\GoodBadHabitsTracker.Infrastructure\GoodBadHabitsTracker.Infrastructure.csproj" />
     <ProjectReference Include="..\GoodBadHabitsTracker.Application\GoodBadHabitsTracker.Application.csproj" />
   </ItemGroup>
 
