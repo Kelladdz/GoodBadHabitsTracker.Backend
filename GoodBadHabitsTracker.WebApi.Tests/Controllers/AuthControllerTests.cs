@@ -48,7 +48,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             };
         }
         [Fact]
-        public async void Register_ValidRequest_ReturnsCreatedAtAction()
+        public async Task Register_ValidRequest_ReturnsCreatedAtAction()
         {
             //ARRANGE
             var request = _dataGenerator.SeedValidRegisterRequest();
@@ -69,7 +69,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public async void Register_InvalidRequest_ReturnsBadRequest()
+        public async Task Register_InvalidRequest_ReturnsBadRequest()
         {
             //ARRANGE
             var request = _dataGenerator.SeedValidRegisterRequest();
@@ -86,7 +86,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public async void Register_NullRequest_ReturnsBadRequest()
+        public async Task Register_NullRequest_ReturnsBadRequest()
         {
             //ARRANGE
             RegisterRequest request = null;
@@ -100,7 +100,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             action.Should().ThrowAsync<HttpRequestException>().Where(ex => ex.StatusCode == HttpStatusCode.BadRequest);
         }
         [Fact]
-        public async void Login_CorrectCredentials_ReturnsOkWithAccessTokenRefreshToken()
+        public async Task Login_CorrectCredentials_ReturnsOkWithAccessTokenRefreshToken()
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
@@ -122,7 +122,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             _controller.ControllerContext.HttpContext.Response.Headers.SetCookie.Should().BeEquivalentTo($"__Secure-Fgp={userFingerprint}; max-age=900; path=/; secure; samesite=strict; httponly");
         }
         [Fact]
-        public async void Login_InvalidCredentials_ReturnsUnauthorized()
+        public async Task Login_InvalidCredentials_ReturnsUnauthorized()
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
@@ -136,7 +136,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             action.Should().ThrowAsync<AppException>().Where(ex => ex.Code == HttpStatusCode.Unauthorized).WithMessage("Invalid email or password");
         }
         [Fact]
-        public async void Login_NullRequest_ReturnsBadRequest()
+        public async Task Login_NullRequest_ReturnsBadRequest()
         {
             //ARRANGE
             LoginRequest request = null;
