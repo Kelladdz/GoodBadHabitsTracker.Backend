@@ -1,8 +1,17 @@
 using GoodBadHabitsTracker.Application.Extensions;
 using GoodBadHabitsTracker.Infrastructure.Extensions;
 using GoodBadHabitsTracker.WebApi.Middleware;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((hostingContext, services, loggerConfiguration) =>
+{
+    loggerConfiguration
+    .ReadFrom.Configuration(hostingContext.Configuration)
+    .ReadFrom.Services(services);
+});
 
 builder.Services.AddControllers();
 builder.Services.AddApplication();
@@ -11,6 +20,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 app.UseExceptionHandlingMiddleware();
 
@@ -29,6 +40,9 @@ app.UseRouting();
 
 
 app.UseAuthentication();
+
+app.UseAuthorizationPolicyMiddleware();
+
 app.UseAuthorization();
 
 app.Run();
