@@ -19,7 +19,7 @@ using System.Security.Cryptography;
 
 namespace GoodBadHabitsTracker.Infrastructure.Tests.Security.AccessTokenHandler
 {
-    public class AccessTokenHandlerTests
+    public class HandlerTests
     {
         private readonly DataGenerator _dataGenerator;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
@@ -29,7 +29,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Tests.Security.AccessTokenHandler
         private readonly JwtSettings _jwtSettings;
 
 
-        public AccessTokenHandlerTests()
+        public HandlerTests()
         {
             _dataGenerator = new DataGenerator();
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();

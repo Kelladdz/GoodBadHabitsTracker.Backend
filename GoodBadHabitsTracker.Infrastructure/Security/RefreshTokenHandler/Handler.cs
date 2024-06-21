@@ -8,7 +8,7 @@ using GoodBadHabitsTracker.Core.Interfaces;
 
 namespace GoodBadHabitsTracker.Infrastructure.Security.RefreshTokenHandler
 {
-    internal sealed class RefreshTokenHandler : IRefreshTokenHandler
+    internal sealed class Handler : IRefreshTokenHandler
     {
         public string GenerateRefreshToken()
         {
