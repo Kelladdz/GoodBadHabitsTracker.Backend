@@ -16,6 +16,6 @@ namespace GoodBadHabitsTracker.Core.Models.Habit
         public Guid UserId { get; init; }
         public bool IsQuit { get; private init; } = true;
         public Group? Group { get; set; }
-        public Guid GroupId { get; set; }
+        public Guid? GroupId { get; set; }
     }
 }

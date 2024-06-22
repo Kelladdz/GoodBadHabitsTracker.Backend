@@ -12,6 +12,7 @@ using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Infrastructure.Security.AccessTokenHandler;
 using GoodBadHabitsTracker.Infrastructure.Security.RefreshTokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Repositories;
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
 {
@@ -26,8 +27,10 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddRoles<UserRole>()
                 .AddRoleStore<RoleStore<UserRole, HabitsDbContext, Guid>>();
 
-            services.AddTransient<IAccessTokenHandler, Handler>();
-            services.AddTransient<IRefreshTokenHandler, RefreshTokenHandler>();
+            services.AddScoped<IAccessTokenHandler, Security.AccessTokenHandler.Handler>();
+            services.AddScoped<IRefreshTokenHandler, Security.RefreshTokenHandler.Handler>();
+
+            services.AddScoped<IGoodHabitsRepository, GoodHabitsRepository>();
 
             services.AddJwt(configuration);
             services.AddAuthorization(options =>

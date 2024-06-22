@@ -20,6 +20,6 @@ namespace GoodBadHabitsTracker.Core.Models.Habit
         public int Quantity { get; set; }
         public Frequencies Frequency { get; set; } = default!;
         public Group? Group { get; set; }
-        public Guid GroupId { get; set; }
+        public Guid? GroupId { get; set; }
     }
 }

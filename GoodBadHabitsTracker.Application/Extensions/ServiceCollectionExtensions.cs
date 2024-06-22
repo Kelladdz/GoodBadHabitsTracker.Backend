@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using FluentValidation;
+using GoodBadHabitsTracker.Application.Mappings;
 
 namespace GoodBadHabitsTracker.Application.Extensions
 {
@@ -13,6 +15,7 @@ namespace GoodBadHabitsTracker.Application.Extensions
         public static void AddApplication(this IServiceCollection services)
         {
             services.AddMediatR(config => config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+            services.AddAutoMapper(typeof(HabitsMappingProfile));
         }
     }
 }

@@ -15,8 +15,8 @@ namespace GoodBadHabitsTracker.Core.Models.Habit
             IsGood = true;
         }
         public User User { get; init; } = default!;
-        public Guid UserId { get; init; }
-        public bool IsTimeBased { get; set; }
+        public Guid UserId { get; set; }
+        public bool IsTimeBased { get; init; }
         public int Quantity { get; set; }
         public Frequencies Frequency { get; set; }
         public RepeatModes RepeatMode { get; set; }
@@ -25,6 +25,6 @@ namespace GoodBadHabitsTracker.Core.Models.Habit
         public int RepeatInterval { get; set; }
         public List<TimeOnly> ReminderTimes { get; init; } = new();
         public Group? Group { get; set; }
-        public Guid GroupId { get; set; }
+        public Guid? GroupId { get; set; }
     }
 }
