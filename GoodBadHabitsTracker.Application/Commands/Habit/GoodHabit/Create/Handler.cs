@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
 {
-    public class Handler(IMapper mapper, IHttpContextAccessor httpContextAccessor, IGoodHabitsRepository goodHabitsRepository) : IRequestHandler<Command, GoodHabitResponse>
+    internal sealed class Handler(IMapper mapper, IHttpContextAccessor httpContextAccessor, IGoodHabitsRepository goodHabitsRepository) : IRequestHandler<Command, GoodHabitResponse>
     {
         public async Task<GoodHabitResponse> Handle(Command command, CancellationToken cancellationToken)
         {

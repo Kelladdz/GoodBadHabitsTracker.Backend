@@ -31,6 +31,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             services.AddScoped<IRefreshTokenHandler, Security.RefreshTokenHandler.Handler>();
 
             services.AddScoped<IGoodHabitsRepository, GoodHabitsRepository>();
+            services.AddScoped<ILimitHabitsRepository, LimitHabitsRepository>();
 
             services.AddJwt(configuration);
             services.AddAuthorization(options =>

@@ -14,7 +14,7 @@ namespace GoodBadHabitsTracker.Core.Models.Habit
             IsGood = false;
         }
         public User User { get; init; } = default!;
-        public Guid UserId { get; init; }
+        public Guid UserId { get; set; }
         public bool IsQuit { get; private init; } = false;
         public bool IsTimeBased { get; set; }
         public int Quantity { get; set; }
