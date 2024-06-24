@@ -14,10 +14,10 @@ namespace GoodBadHabitsTracker.Application.DTOs.Habit.Request
         public bool IsGood { get; init; }
         public bool? IsQuit { get; init; }
         public DateOnly StartDate { get; init; }
-        public bool IsTimeBased { get; init; }
-        public int Quantity { get; init; }
-        public Frequencies Frequency { get; init; }
-        public RepeatModes RepeatMode { get; init; }
+        public bool? IsTimeBased { get; init; }
+        public int? Quantity { get; init; }
+        public Frequencies? Frequency { get; init; }
+        public RepeatModes? RepeatMode { get; init; }
         public string[] RepeatDaysOfWeek { get; set; }
         public int[] RepeatDaysOfMonth { get; set; }
         public int RepeatInterval { get; set; }

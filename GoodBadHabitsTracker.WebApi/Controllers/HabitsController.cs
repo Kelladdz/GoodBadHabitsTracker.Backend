@@ -25,7 +25,11 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
                 var response = await mediator.Send(new Application.Commands.Habit.LimitHabit.Create.Command(request), cancellationToken);
                 return Created(new Uri($"/api/habits/{response.LimitHabit}", UriKind.Relative), response.LimitHabit); //TO CHANGE LATER
             }
-            else return Ok();
+            else
+            {
+                var response = await mediator.Send(new Application.Commands.Habit.QuitHabit.Create.Command(request), cancellationToken);
+                return Created(new Uri($"/api/habits/{response.QuitHabit}", UriKind.Relative), response.QuitHabit); //TO CHANGE LATER
+            }
         }
     }
 }

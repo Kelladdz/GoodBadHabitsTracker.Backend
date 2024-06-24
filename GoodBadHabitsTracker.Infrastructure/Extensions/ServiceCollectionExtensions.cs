@@ -32,6 +32,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
 
             services.AddScoped<IGoodHabitsRepository, GoodHabitsRepository>();
             services.AddScoped<ILimitHabitsRepository, LimitHabitsRepository>();
+            services.AddScoped<IQuitHabitsRepository, QuitHabitsRepository>();
 
             services.AddJwt(configuration);
             services.AddAuthorization(options =>

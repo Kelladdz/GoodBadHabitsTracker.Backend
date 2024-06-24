@@ -17,6 +17,7 @@ namespace GoodBadHabitsTracker.Application.Mappings
         {
             CreateMap<HabitRequest, GoodHabit>();
             CreateMap<HabitRequest, LimitHabit>();
+            CreateMap<HabitRequest, QuitHabit>();
         }
     }
 }
