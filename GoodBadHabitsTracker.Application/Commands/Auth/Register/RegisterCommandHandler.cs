@@ -11,11 +11,11 @@ using GoodBadHabitsTracker.Application.Exceptions;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
 {
-    internal sealed class Handler(
+    internal sealed class RegisterCommandHandler(
         UserManager<User> userManager,
-        RoleManager<UserRole> roleManager) : IRequestHandler<Command, User>
+        RoleManager<UserRole> roleManager) : IRequestHandler<RegisterCommand, User>
     {
-        public async Task<User> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<User> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
             User user = new()
             {

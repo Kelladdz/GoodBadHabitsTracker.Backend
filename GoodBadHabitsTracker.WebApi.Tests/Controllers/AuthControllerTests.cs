@@ -25,6 +25,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using FluentAssertions.Common;
 using System.Security.Authentication;
+using GoodBadHabitsTracker.Application.Commands.Auth.Login;
 
 namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
 {
@@ -53,7 +54,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             //ARRANGE
             var request = _dataGenerator.SeedValidRegisterRequest();
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.Command>(), default)).ReturnsAsync(new User { Email = request.Email, UserName = request.UserName });
+            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.RegisterCommand>(), default)).ReturnsAsync(new User { Email = request.Email, UserName = request.UserName });
 
             //ACT
             var result = await _controller.Register(request, default) as CreatedAtActionResult;
@@ -75,7 +76,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             var request = _dataGenerator.SeedValidRegisterRequest();
             _controller.ModelState.AddModelError("Email", $"Email '{request.Email}' is already taken.");
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.Command>(), default)).ThrowsAsync(new AppException(HttpStatusCode.BadRequest, $"Failed to create user: Email '{request.Email}' is already taken."));
+            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.RegisterCommand>(), default)).ThrowsAsync(new AppException(HttpStatusCode.BadRequest, $"Failed to create user: Email '{request.Email}' is already taken."));
 
             //ACT
             Func<Task> action = async () => await _controller.Register(request, default);
@@ -91,7 +92,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             //ARRANGE
             RegisterRequest request = null;
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.Command>(), default)).ReturnsAsync((User)null);
+            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.RegisterCommand>(), default)).ReturnsAsync((User)null);
 
             //ACT
             Func<Task> action = async () => await _controller.Register(request, default);
@@ -105,10 +106,10 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomToken();
-            var userFingerprint = _dataGenerator.SeedRandomToken();
+            var refreshToken = _dataGenerator.SeedRandomString();
+            var userFingerprint = _dataGenerator.SeedRandomString();
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Login.Command>(), default)).ReturnsAsync(new LoginResponse(accessToken, refreshToken, userFingerprint));
+            _mediatorMock.Setup(x => x.Send(It.IsAny<LoginCommand>(), default)).ReturnsAsync(new LoginResponse(accessToken, refreshToken, userFingerprint));
 
 
             //ACT
@@ -127,7 +128,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Login.Command>(), default)).ThrowsAsync(new AppException(HttpStatusCode.Unauthorized, "Invalid email or password"));
+            _mediatorMock.Setup(x => x.Send(It.IsAny<LoginCommand>(), default)).ThrowsAsync(new AppException(HttpStatusCode.Unauthorized, "Invalid email or password"));
 
             //ACT
             Func<Task> action = async () => await _controller.Login(request, default);
@@ -141,7 +142,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             //ARRANGE
             LoginRequest request = null;
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Login.Command>(), default)).ReturnsAsync((LoginResponse)null);
+            _mediatorMock.Setup(x => x.Send(It.IsAny<LoginCommand>(), default)).ReturnsAsync((LoginResponse)null);
 
             //ACT
             Func<Task> action = async () => await _controller.Login(request, default);

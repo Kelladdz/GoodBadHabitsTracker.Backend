@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
 {
-    internal sealed class Handler(IMapper mapper, IHttpContextAccessor httpContextAccessor, IGoodHabitsRepository goodHabitsRepository) : IRequestHandler<Command, GoodHabitResponse>
+    internal sealed class CreateGoodHabitCommandHandler(IMapper mapper, IHttpContextAccessor httpContextAccessor, IGoodHabitsRepository goodHabitsRepository) : IRequestHandler<CreateGoodHabitCommand, GoodHabitResponse>
     {
-        public async Task<GoodHabitResponse> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<GoodHabitResponse> Handle(CreateGoodHabitCommand command, CancellationToken cancellationToken)
         {
             var habit = mapper.Map<Core.Models.Habit.GoodHabit>(command.Request);
             habit.UserId = Guid.Parse("83166a55-c2f1-44a5-2a39-08dc8bf473f7"); //TO CHANGE

@@ -1,6 +1,8 @@
 ﻿using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using GoodBadHabitsTracker.Application.Commands.Auth.Register;
+using GoodBadHabitsTracker.Application.Commands.Auth.Login;
 
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
@@ -13,7 +15,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         public async Task<IActionResult> Register
             ([FromBody] RegisterRequest request, CancellationToken cancellationToken)
         {
-            var response = await mediator.Send(new Application.Commands.Auth.Register.Command(request, cancellationToken));
+            var response = await mediator.Send(new RegisterCommand(request, cancellationToken));
             return CreatedAtAction(nameof(Register), new { id = response.Id }, response);
         }
 
@@ -21,7 +23,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         public async Task<IActionResult> Login
             ([FromBody] LoginRequest request, CancellationToken cancellationToken)
         {
-            var response = await mediator.Send(new Application.Commands.Auth.Login.Command(request, cancellationToken));
+            var response = await mediator.Send(new LoginCommand(request, cancellationToken));
 
             Response.Cookies.Append("__Secure-Fgp", response.UserFingerprint, new CookieOptions
             {

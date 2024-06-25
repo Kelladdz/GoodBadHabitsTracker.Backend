@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habit.QuitHabit.Create
 {
-    internal sealed class Handler(IMapper mapper, IHttpContextAccessor httpContextAccessor, IQuitHabitsRepository quitHabitsRepository) : IRequestHandler<Command, QuitHabitResponse>
+    internal sealed class CreateQuitHabitCommandHandler(IMapper mapper, IHttpContextAccessor httpContextAccessor, IQuitHabitsRepository quitHabitsRepository) : IRequestHandler<CreateQuitHabitCommand, QuitHabitResponse>
     {
-        public async Task<QuitHabitResponse> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<QuitHabitResponse> Handle(CreateQuitHabitCommand command, CancellationToken cancellationToken)
         {
             var habit = mapper.Map<Core.Models.Habit.QuitHabit>(command.Request);
             habit.UserId = Guid.Parse("83166a55-c2f1-44a5-2a39-08dc8bf473f7"); //TO CHANGE

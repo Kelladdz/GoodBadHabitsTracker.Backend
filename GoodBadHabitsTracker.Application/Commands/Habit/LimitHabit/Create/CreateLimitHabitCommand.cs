@@ -9,5 +9,5 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Create
 {
-    public record Command(HabitRequest Request) : IRequest<LimitHabitResponse>;
+    public record CreateLimitHabitCommand(HabitRequest Request) : IRequest<LimitHabitResponse>;
 }

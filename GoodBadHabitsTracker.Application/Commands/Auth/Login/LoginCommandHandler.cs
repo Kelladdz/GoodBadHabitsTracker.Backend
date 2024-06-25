@@ -12,17 +12,16 @@ using Azure.Core;
 using System.Security.Authentication;
 using Azure;
 using Microsoft.AspNetCore.Http;
-using GoodBadHabitsTracker.Infrastructure.Services.AccessTokenHandler;
-using GoodBadHabitsTracker.Infrastructure.Services.RefreshTokenHandler;
+using GoodBadHabitsTracker.Core.Interfaces;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
 {
-    public sealed class Handler
+    public sealed class LoginCommandHandler
         (UserManager<User> userManager,
         IAccessTokenHandler accessTokenHandler,
-        IRefreshTokenHandler refreshTokenHandler) : IRequestHandler<Command, LoginResponse>
+        IRefreshTokenHandler refreshTokenHandler) : IRequestHandler<LoginCommand, LoginResponse>
     {
-        public async Task<LoginResponse> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
         {
             var user = await userManager.FindByEmailAsync(command.Request.Email) 
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid email or password");
@@ -41,16 +40,16 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
             var userSession = new UserSession(user.Id, user.UserName!, user.Email, userRoles);
 
             var accessToken = accessTokenHandler.GenerateAccessToken(userSession, out string userFingerprint);
-            if (accessToken is null) throw new InvalidOperationException("Access token cannot be null.");
+            if (accessToken is null) throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
 
             var refreshToken = refreshTokenHandler.GenerateRefreshToken();
-            if (refreshToken is null) throw new InvalidOperationException("Refresh token cannot be null.");
+            if (refreshToken is null) throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
 
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpirationDate = DateTime.UtcNow.AddDays(7);
 
             var userUpdateResult = await userManager.UpdateAsync(user);
-            if (!userUpdateResult.Succeeded) throw new InvalidOperationException("User update failed.");
+            if (!userUpdateResult.Succeeded) throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
 
             return new LoginResponse(accessToken, refreshToken, userFingerprint);
         }

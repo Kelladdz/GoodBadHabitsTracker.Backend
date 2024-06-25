@@ -45,13 +45,13 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
+            var command = new LoginCommand(request, default);
+            var handler = new LoginCommandHandler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomToken();
-            string expectedUserFingerprint = _dataGenerator.SeedRandomToken();
+            var refreshToken = _dataGenerator.SeedRandomString();
+            string expectedUserFingerprint = _dataGenerator.SeedRandomString();
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email});
@@ -93,8 +93,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
+            var command = new LoginCommand(request, default);
+            var handler = new LoginCommandHandler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync((User)null);
@@ -121,8 +121,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
+            var command = new LoginCommand(request, default);
+            var handler = new LoginCommandHandler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email });
@@ -151,13 +151,13 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
+            var command = new LoginCommand(request, default);
+            var handler = new LoginCommandHandler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomToken();
-            string expectedUserFingerprint = _dataGenerator.SeedRandomToken();
+            var refreshToken = _dataGenerator.SeedRandomString();
+            string expectedUserFingerprint = _dataGenerator.SeedRandomString();
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email });
@@ -201,8 +201,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
+            var command = new LoginCommand(request, default);
+            var handler = new LoginCommandHandler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
             var userId = Guid.NewGuid();
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
@@ -236,8 +236,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
+            var command = new LoginCommand(request, default);
+            var handler = new LoginCommandHandler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
 
@@ -274,12 +274,12 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
+            var command = new LoginCommand(request, default);
+            var handler = new LoginCommandHandler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            string expectedUserFingerprint = _dataGenerator.SeedRandomToken();
+            string expectedUserFingerprint = _dataGenerator.SeedRandomString();
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email });
@@ -323,13 +323,13 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
         {
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
+            var command = new LoginCommand(request, default);
+            var handler = new LoginCommandHandler(_userManagerMock.Object, _accessTokenHandlerMock.Object, _refreshTokenHandlerMock.Object);
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomToken();
-            string expectedUserFingerprint = _dataGenerator.SeedRandomToken();
+            var refreshToken = _dataGenerator.SeedRandomString();
+            string expectedUserFingerprint = _dataGenerator.SeedRandomString();
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email });

@@ -9,5 +9,5 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
 {
-    public record Command(LoginRequest Request, CancellationToken CancellationToken) : IRequest<LoginResponse>;
+    public record LoginCommand(LoginRequest Request, CancellationToken CancellationToken) : IRequest<LoginResponse>;
 }

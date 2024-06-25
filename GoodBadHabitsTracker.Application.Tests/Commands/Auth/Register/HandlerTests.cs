@@ -12,13 +12,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
 
 namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Register
 {
     public class HandlerTests
     {
-        private readonly ServiceCollection _services;
         private readonly Mock<IUserStore<User>> _userStoreMock;
         private readonly Mock<UserManager<User>> _userManagerMock;
         private readonly Mock<IRoleStore<UserRole>> _roleStoreMock;
@@ -27,7 +25,6 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Register
 
         public HandlerTests()
         {
-            _services = new ServiceCollection();
             _userStoreMock = new Mock<IUserStore<User>>();
             _userManagerMock = new Mock<UserManager<User>>(_userStoreMock.Object, null, null, null, null, null, null, null, null);
             _roleStoreMock = new Mock<IRoleStore<UserRole>>();
@@ -40,8 +37,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Register
         {
             //ARRANGE
             var request = _dataGenerator.SeedValidRegisterRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _roleManagerMock.Object);
+            var command = new RegisterCommand(request, default);
+            var handler = new RegisterCommandHandler(_userManagerMock.Object, _roleManagerMock.Object);
 
             _userManagerMock.Setup(x => x.CreateAsync(It.Is<User>(user => user.Id.GetType() == typeof(Guid)), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
@@ -67,8 +64,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Register
         {
             //ARRANGE
             var request = _dataGenerator.SeedValidRegisterRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _roleManagerMock.Object);
+            var command = new RegisterCommand(request, default);
+            var handler = new RegisterCommandHandler(_userManagerMock.Object, _roleManagerMock.Object);
 
             _userManagerMock.Setup(x => x.CreateAsync(It.Is<User>(user => user.Id.GetType() == typeof(Guid)), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Failed());
@@ -90,8 +87,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Register
         {
             //ARRANGE
             var request = _dataGenerator.SeedValidRegisterRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _roleManagerMock.Object);
+            var command = new RegisterCommand(request, default);
+            var handler = new RegisterCommandHandler(_userManagerMock.Object, _roleManagerMock.Object);
 
             _userManagerMock.Setup(x => x.CreateAsync(It.Is<User>(user => user.Id.GetType() == typeof(Guid)), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
@@ -118,8 +115,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Register
         {
             //ARRANGE
             var request = _dataGenerator.SeedValidRegisterRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _roleManagerMock.Object);
+            var command = new RegisterCommand(request, default);
+            var handler = new RegisterCommandHandler(_userManagerMock.Object, _roleManagerMock.Object);
 
             _userManagerMock.Setup(x => x.CreateAsync(It.Is<User>(user => user.Id.GetType() == typeof(Guid)), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
@@ -149,8 +146,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Register
         {
             //ARRANGE
             var request = _dataGenerator.SeedValidRegisterRequest();
-            var command = new Command(request, default);
-            var handler = new Handler(_userManagerMock.Object, _roleManagerMock.Object);
+            var command = new RegisterCommand(request, default);
+            var handler = new RegisterCommandHandler(_userManagerMock.Object, _roleManagerMock.Object);
 
             _userManagerMock.Setup(x => x.CreateAsync(It.Is<User>(user => user.Id.GetType() == typeof(Guid)), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
