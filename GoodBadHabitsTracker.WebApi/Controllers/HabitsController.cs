@@ -8,6 +8,7 @@ using GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Create;
 
 using FluentValidation;
 using GoodBadHabitsTracker.Application.Commands.Habit.QuitHabit.Create;
+using System.Reflection.Metadata.Ecma335;
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
 {
@@ -20,7 +21,9 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         {
             if (request.IsGood)
             {
-                var response = await mediator.Send(new CreateGoodHabitCommand(request), cancellationToken);
+                var command = new CreateGoodHabitCommand(request);
+
+                var response = await mediator.Send(command, cancellationToken);
                 return Created(new Uri($"/api/habits/{response.GoodHabit}", UriKind.Relative), response.GoodHabit); //TO CHANGE LATER
             }
             else if ((bool)!request.IsQuit!)

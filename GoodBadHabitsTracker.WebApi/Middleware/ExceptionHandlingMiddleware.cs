@@ -1,6 +1,9 @@
-﻿using System.Net;
+﻿using System;
+
+using System.Net;
 using System.Text.Json;
 using GoodBadHabitsTracker.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GoodBadHabitsTracker.WebApi.Middleware
 {
@@ -21,35 +24,54 @@ namespace GoodBadHabitsTracker.WebApi.Middleware
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(httpContext, ex, logger);
+                logger.LogError(ex, "Exception occurred: {Message}", ex.Message);
+
+                var exceptionDetails = GetExceptionDetails(ex);
+
+                var problemDetails = new ProblemDetails
+                {
+                    Status = exceptionDetails.Status,
+                    Type = exceptionDetails.Type,
+                    Title = exceptionDetails.Title,
+                    Detail = exceptionDetails.Detail
+                };
+
+                if (exceptionDetails.Errors is not null)
+                {
+                    problemDetails.Extensions["errors"] = exceptionDetails.Errors;
+                }
+
+                httpContext.Response.StatusCode = exceptionDetails.Status;
+                await httpContext.Response.WriteAsJsonAsync(problemDetails);
             }
         }
-        private static async Task HandleExceptionAsync(
-        HttpContext context,
-        Exception exception,
-        ILogger<ExceptionHandlingMiddleware> logger
-    )
+        private static ExceptionDetails GetExceptionDetails(Exception exception)
         {
-            string? result;
-            switch (exception)
+            return exception switch
             {
-                case AppException re:
-                    context.Response.StatusCode = (int)re.Code;
-                    result = JsonSerializer.Serialize(new { errors = re.Errors });
-                    break;
-                default:
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    LOGGER_MESSAGE(logger, "Unhandled Exception", exception);
-                    result = JsonSerializer.Serialize(
-                        new { errors = "InternalServerError" }
-                    );
-                    break;
-            }
-
-            context.Response.ContentType = "application/json";
-            await context.Response.WriteAsync(result);
+                AppException appException => new ExceptionDetails(
+                    StatusCodes.Status400BadRequest,
+                    "ValidationFailure",
+                    "Validation error",
+                    "One or more validation errors has occurred",
+                    appException.Errors),
+                ValidationException validationException => new ExceptionDetails(
+                    StatusCodes.Status400BadRequest,
+                    "ApplicationFailure",
+                    "Application error",
+                    "Something goes wrong",
+                    validationException.Errors),
+                _ => new ExceptionDetails(
+                    StatusCodes.Status500InternalServerError,
+                    "ServerError",
+                    "Server error",
+                    "An unexpected error has occurred",
+                    null)
+            };
         }
     }
+
+    internal record ExceptionDetails(int Status, string Type, string Title, string Detail, object? Errors);
 
     public static class ExceptionHandlingMiddlewareExtensions
     {

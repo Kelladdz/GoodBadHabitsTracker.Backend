@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using FluentValidation;
 using GoodBadHabitsTracker.Application.Mappings;
+using GoodBadHabitsTracker.Application.Abstractions.Behaviors;
 
 namespace GoodBadHabitsTracker.Application.Extensions
 {
@@ -14,8 +15,13 @@ namespace GoodBadHabitsTracker.Application.Extensions
     {
         public static void AddApplication(this IServiceCollection services)
         {
-            services.AddMediatR(config => config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+            services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            });
             services.AddAutoMapper(typeof(HabitsMappingProfile));
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
