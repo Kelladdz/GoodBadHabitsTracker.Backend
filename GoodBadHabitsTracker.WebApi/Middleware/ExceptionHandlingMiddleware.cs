@@ -50,16 +50,16 @@ namespace GoodBadHabitsTracker.WebApi.Middleware
             return exception switch
             {
                 AppException appException => new ExceptionDetails(
+                    (int)appException.Code,
+                    "ApplicationFailure",
+                    "Application error",
+                    "Something goes wrong",
+                    appException.Errors),
+                ValidationException validationException => new ExceptionDetails(
                     StatusCodes.Status400BadRequest,
                     "ValidationFailure",
                     "Validation error",
                     "One or more validation errors has occurred",
-                    appException.Errors),
-                ValidationException validationException => new ExceptionDetails(
-                    StatusCodes.Status400BadRequest,
-                    "ApplicationFailure",
-                    "Application error",
-                    "Something goes wrong",
                     validationException.Errors),
                 _ => new ExceptionDetails(
                     StatusCodes.Status500InternalServerError,

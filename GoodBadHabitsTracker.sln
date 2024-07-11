@@ -3,21 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodBadHabitsTracker.WebApi", "GoodBadHabitsTracker.WebApi\GoodBadHabitsTracker.WebApi.csproj", "{EFA92730-DFEA-4863-A7DA-0AB88923EAE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.WebApi", "GoodBadHabitsTracker.WebApi\GoodBadHabitsTracker.WebApi.csproj", "{EFA92730-DFEA-4863-A7DA-0AB88923EAE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodBadHabitsTracker.Application", "GoodBadHabitsTracker.Application\GoodBadHabitsTracker.Application.csproj", "{0C3A2DEC-0581-4885-B7C1-4141DA83DFAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.Application", "GoodBadHabitsTracker.Application\GoodBadHabitsTracker.Application.csproj", "{0C3A2DEC-0581-4885-B7C1-4141DA83DFAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodBadHabitsTracker.Core", "GoodBadHabitsTracker.Core\GoodBadHabitsTracker.Core.csproj", "{070C0C12-966E-4DBD-9B23-1DB430490F16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.Core", "GoodBadHabitsTracker.Core\GoodBadHabitsTracker.Core.csproj", "{070C0C12-966E-4DBD-9B23-1DB430490F16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodBadHabitsTracker.Infrastructure", "GoodBadHabitsTracker.Infrastructure\GoodBadHabitsTracker.Infrastructure.csproj", "{C9AA91E3-1C04-436B-96B6-4CD2F5115003}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.Infrastructure", "GoodBadHabitsTracker.Infrastructure\GoodBadHabitsTracker.Infrastructure.csproj", "{C9AA91E3-1C04-436B-96B6-4CD2F5115003}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.Application.Tests", "GoodBadHabitsTracker.Application.Tests\GoodBadHabitsTracker.Application.Tests.csproj", "{50E492E5-88A3-43A7-B996-0574201790AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.Core.Tests", "GoodBadHabitsTracker.Core.Tests\GoodBadHabitsTracker.Core.Tests.csproj", "{5613E57F-C818-4C79-9B08-53D894765FE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.Infrastructure.Tests", "GoodBadHabitsTracker.Infrastructure.Tests\GoodBadHabitsTracker.Infrastructure.Tests.csproj", "{26AB2AD1-57EE-4CAA-A93C-33995559700E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.TestMisc", "GoodBadHabitsTracker.TestMisc\GoodBadHabitsTracker.TestMisc.csproj", "{2E85D333-BA9A-4CC6-86FB-019EA9934853}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodBadHabitsTracker.WebApi.Tests", "GoodBadHabitsTracker.WebApi.Tests\GoodBadHabitsTracker.WebApi.Tests.csproj", "{50ACD727-67AE-4615-B181-430A429FE1A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EFA92730-DFEA-4863-A7DA-0AB88923EAE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -36,5 +43,31 @@ Global
 		{C9AA91E3-1C04-436B-96B6-4CD2F5115003}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9AA91E3-1C04-436B-96B6-4CD2F5115003}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9AA91E3-1C04-436B-96B6-4CD2F5115003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50E492E5-88A3-43A7-B996-0574201790AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E492E5-88A3-43A7-B996-0574201790AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E492E5-88A3-43A7-B996-0574201790AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E492E5-88A3-43A7-B996-0574201790AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5613E57F-C818-4C79-9B08-53D894765FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5613E57F-C818-4C79-9B08-53D894765FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5613E57F-C818-4C79-9B08-53D894765FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5613E57F-C818-4C79-9B08-53D894765FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26AB2AD1-57EE-4CAA-A93C-33995559700E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26AB2AD1-57EE-4CAA-A93C-33995559700E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26AB2AD1-57EE-4CAA-A93C-33995559700E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26AB2AD1-57EE-4CAA-A93C-33995559700E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E85D333-BA9A-4CC6-86FB-019EA9934853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E85D333-BA9A-4CC6-86FB-019EA9934853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E85D333-BA9A-4CC6-86FB-019EA9934853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E85D333-BA9A-4CC6-86FB-019EA9934853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50ACD727-67AE-4615-B181-430A429FE1A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50ACD727-67AE-4615-B181-430A429FE1A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50ACD727-67AE-4615-B181-430A429FE1A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50ACD727-67AE-4615-B181-430A429FE1A7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8674F361-F11D-4C3E-A164-2AB7A336FF5A}
 	EndGlobalSection
 EndGlobal

@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoodBadHabitsTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(HabitsDbContext))]
-    [Migration("20240613220124_User_NullableProperties_FirstNameLastNameImagePathRefreshToken")]
-    partial class User_NullableProperties_FirstNameLastNameImagePathRefreshToken
+    [Migration("20240711080439_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -85,6 +85,10 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -94,12 +98,15 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -126,6 +133,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RefreshToken")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RefreshTokenExpirationDate")
@@ -292,7 +300,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                     b.Property<int>("Frequency")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("GroupId")
+                    b.Property<Guid?>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsTimeBased")
@@ -338,7 +346,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                     b.Property<int>("Frequency")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("GroupId")
+                    b.Property<Guid?>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsQuit")
@@ -366,7 +374,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                 {
                     b.HasBaseType("GoodBadHabitsTracker.Core.Models.Habit.Habit");
 
-                    b.Property<Guid>("GroupId")
+                    b.Property<Guid?>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsQuit")
@@ -450,9 +458,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                 {
                     b.HasOne("GoodBadHabitsTracker.Core.Models.Group", "Group")
                         .WithMany("GoodHabits")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("GoodBadHabitsTracker.Core.Models.User", "User")
                         .WithMany("GoodHabits")
@@ -528,9 +534,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                 {
                     b.HasOne("GoodBadHabitsTracker.Core.Models.Group", "Group")
                         .WithMany("LimitHabits")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("GoodBadHabitsTracker.Core.Models.User", "User")
                         .WithMany("LimitHabits")
@@ -606,9 +610,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                 {
                     b.HasOne("GoodBadHabitsTracker.Core.Models.Group", "Group")
                         .WithMany("QuitHabits")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("GoodBadHabitsTracker.Core.Models.User", "User")
                         .WithMany("QuitHabits")

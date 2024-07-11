@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GoodBadHabitsTracker.Application\GoodBadHabitsTracker.Application.csproj" />
+    <ProjectReference Include="..\GoodBadHabitsTracker.Infrastructure\GoodBadHabitsTracker.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

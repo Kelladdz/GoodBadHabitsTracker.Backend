@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Castle.Components.DictionaryAdapter.Xml;
+using FluentValidation;
 using GoodBadHabitsTracker.Core.Enums;
 using System;
 using System.Collections.Generic;
@@ -16,18 +17,19 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
             RuleFor(x => x.Request.Name)
                 .NotEmpty().WithMessage("Name is required.")
                 .MaximumLength(100).WithMessage("Name must not exceed 100 characters.");
+            RuleFor(x => x.Request.IsGood)
+                .Must(x => x == true).WithMessage("For good habit IsGood should be true.");
             RuleFor(x => x.Request.IsQuit)
                 .Empty().WithMessage("IsQuit shouldn't be set if habit is good.");
+            RuleFor(x => x.Request.Quantity)
+                .NotNull().WithMessage("For good habit, quantity shouldn't be null");
             RuleFor(x => x.Request.Frequency)
                 .Must(x => x == Frequencies.PerDay || x == Frequencies.PerWeek || x == Frequencies.PerMonth).WithMessage("Invalid frequency");
             RuleFor(x => x.Request.IsTimeBased)
-                .Empty().WithMessage("For breaking a habit, IsGoalInTime should be false");
-            RuleFor(x => x.Request.Quantity)
-                .Must(x => x < 256 && x != null).WithMessage("Invalid quantity")
-                .Empty().WithMessage("For breaking a habit, quantity should be empty");
+                .NotNull().WithMessage("For good habit, IsTimeBased shouldn't be null.");
             RuleFor(x => x.Request.RepeatMode)
                 .Must(x => x == RepeatModes.Daily || x == RepeatModes.Monthly || x == RepeatModes.Interval).WithMessage("Repeat mode must be Daily, Weekly or Monthly.")
-                .Empty().WithMessage("For breaking a habit, repeat mode should be empty");
+                .NotNull().WithMessage("For good habit, repeat mode shouldn't be null.");
             RuleFor(x => x.Request.RepeatDaysOfMonth)
                 .Custom((value, context) =>
                 {
@@ -68,12 +70,12 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
                     if (context.InstanceToValidate.Request.RepeatMode == RepeatModes.Interval)
                     {
                         if (value < 1 || value > 8)
-                            context.AddFailure("Repeat interval must be greater than 1 and less than 8.");
+                            context.AddFailure("Repeat interval value must be greater than 1 and less than 8.");
                     }
                     else
                     {
-                        if (value != null)
-                            context.AddFailure("RepeatInterval should be empty if repeat mode isn't 'Interval'.");
+                        if (value != 0)
+                            context.AddFailure("Repeat interval value should be 0 if repeat mode isn't 'Interval'.");
                     }
                 });
             RuleFor(x => x.Request.StartDate)
@@ -81,8 +83,8 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
             RuleFor(x => x.Request.ReminderTimes)
                 .Custom((value, context) =>
                 {
-                    if (value.Count() > 0)
-                        context.AddFailure("ReminderTimes shouldn't be set if habit is good.");
+                    if (value.Length <= 0)
+                        context.AddFailure("list of reminder times shouldn't be empty if habit is good.");
                     else
                     {
                         foreach (var time in value)
