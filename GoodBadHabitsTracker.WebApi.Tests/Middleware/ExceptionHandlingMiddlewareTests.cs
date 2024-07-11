@@ -70,7 +70,14 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Middleware
             //ASSERT
             _httpContext.Response.Body.Seek(0, SeekOrigin.Begin);
             var responseContent = new StreamReader(_httpContext.Response.Body).ReadToEnd();
-            var expectedResponse = JsonSerializer.Serialize(new { errors = exception.Errors });
+            var expectedResponse = JsonSerializer.Serialize(new 
+            { 
+                type = "ApplicationFailure",
+                title = "Application error",
+                status = statusCode,
+                detail = "Something goes wrong",
+                errors = error
+            });
 
             _httpContext.Response.StatusCode.Should().Be((int)statusCode);
             responseContent.Should().BeEquivalentTo(expectedResponse);
@@ -83,8 +90,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Middleware
             //ARRANGE
             var random = new Random();
             var statusCode = HttpStatusCode.InternalServerError;
-            var error = "InternalServerError";
-            var exception = new Exception(error);
+            var exception = new Exception(null);
             _httpContext.Response.Body = new MemoryStream();
 
             _nextMock.Setup(x => x(It.IsAny<HttpContext>())).Throws(exception);
@@ -95,7 +101,13 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Middleware
             //ASSERT
             _httpContext.Response.Body.Seek(0, SeekOrigin.Begin);
             var responseContent = new StreamReader(_httpContext.Response.Body).ReadToEnd();
-            var expectedResponse = JsonSerializer.Serialize(new { errors = error });
+            var expectedResponse = JsonSerializer.Serialize(new
+            {
+                type = "ServerError",
+                title = "Server error",
+                status = statusCode,
+                detail = "An unexpected error has occurred"
+            });
 
             _httpContext.Response.StatusCode.Should().Be((int)statusCode);
             responseContent.Should().BeEquivalentTo(expectedResponse);
