@@ -49,7 +49,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 
-app.UseAuthorizationPolicyMiddleware();
+
 
 app.UseAuthorization();
 

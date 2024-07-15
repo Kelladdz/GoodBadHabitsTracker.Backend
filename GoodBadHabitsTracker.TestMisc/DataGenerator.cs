@@ -1,6 +1,8 @@
 ﻿using Bogus;
 using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
+using GoodBadHabitsTracker.Application.DTOs.Habit.Request;
 using GoodBadHabitsTracker.Application.Exceptions;
+using GoodBadHabitsTracker.Core.Enums;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +20,15 @@ namespace GoodBadHabitsTracker.TestMisc
 {
     public class DataGenerator()
     {
+        Random random = new Random();
+        string[] allowedDaysOfWeek = ["Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"];
+
         public RegisterRequest SeedValidRegisterRequest()
         {
             var registerRequestGenerator = new Faker<RegisterRequest>()
@@ -109,6 +120,54 @@ namespace GoodBadHabitsTracker.TestMisc
                 });
 
             return configurationGenerator.Generate();
+        }
+
+        public HabitRequest SeedGoodHabitRequest()
+        {
+            var goodHabitRequestGenerator = new Faker<HabitRequest>()
+                .RuleFor(h => h.Name, f => f.Name.JobTitle())
+                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IsGood, f => true)
+                .RuleFor(h => h.IsQuit, f => null)
+                .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
+                .RuleFor(h => h.IsTimeBased, f => f.Random.Bool())
+                .RuleFor(h => h.Quantity, (f, h) => (bool)h.IsTimeBased! ? f.Random.Int(1, 60) * 60 : f.Random.Int(1, 100))
+                .RuleFor(h => h.Frequency, f => f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth))
+                .RuleFor(h => h.RepeatMode, f => f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval))
+                .RuleFor(h => h.RepeatDaysOfWeek, (f, h) => h.RepeatMode == RepeatModes.Daily ? Enumerable.Range(1, random.Next(2, 7)).Select(x => f.PickRandom(allowedDaysOfWeek)).ToArray() : Array.Empty<string>())
+                .RuleFor(h => h.RepeatDaysOfMonth, (f, h) => h.RepeatMode == RepeatModes.Monthly ? Enumerable.Range(1, random.Next(2, 28)).Select(x => f.Random.Int(1, 28)).ToArray() : Array.Empty<int>())
+                .RuleFor(h => h.RepeatInterval, (f, h) => h.RepeatMode == RepeatModes.Interval ? f.Random.Int(2, 7) : 0)
+                .RuleFor(h => h.ReminderTimes, f => Enumerable.Range(0, random.Next(1, 5)).Select(x => f.Date.SoonTimeOnly()).ToArray());
+
+            return goodHabitRequestGenerator.Generate();
+        }
+
+        public HabitRequest SeedLimitHabitRequest()
+        {
+            var limitHabitRequestGenerator = new Faker<HabitRequest>()
+                .RuleFor(h => h.Name, f => f.Name.JobTitle())
+                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IsGood, f => false)
+                .RuleFor(h => h.IsQuit, f => false)
+                .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
+                .RuleFor(h => h.IsTimeBased, f => f.Random.Bool())
+                .RuleFor(h => h.Quantity, (f, h) => (bool)h.IsTimeBased! ? f.Random.Int(1, 60) * 60 : f.Random.Int(1, 100))
+                .RuleFor(h => h.Frequency, f => f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth));
+                
+
+            return limitHabitRequestGenerator.Generate();
+        }
+
+        public HabitRequest SeedQuitHabitRequest()
+        {
+            var quitHabitRequestGenerator = new Faker<HabitRequest>()
+                .RuleFor(h => h.Name, f => f.Name.JobTitle())
+                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IsGood, f => false)
+                .RuleFor(h => h.IsQuit, f => true)
+                .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly());
+
+            return quitHabitRequestGenerator.Generate();
         }
     }
 }

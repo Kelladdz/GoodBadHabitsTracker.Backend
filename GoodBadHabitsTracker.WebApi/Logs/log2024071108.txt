@@ -1,0 +1,338 @@
+2024-07-11 08:30:51.576 +01:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2024-07-11 08:30:51.622 +01:00 [DBG] Hosting starting
+2024-07-11 08:30:51.635 +01:00 [INF] User profile is available. Using 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-07-11 08:30:51.638 +01:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-d3fee60e-e7e4-485b-8db6-37af50a0aecc.xml'.
+2024-07-11 08:30:51.648 +01:00 [DBG] Found key {d3fee60e-e7e4-485b-8db6-37af50a0aecc}.
+2024-07-11 08:30:51.653 +01:00 [DBG] Considering key {d3fee60e-e7e4-485b-8db6-37af50a0aecc} with expiration date 2024-10-08 20:02:23Z as default key.
+2024-07-11 08:30:51.655 +01:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2024-07-11 08:30:51.657 +01:00 [DBG] Decrypting secret element using Windows DPAPI.
+2024-07-11 08:30:51.658 +01:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2024-07-11 08:30:51.660 +01:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2024-07-11 08:30:51.662 +01:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2024-07-11 08:30:51.664 +01:00 [DBG] Using key {d3fee60e-e7e4-485b-8db6-37af50a0aecc} as the default key.
+2024-07-11 08:30:51.665 +01:00 [DBG] Key ring with default key {d3fee60e-e7e4-485b-8db6-37af50a0aecc} was loaded during application startup.
+2024-07-11 08:30:51.736 +01:00 [INF] Now listening on: https://localhost:7154
+2024-07-11 08:30:51.741 +01:00 [DBG] Loaded hosting startup assembly GoodBadHabitsTracker.WebApi
+2024-07-11 08:30:51.742 +01:00 [DBG] Loaded hosting startup assembly Microsoft.AspNetCore.Watch.BrowserRefresh
+2024-07-11 08:30:51.743 +01:00 [DBG] Loaded hosting startup assembly Microsoft.WebTools.BrowserLink.Net
+2024-07-11 08:30:51.743 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-07-11 08:30:51.744 +01:00 [INF] Hosting environment: Development
+2024-07-11 08:30:51.745 +01:00 [INF] Content root path: F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.WebApi
+2024-07-11 08:30:51.746 +01:00 [DBG] Hosting started
+2024-07-11 08:30:51.799 +01:00 [DBG] Connection id "0HN51FDI73DTU" received FIN.
+2024-07-11 08:30:51.799 +01:00 [DBG] Connection id "0HN51FDI73DTV" received FIN.
+2024-07-11 08:30:51.799 +01:00 [DBG] Connection id "0HN51FDI73DTV" accepted.
+2024-07-11 08:30:51.799 +01:00 [DBG] Connection id "0HN51FDI73DTU" accepted.
+2024-07-11 08:30:51.801 +01:00 [DBG] Connection id "0HN51FDI73DTV" started.
+2024-07-11 08:30:51.801 +01:00 [DBG] Connection id "0HN51FDI73DTU" started.
+2024-07-11 08:30:51.807 +01:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2024-07-11 08:30:51.807 +01:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2024-07-11 08:30:51.813 +01:00 [DBG] Connection id "0HN51FDI73DTV" stopped.
+2024-07-11 08:30:51.813 +01:00 [DBG] Connection id "0HN51FDI73DTU" stopped.
+2024-07-11 08:30:51.814 +01:00 [DBG] Connection id "0HN51FDI73DTU" sending FIN because: "The Socket transport's send loop completed gracefully."
+2024-07-11 08:30:51.814 +01:00 [DBG] Connection id "0HN51FDI73DTV" sending FIN because: "The Socket transport's send loop completed gracefully."
+2024-07-11 08:30:52.025 +01:00 [DBG] Connection id "0HN51FDI73DU0" accepted.
+2024-07-11 08:30:52.027 +01:00 [DBG] Connection id "0HN51FDI73DU0" started.
+2024-07-11 08:30:52.046 +01:00 [DBG] Connection 0HN51FDI73DU0 established using the following protocol: "Tls13"
+2024-07-11 08:30:52.075 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/index.html - null null
+2024-07-11 08:30:52.135 +01:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2024-07-11 08:30:52.173 +01:00 [DBG] Response markup is scheduled to include Browser Link script injection.
+2024-07-11 08:30:52.175 +01:00 [DBG] Response markup is scheduled to include browser refresh script injection.
+2024-07-11 08:30:52.184 +01:00 [INF] HTTP GET /swagger/index.html responded 200 in 46.8449 ms
+2024-07-11 08:30:52.186 +01:00 [DBG] Response markup was updated to include Browser Link script injection.
+2024-07-11 08:30:52.188 +01:00 [DBG] Response markup was updated to include browser refresh script injection.
+2024-07-11 08:30:52.191 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/index.html - 200 null text/html;charset=utf-8 116.8467ms
+2024-07-11 08:30:52.192 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/_framework/aspnetcore-browser-refresh.js - null null
+2024-07-11 08:30:52.196 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/_vs/browserLink - null null
+2024-07-11 08:30:52.199 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/_framework/aspnetcore-browser-refresh.js - 200 13790 application/javascript; charset=utf-8 7.5165ms
+2024-07-11 08:30:52.263 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/_vs/browserLink - 200 null text/javascript; charset=UTF-8 66.702ms
+2024-07-11 08:30:52.386 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - null null
+2024-07-11 08:30:52.441 +01:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 52.7059 ms
+2024-07-11 08:30:52.443 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 56.878ms
+2024-07-11 08:31:01.721 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7154/api/Habits - application/json-patch+json 338
+2024-07-11 08:31:01.725 +01:00 [DBG] POST requests are not supported
+2024-07-11 08:31:01.726 +01:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2024-07-11 08:31:01.735 +01:00 [DBG] 1 candidate(s) found for the request path '/api/Habits'
+2024-07-11 08:31:01.738 +01:00 [DBG] Endpoint 'GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi)' with route pattern 'api/Habits' is valid for the request path '/api/Habits'
+2024-07-11 08:31:01.739 +01:00 [DBG] Request matched endpoint 'GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi)'
+2024-07-11 08:31:02.442 +01:00 [DBG] AuthenticationScheme: Bearer was not authenticated.
+2024-07-11 08:31:02.444 +01:00 [INF] Executing endpoint 'GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi)'
+2024-07-11 08:31:02.455 +01:00 [INF] Route matched with {action = "Create", controller = "Habits"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest, System.Threading.CancellationToken) on controller GoodBadHabitsTracker.WebApi.Controllers.HabitsController (GoodBadHabitsTracker.WebApi).
+2024-07-11 08:31:02.457 +01:00 [DBG] Execution plan of authorization filters (in the following order): ["None"]
+2024-07-11 08:31:02.458 +01:00 [DBG] Execution plan of resource filters (in the following order): ["None"]
+2024-07-11 08:31:02.459 +01:00 [DBG] Execution plan of action filters (in the following order): ["Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000)","Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000)"]
+2024-07-11 08:31:02.460 +01:00 [DBG] Execution plan of exception filters (in the following order): ["None"]
+2024-07-11 08:31:02.461 +01:00 [DBG] Execution plan of result filters (in the following order): ["Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000)"]
+2024-07-11 08:31:02.462 +01:00 [DBG] Executing controller factory for controller GoodBadHabitsTracker.WebApi.Controllers.HabitsController (GoodBadHabitsTracker.WebApi)
+2024-07-11 08:31:02.463 +01:00 [DBG] Executed controller factory for controller GoodBadHabitsTracker.WebApi.Controllers.HabitsController (GoodBadHabitsTracker.WebApi)
+2024-07-11 08:31:02.473 +01:00 [DBG] Attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest' ...
+2024-07-11 08:31:02.475 +01:00 [DBG] Attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest' using the name '' in request data ...
+2024-07-11 08:31:02.476 +01:00 [DBG] Rejected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonPatchInputFormatter' for content type 'application/json-patch+json'.
+2024-07-11 08:31:02.477 +01:00 [DBG] Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonInputFormatter' for content type 'application/json-patch+json'.
+2024-07-11 08:31:02.485 +01:00 [DBG] Connection id "0HN51FDI73DU0", Request id "0HN51FDI73DU0:00000009": started reading request body.
+2024-07-11 08:31:02.487 +01:00 [DBG] Connection id "0HN51FDI73DU0", Request id "0HN51FDI73DU0:00000009": done reading request body.
+2024-07-11 08:31:02.552 +01:00 [DBG] Done attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest'.
+2024-07-11 08:31:02.553 +01:00 [DBG] Done attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest'.
+2024-07-11 08:31:02.554 +01:00 [DBG] Attempting to validate the bound parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest' ...
+2024-07-11 08:31:02.561 +01:00 [DBG] Done attempting to validate the bound parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest'.
+2024-07-11 08:31:02.562 +01:00 [DBG] Attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2024-07-11 08:31:02.563 +01:00 [DBG] Done attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2024-07-11 08:31:02.563 +01:00 [DBG] Attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2024-07-11 08:31:02.564 +01:00 [DBG] Done attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2024-07-11 08:31:02.606 +01:00 [INF] Executed action GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi) in 143.4012ms
+2024-07-11 08:31:02.608 +01:00 [INF] Executed endpoint 'GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi)'
+2024-07-11 08:31:02.608 +01:00 [ERR] Exception occurred: Validation failed
+GoodBadHabitsTracker.Application.Exceptions.ValidationException: Validation failed
+   at GoodBadHabitsTracker.Application.Abstractions.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.Application\Abstractions\Behaviors\ValidationBehavior.cs:line 35
+   at GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create(HabitRequest request, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.WebApi\Controllers\HabitsController.cs:line 26
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at GoodBadHabitsTracker.WebApi.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext httpContext) in F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.WebApi\Middleware\ExceptionHandlingMiddleware.cs:line 23
+2024-07-11 08:31:02.619 +01:00 [INF] HTTP POST /api/Habits responded 400 in 895.0857 ms
+2024-07-11 08:31:02.620 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7154/api/Habits - 400 null application/json; charset=utf-8 899.2796ms
+2024-07-11 08:31:17.172 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7154/api/Habits - application/json-patch+json 339
+2024-07-11 08:31:17.175 +01:00 [DBG] POST requests are not supported
+2024-07-11 08:31:17.175 +01:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2024-07-11 08:31:17.176 +01:00 [DBG] 1 candidate(s) found for the request path '/api/Habits'
+2024-07-11 08:31:17.177 +01:00 [DBG] Endpoint 'GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi)' with route pattern 'api/Habits' is valid for the request path '/api/Habits'
+2024-07-11 08:31:17.179 +01:00 [DBG] Request matched endpoint 'GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi)'
+2024-07-11 08:31:17.180 +01:00 [DBG] AuthenticationScheme: Bearer was not authenticated.
+2024-07-11 08:31:17.181 +01:00 [INF] Executing endpoint 'GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi)'
+2024-07-11 08:31:17.182 +01:00 [INF] Route matched with {action = "Create", controller = "Habits"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest, System.Threading.CancellationToken) on controller GoodBadHabitsTracker.WebApi.Controllers.HabitsController (GoodBadHabitsTracker.WebApi).
+2024-07-11 08:31:17.183 +01:00 [DBG] Execution plan of authorization filters (in the following order): ["None"]
+2024-07-11 08:31:17.184 +01:00 [DBG] Execution plan of resource filters (in the following order): ["None"]
+2024-07-11 08:31:17.186 +01:00 [DBG] Execution plan of action filters (in the following order): ["Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000)","Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000)"]
+2024-07-11 08:31:17.188 +01:00 [DBG] Execution plan of exception filters (in the following order): ["None"]
+2024-07-11 08:31:17.189 +01:00 [DBG] Execution plan of result filters (in the following order): ["Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000)"]
+2024-07-11 08:31:17.191 +01:00 [DBG] Executing controller factory for controller GoodBadHabitsTracker.WebApi.Controllers.HabitsController (GoodBadHabitsTracker.WebApi)
+2024-07-11 08:31:17.192 +01:00 [DBG] Executed controller factory for controller GoodBadHabitsTracker.WebApi.Controllers.HabitsController (GoodBadHabitsTracker.WebApi)
+2024-07-11 08:31:17.193 +01:00 [DBG] Attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest' ...
+2024-07-11 08:31:17.194 +01:00 [DBG] Attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest' using the name '' in request data ...
+2024-07-11 08:31:17.195 +01:00 [DBG] Rejected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonPatchInputFormatter' for content type 'application/json-patch+json'.
+2024-07-11 08:31:17.196 +01:00 [DBG] Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonInputFormatter' for content type 'application/json-patch+json'.
+2024-07-11 08:31:17.197 +01:00 [DBG] Connection id "0HN51FDI73DU0", Request id "0HN51FDI73DU0:0000000B": started reading request body.
+2024-07-11 08:31:17.198 +01:00 [DBG] Connection id "0HN51FDI73DU0", Request id "0HN51FDI73DU0:0000000B": done reading request body.
+2024-07-11 08:31:17.199 +01:00 [DBG] Done attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest'.
+2024-07-11 08:31:17.200 +01:00 [DBG] Done attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest'.
+2024-07-11 08:31:17.201 +01:00 [DBG] Attempting to validate the bound parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest' ...
+2024-07-11 08:31:17.202 +01:00 [DBG] Done attempting to validate the bound parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Habit.Request.HabitRequest'.
+2024-07-11 08:31:17.203 +01:00 [DBG] Attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2024-07-11 08:31:17.204 +01:00 [DBG] Done attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2024-07-11 08:31:17.205 +01:00 [DBG] Attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2024-07-11 08:31:17.206 +01:00 [DBG] Done attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2024-07-11 08:31:17.712 +01:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2024-07-11 08:31:17.995 +01:00 [DBG] The index {'GoodHabitId'} was not created on entity type 'GoodHabit.Comments#Comment' as the properties are already covered by the index {'GoodHabitId', 'Id'}.
+2024-07-11 08:31:17.996 +01:00 [DBG] The index {'GoodHabitId'} was not created on entity type 'GoodHabit.DayResults#DayResult' as the properties are already covered by the index {'GoodHabitId', 'Id'}.
+2024-07-11 08:31:17.997 +01:00 [DBG] The index {'LimitHabitId'} was not created on entity type 'LimitHabit.Comments#Comment' as the properties are already covered by the index {'LimitHabitId', 'Id'}.
+2024-07-11 08:31:17.997 +01:00 [DBG] The index {'LimitHabitId'} was not created on entity type 'LimitHabit.DayResults#DayResult' as the properties are already covered by the index {'LimitHabitId', 'Id'}.
+2024-07-11 08:31:17.998 +01:00 [DBG] The index {'QuitHabitId'} was not created on entity type 'QuitHabit.Comments#Comment' as the properties are already covered by the index {'QuitHabitId', 'Id'}.
+2024-07-11 08:31:17.999 +01:00 [DBG] The index {'QuitHabitId'} was not created on entity type 'QuitHabit.DayResults#DayResult' as the properties are already covered by the index {'QuitHabitId', 'Id'}.
+2024-07-11 08:31:18.000 +01:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserRole<Guid>' as the properties are already covered by the index {'UserId', 'RoleId'}.
+2024-07-11 08:31:18.001 +01:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserToken<Guid>' as the properties are already covered by the index {'UserId', 'LoginProvider', 'Name'}.
+2024-07-11 08:31:18.064 +01:00 [DBG] The property 'GoodHabit.Comments#Comment.GoodHabitId' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.065 +01:00 [DBG] The property 'GoodHabit.Comments#Comment.Id' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.066 +01:00 [DBG] The property 'GoodHabit.DayResults#DayResult.GoodHabitId' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.066 +01:00 [DBG] The property 'GoodHabit.DayResults#DayResult.Id' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.067 +01:00 [DBG] The property 'LimitHabit.Comments#Comment.LimitHabitId' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.068 +01:00 [DBG] The property 'LimitHabit.Comments#Comment.Id' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.068 +01:00 [DBG] The property 'LimitHabit.DayResults#DayResult.LimitHabitId' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.069 +01:00 [DBG] The property 'LimitHabit.DayResults#DayResult.Id' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.070 +01:00 [DBG] The property 'QuitHabit.Comments#Comment.QuitHabitId' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.071 +01:00 [DBG] The property 'QuitHabit.Comments#Comment.Id' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.072 +01:00 [DBG] The property 'QuitHabit.DayResults#DayResult.QuitHabitId' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.072 +01:00 [DBG] The property 'QuitHabit.DayResults#DayResult.Id' was created in shadow state because there are no eligible CLR members with a matching name.
+2024-07-11 08:31:18.151 +01:00 [DBG] Entity Framework Core 8.0.7 initialized 'HabitsDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.7' with options: None
+2024-07-11 08:31:18.203 +01:00 [DBG] Context 'HabitsDbContext' started tracking 'QuitHabit' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2024-07-11 08:31:18.207 +01:00 [DBG] SaveChanges starting for 'HabitsDbContext'.
+2024-07-11 08:31:18.209 +01:00 [DBG] DetectChanges starting for 'HabitsDbContext'.
+2024-07-11 08:31:18.216 +01:00 [DBG] DetectChanges completed for 'HabitsDbContext'.
+2024-07-11 08:31:18.248 +01:00 [DBG] Creating DbConnection.
+2024-07-11 08:31:18.447 +01:00 [DBG] Created DbConnection. (199ms).
+2024-07-11 08:31:18.449 +01:00 [DBG] Opening connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2024-07-11 08:31:18.851 +01:00 [DBG] Opened connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2024-07-11 08:31:18.856 +01:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-07-11 08:31:18.859 +01:00 [DBG] Created DbCommand for 'ExecuteReader' (2ms).
+2024-07-11 08:31:18.863 +01:00 [DBG] Initialized DbCommand for 'ExecuteReader' (7ms).
+2024-07-11 08:31:18.867 +01:00 [DBG] Executing DbCommand [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (Size = 4000), @p3='?' (DbType = Boolean), @p4='?' (DbType = Boolean), @p5='?' (Size = 450), @p6='?' (DbType = Date), @p7='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Quit Habits] ([Id], [GroupId], [IconPath], [IsGood], [IsQuit], [Name], [StartDate], [UserId])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2024-07-11 08:31:18.915 +01:00 [ERR] Failed executing DbCommand (48ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (Size = 4000), @p3='?' (DbType = Boolean), @p4='?' (DbType = Boolean), @p5='?' (Size = 450), @p6='?' (DbType = Date), @p7='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Quit Habits] ([Id], [GroupId], [IconPath], [IsGood], [IsQuit], [Name], [StartDate], [UserId])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+2024-07-11 08:31:18.919 +01:00 [DBG] Closing connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2024-07-11 08:31:18.923 +01:00 [DBG] Closed connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB' (3ms).
+2024-07-11 08:31:18.927 +01:00 [ERR] An exception occurred in the database while saving changes for context type 'GoodBadHabitsTracker.Infrastructure.Persistance.HabitsDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Quit Habits'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:d7d3c484-7def-4cfa-8b25-e33e78e421e6
+Error Number:208,State:1,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Quit Habits'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:d7d3c484-7def-4cfa-8b25-e33e78e421e6
+Error Number:208,State:1,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2024-07-11 08:31:18.932 +01:00 [INF] Executed action GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi) in 1741.8314ms
+2024-07-11 08:31:18.934 +01:00 [INF] Executed endpoint 'GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create (GoodBadHabitsTracker.WebApi)'
+2024-07-11 08:31:18.935 +01:00 [ERR] Exception occurred: An error occurred while saving the entity changes. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid object name 'Quit Habits'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:d7d3c484-7def-4cfa-8b25-e33e78e421e6
+Error Number:208,State:1,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at GoodBadHabitsTracker.Infrastructure.Repositories.QuitHabitsRepository.CreateAsync(QuitHabit habit, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.Infrastructure\Repositories\QuitHabitsRepository.cs:line 17
+   at GoodBadHabitsTracker.Application.Commands.Habit.QuitHabit.Create.CreateQuitHabitCommandHandler.Handle(CreateQuitHabitCommand command, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.Application\Commands\Habit\QuitHabit\Create\CreateQuitHabitCommandHandler.cs:line 22
+   at GoodBadHabitsTracker.WebApi.Controllers.HabitsController.Create(HabitRequest request, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.WebApi\Controllers\HabitsController.cs:line 40
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at GoodBadHabitsTracker.WebApi.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext httpContext) in F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.WebApi\Middleware\ExceptionHandlingMiddleware.cs:line 23
+2024-07-11 08:31:18.943 +01:00 [ERR] HTTP POST /api/Habits responded 500 in 1768.0681 ms
+2024-07-11 08:31:18.944 +01:00 [DBG] 'HabitsDbContext' disposed.
+2024-07-11 08:31:18.947 +01:00 [DBG] Disposing connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2024-07-11 08:31:18.948 +01:00 [DBG] Disposed connection to database '' on server '' (1ms).
+2024-07-11 08:31:18.948 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7154/api/Habits - 500 null application/json; charset=utf-8 1776.0464ms
+2024-07-11 08:33:29.314 +01:00 [DBG] Connection id "0HN51FDI73DU0" is closing.
+2024-07-11 08:33:29.315 +01:00 [DBG] Connection id "0HN51FDI73DU0" is closed. The last processed stream ID was 11.
+2024-07-11 08:33:29.317 +01:00 [DBG] Connection id "0HN51FDI73DU0" received FIN.
+2024-07-11 08:33:29.318 +01:00 [DBG] The connection queue processing loop for 0HN51FDI73DU0 completed.
+2024-07-11 08:33:29.319 +01:00 [DBG] Connection id "0HN51FDI73DU0" sending FIN because: "The Socket transport's send loop completed gracefully."
+2024-07-11 08:33:29.336 +01:00 [DBG] Connection id "0HN51FDI73DU0" stopped.
+2024-07-11 08:35:58.164 +01:00 [DBG] Config reload token fired. Checking for changes...
+2024-07-11 08:35:58.432 +01:00 [DBG] Config reload token fired. Checking for changes...
+2024-07-11 08:36:24.568 +01:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2024-07-11 08:36:24.661 +01:00 [DBG] Hosting starting
+2024-07-11 08:36:24.671 +01:00 [INF] User profile is available. Using 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-07-11 08:36:24.676 +01:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-d3fee60e-e7e4-485b-8db6-37af50a0aecc.xml'.
+2024-07-11 08:36:24.680 +01:00 [DBG] Found key {d3fee60e-e7e4-485b-8db6-37af50a0aecc}.
+2024-07-11 08:36:24.685 +01:00 [DBG] Considering key {d3fee60e-e7e4-485b-8db6-37af50a0aecc} with expiration date 2024-10-08 20:02:23Z as default key.
+2024-07-11 08:36:24.687 +01:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2024-07-11 08:36:24.689 +01:00 [DBG] Decrypting secret element using Windows DPAPI.
+2024-07-11 08:36:24.690 +01:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2024-07-11 08:36:24.692 +01:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2024-07-11 08:36:24.695 +01:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2024-07-11 08:36:24.697 +01:00 [DBG] Using key {d3fee60e-e7e4-485b-8db6-37af50a0aecc} as the default key.
+2024-07-11 08:36:24.699 +01:00 [DBG] Key ring with default key {d3fee60e-e7e4-485b-8db6-37af50a0aecc} was loaded during application startup.
+2024-07-11 08:36:24.750 +01:00 [INF] Now listening on: https://localhost:7154
+2024-07-11 08:36:24.751 +01:00 [DBG] Loaded hosting startup assembly GoodBadHabitsTracker.WebApi
+2024-07-11 08:36:24.751 +01:00 [DBG] Loaded hosting startup assembly Microsoft.AspNetCore.Watch.BrowserRefresh
+2024-07-11 08:36:24.752 +01:00 [DBG] Loaded hosting startup assembly Microsoft.WebTools.BrowserLink.Net
+2024-07-11 08:36:24.752 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-07-11 08:36:24.755 +01:00 [INF] Hosting environment: Development
+2024-07-11 08:36:24.757 +01:00 [INF] Content root path: F:\Programowanie\PROJEKTY\gbht\good-bad-habits-tracker\GoodBadHabitsTracker.WebApi
+2024-07-11 08:36:24.758 +01:00 [DBG] Hosting started
+2024-07-11 08:36:24.804 +01:00 [DBG] Connection id "0HN51FGLESG6G" accepted.
+2024-07-11 08:36:24.805 +01:00 [DBG] Connection id "0HN51FGLESG6G" started.
+2024-07-11 08:36:24.825 +01:00 [DBG] Connection 0HN51FGLESG6G established using the following protocol: "Tls13"
+2024-07-11 08:36:24.842 +01:00 [DBG] Connection id "0HN51FGLESG6H" accepted.
+2024-07-11 08:36:24.844 +01:00 [DBG] Connection id "0HN51FGLESG6H" started.
+2024-07-11 08:36:24.847 +01:00 [DBG] Connection 0HN51FGLESG6H established using the following protocol: "Tls13"
+2024-07-11 08:36:24.854 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/index.html - null null
+2024-07-11 08:36:24.895 +01:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2024-07-11 08:36:24.935 +01:00 [DBG] Response markup is scheduled to include Browser Link script injection.
+2024-07-11 08:36:24.936 +01:00 [DBG] Response markup is scheduled to include browser refresh script injection.
+2024-07-11 08:36:24.944 +01:00 [INF] HTTP GET /swagger/index.html responded 200 in 41.9134 ms
+2024-07-11 08:36:24.948 +01:00 [DBG] Response markup was updated to include Browser Link script injection.
+2024-07-11 08:36:24.949 +01:00 [DBG] Response markup was updated to include browser refresh script injection.
+2024-07-11 08:36:24.949 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/_framework/aspnetcore-browser-refresh.js - null null
+2024-07-11 08:36:24.949 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/_vs/browserLink - null null
+2024-07-11 08:36:24.951 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/index.html - 200 null text/html;charset=utf-8 97.1603ms
+2024-07-11 08:36:24.954 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/_framework/aspnetcore-browser-refresh.js - 200 13790 application/javascript; charset=utf-8 4.9335ms
+2024-07-11 08:36:24.969 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/_vs/browserLink - 200 null text/javascript; charset=UTF-8 19.4972ms
+2024-07-11 08:36:24.990 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - null null
+2024-07-11 08:36:25.043 +01:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 50.5675 ms
+2024-07-11 08:36:25.045 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 54.9395ms

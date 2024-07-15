@@ -24,21 +24,21 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
                 var command = new CreateGoodHabitCommand(request);
 
                 var response = await mediator.Send(command, cancellationToken);
-                return Created(new Uri($"/api/habits/{response.GoodHabit}", UriKind.Relative), response.GoodHabit); //TO CHANGE LATER
+                return Created(new Uri($"/api/habits/{response.GoodHabit.Id}", UriKind.Relative), response.GoodHabit); //TO CHANGE LATER
             }
             else if ((bool)!request.IsQuit!)
             {
                 var command = new CreateLimitHabitCommand(request);
 
                 var response = await mediator.Send(command, cancellationToken);
-                return Created(new Uri($"/api/habits/{response.LimitHabit}", UriKind.Relative), response.LimitHabit); //TO CHANGE LATER
+                return Created(new Uri($"/api/habits/{response.LimitHabit.Id}", UriKind.Relative), response.LimitHabit); //TO CHANGE LATER
             }
             else
             {
                 var command = new CreateQuitHabitCommand(request);
 
                 var response = await mediator.Send(command, cancellationToken);
-                return Created(new Uri($"/api/habits/{response.QuitHabit}", UriKind.Relative), response.QuitHabit); //TO CHANGE LATER
+                return Created(new Uri($"/api/habits/{response.QuitHabit.Id}", UriKind.Relative), response.QuitHabit); //TO CHANGE LATER
             }
         }
     }
