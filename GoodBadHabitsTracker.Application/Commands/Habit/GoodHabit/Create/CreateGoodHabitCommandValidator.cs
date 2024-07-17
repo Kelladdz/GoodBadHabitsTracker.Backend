@@ -20,7 +20,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
             RuleFor(x => x.Request.IsGood)
                 .Must(x => x == true).WithMessage("For good habit IsGood should be true.");
             RuleFor(x => x.Request.IsQuit)
-                .Empty().WithMessage("IsQuit shouldn't be set if habit is good.");
+                .Null().WithMessage("IsQuit shouldn't be set if habit is good.");
             RuleFor(x => x.Request.Quantity)
                 .NotNull().WithMessage("For good habit, quantity shouldn't be null");
             RuleFor(x => x.Request.Frequency)
@@ -35,6 +35,8 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
                 {
                     if (context.InstanceToValidate.Request.RepeatMode == RepeatModes.Monthly)
                     {
+                        if (value.Length == 0)
+                            context.AddFailure("RepeatDaysOfMonth shouldn't be empty if repeat mode is 'Monthly'.");
                         foreach (var day in context.InstanceToValidate.Request.RepeatDaysOfMonth)
                         {
                             if (day < 1 || day > 31)
@@ -43,7 +45,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
                     }
                     else
                     {
-                        if (value is not null)
+                        if (value.Length != 0)
                             context.AddFailure("RepeatDaysOfMonth should be empty if repeat mode isn't 'Monthly'.");
                     }
                 });
@@ -52,6 +54,8 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
                 {
                     if (context.InstanceToValidate.Request.RepeatMode == RepeatModes.Daily)
                     {
+                        if (value.Length == 0)
+                            context.AddFailure("RepeatDaysOfWeek shouldn't be empty if repeat mode is 'Daily'.");
                         foreach (var day in context.InstanceToValidate.Request.RepeatDaysOfWeek)
                         {
                             if (!DaysOfWeek.Contains(day))
@@ -60,13 +64,15 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
                     }
                     else
                     {
-                        if (value is not null)
+                        if (value.Length != 0)
                             context.AddFailure("RepeatDaysOfWeek should be empty if repeat mode isn't 'Daily'.");
                     }
                 });
             RuleFor(x => x.Request.RepeatInterval)
                 .Custom((value, context) =>
                 {
+                    if (value == 0)
+                        context.AddFailure("Repeat interval value shouldn't be 0 if repeat mode is interval");
                     if (context.InstanceToValidate.Request.RepeatMode == RepeatModes.Interval)
                     {
                         if (value < 1 || value > 8)
@@ -83,16 +89,12 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
             RuleFor(x => x.Request.ReminderTimes)
                 .Custom((value, context) =>
                 {
-                    if (value.Length <= 0)
-                        context.AddFailure("list of reminder times shouldn't be empty if habit is good.");
-                    else
-                    {
                         foreach (var time in value)
                         {
                             if (time.Hour < 0 || time.Hour > 23 || time.Minute < 0 || time.Minute > 59)
                                 context.AddFailure($"Invalid time: {time}");
                         }
-                    }
+
                 });
         }
     }

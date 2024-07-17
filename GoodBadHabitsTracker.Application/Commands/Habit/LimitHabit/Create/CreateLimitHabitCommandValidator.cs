@@ -32,7 +32,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Create
             RuleFor(x => x.Request.RepeatDaysOfWeek)
                 .Empty().WithMessage("For limiting habit, list of repeat days should be empty.");
             RuleFor(x => x.Request.RepeatInterval)
-                .Empty().WithMessage("For limiting habit, repeat interval value should be 0.");
+                .Must(x => x == 0).WithMessage("For limiting habit, repeat interval value should be 0.");
             RuleFor(x => x.Request.StartDate)
                 .Must(x => x >= DateOnly.FromDateTime(DateTime.Now)).WithMessage("Start date must be today or later.");
             RuleFor(x => x.Request.ReminderTimes)

@@ -169,5 +169,13 @@ namespace GoodBadHabitsTracker.TestMisc
 
             return quitHabitRequestGenerator.Generate();
         }
+
+        public string SeedTooLongHabitName()
+        {
+            var nameGenerator = new Faker<string>()
+                .CustomInstantiator(f => f.Random.String2(101));
+
+            return nameGenerator.Generate();
+        }
     }
 }

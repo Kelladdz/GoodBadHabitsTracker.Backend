@@ -20,7 +20,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.QuitHabit.Create
             RuleFor(x => x.Request.IsQuit)
                 .Must(x => x == true).WithMessage("For breaking habit IsQuit should be true.");
             RuleFor(x => x.Request.Frequency)
-                .Null().WithMessage("For breaking habit frequency should be null.");
+                .Null().WithMessage("For breaking habit, frequency should be null.");
             RuleFor(x => x.Request.IsTimeBased)
                 .Null().WithMessage("For breaking habit, IsTimeBased should be null.");
             RuleFor(x => x.Request.Quantity)
