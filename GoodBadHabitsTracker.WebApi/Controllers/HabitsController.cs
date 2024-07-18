@@ -1,14 +1,12 @@
 ﻿using GoodBadHabitsTracker.Application.DTOs.Habit.Request;
 using GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Create;
-
-using FluentValidation;
 using GoodBadHabitsTracker.Application.Commands.Habit.QuitHabit.Create;
-using System.Reflection.Metadata.Ecma335;
+using GoodBadHabitsTracker.Application.Queries.Habits.GetHabits;
+
+
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
 {
@@ -40,6 +38,13 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
                 var response = await mediator.Send(command, cancellationToken);
                 return Created(new Uri($"/api/habits/{response.QuitHabit.Id}", UriKind.Relative), response.QuitHabit); //TO CHANGE LATER
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetHabits([FromQuery] GetHabitsRequest request)
+        {
+            var response = await mediator.Send(new GetHabitsQuery(request));
+            return Ok(response);
         }
     }
 }

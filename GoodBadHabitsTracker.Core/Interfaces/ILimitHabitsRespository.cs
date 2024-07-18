@@ -10,5 +10,6 @@ namespace GoodBadHabitsTracker.Core.Interfaces
     public interface ILimitHabitsRepository
     {
         Task<bool> CreateAsync(LimitHabit limitHabit, CancellationToken cancellationToken);
+        Task<List<LimitHabit>> GetLimitHabitsAsync(string term, DateOnly date, Guid userId, CancellationToken cancellationToken);
     }
 }

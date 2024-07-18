@@ -71,8 +71,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
             RuleFor(x => x.Request.RepeatInterval)
                 .Custom((value, context) =>
                 {
-                    if (value == 0)
-                        context.AddFailure("Repeat interval value shouldn't be 0 if repeat mode is interval");
                     if (context.InstanceToValidate.Request.RepeatMode == RepeatModes.Interval)
                     {
                         if (value < 1 || value > 8)

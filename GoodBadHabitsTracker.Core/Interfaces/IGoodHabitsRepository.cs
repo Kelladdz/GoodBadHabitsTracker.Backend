@@ -10,5 +10,6 @@ namespace GoodBadHabitsTracker.Core.Interfaces
     public interface IGoodHabitsRepository
     {
         Task<bool> CreateAsync(GoodHabit goodHabit, CancellationToken cancellationToken);
+        Task<List<GoodHabit>> GetGoodHabitsAsync(string term, DateOnly date, Guid userId, CancellationToken cancellationToken);
     }
 }

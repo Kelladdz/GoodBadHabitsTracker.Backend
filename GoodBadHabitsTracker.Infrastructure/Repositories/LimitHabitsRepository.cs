@@ -17,5 +17,24 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
             await dbContext.LimitHabit.AddAsync(habit, cancellationToken);
             return await dbContext.SaveChangesAsync(cancellationToken) > 0;
         }
+
+        public async Task<List<LimitHabit>> GetLimitHabitsAsync(string term, DateOnly date, Guid userId, CancellationToken cancellationToken)
+        {
+            int dayNumber = date.DayNumber;
+            string dayOfWeekLower = date.DayOfWeek.ToString().ToLower();
+
+            var limitHabits = await dbContext.LimitHabit
+                .Where(h => h.UserId == userId)
+                .ToListAsync();
+
+            if (string.IsNullOrWhiteSpace(term))
+                return limitHabits;
+            else
+            {
+                term = term.Trim().ToLower();
+                var searchedHabits = limitHabits.Where(h => h.Name!.ToLower().Contains(term, StringComparison.OrdinalIgnoreCase)).ToList();
+                return searchedHabits;
+            }
+        }
     }
 }
