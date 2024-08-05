@@ -10,6 +10,6 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habit.QuitHabit.Create
 {
-    public record CreateQuitHabitCommand(HabitRequest Request) : ICommand<QuitHabitResponse>;
+    public record CreateQuitHabitCommand(CreateHabitRequest Request) : ICommand<QuitHabitResponse>;
 }
 

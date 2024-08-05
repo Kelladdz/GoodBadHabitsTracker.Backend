@@ -4,7 +4,11 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Create;
 using GoodBadHabitsTracker.Application.Commands.Habit.QuitHabit.Create;
-using GoodBadHabitsTracker.Application.Queries.Habits.GetHabits;
+using GoodBadHabitsTracker.Application.Queries.Habits.Get;
+using System.Threading;
+using GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Edit;
+using GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Edit;
+using GoodBadHabitsTracker.Application.Commands.Habit.QuitHabit.Edit;
 
 
 
@@ -15,7 +19,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
     public class HabitsController(IMediator mediator) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] HabitRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> Create([FromBody] CreateHabitRequest request, CancellationToken cancellationToken)
         {
             if (request.IsGood)
             {
@@ -41,10 +45,31 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetHabits([FromQuery] GetHabitsRequest request)
+        public async Task<IActionResult> Get([FromQuery] GetHabitsRequest request, CancellationToken cancellationToken)
         {
-            var response = await mediator.Send(new GetHabitsQuery(request));
+            var response = await mediator.Send(new GetHabitsQuery(request), cancellationToken);
             return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] EditHabitRequest request, CancellationToken cancellationToken)
+        {
+            if (request.IsGood)
+            {
+                var command = new EditGoodHabitCommand(request);
+                await mediator.Send(command, cancellationToken);
+            }
+            else if ((bool)!request.IsQuit!)
+            {
+                var command = new EditLimitHabitCommand(request);
+                await mediator.Send(command, cancellationToken);
+            }
+            else
+            {
+                var command = new EditQuitHabitCommand(request);
+                await mediator.Send(command, cancellationToken);
+            }
+            return NoContent();
         }
     }
 }

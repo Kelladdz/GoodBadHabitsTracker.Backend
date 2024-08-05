@@ -36,5 +36,17 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                 return searchedHabits;
             }
         }
+
+        public async Task<bool> EditAsync(QuitHabit habitToUpdate, CancellationToken cancellationToken)
+        {
+            var habit = await dbContext.QuitHabit.FirstOrDefaultAsync(h => h.Id == habitToUpdate.Id);
+
+            if (habit is null) return false;
+
+            habit.Name = habitToUpdate.Name;
+            habit.IconPath = habitToUpdate.IconPath;
+
+            return await dbContext.SaveChangesAsync() > 0;
+        }
     }
 }

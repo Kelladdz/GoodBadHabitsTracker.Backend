@@ -10,5 +10,5 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
 {
-    public record CreateGoodHabitCommand(HabitRequest Request) : ICommand<GoodHabitResponse>;
+    public record CreateGoodHabitCommand(CreateHabitRequest Request) : ICommand<GoodHabitResponse>;
 }

@@ -1,5 +1,4 @@
-﻿using Castle.Components.DictionaryAdapter.Xml;
-using FluentValidation;
+﻿using FluentValidation;
 using GoodBadHabitsTracker.Core.Enums;
 using System;
 using System.Collections.Generic;
@@ -7,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
+namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Edit
 {
-    public sealed class EditGoodHabitCommandValidator : AbstractValidator<CreateGoodHabitCommand>
+    public sealed class EditGoodHabitCommandValidator : AbstractValidator<EditGoodHabitCommand>
     {
         private readonly List<string> DaysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         public EditGoodHabitCommandValidator()
@@ -25,8 +24,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
                 .NotNull().WithMessage("For good habit, quantity shouldn't be null");
             RuleFor(x => x.Request.Frequency)
                 .Must(x => x == Frequencies.PerDay || x == Frequencies.PerWeek || x == Frequencies.PerMonth).WithMessage("Invalid frequency");
-            RuleFor(x => x.Request.IsTimeBased)
-                .NotNull().WithMessage("For good habit, IsTimeBased shouldn't be null.");
             RuleFor(x => x.Request.RepeatMode)
                 .Must(x => x == RepeatModes.Daily || x == RepeatModes.Monthly || x == RepeatModes.Interval).WithMessage("Repeat mode must be Daily, Weekly or Monthly.")
                 .NotNull().WithMessage("For good habit, repeat mode shouldn't be null.");
@@ -82,8 +79,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.GoodHabit.Create
                             context.AddFailure("Repeat interval value should be 0 if repeat mode isn't 'Interval'.");
                     }
                 });
-            RuleFor(x => x.Request.StartDate)
-                .Must(x => x >= DateOnly.FromDateTime(DateTime.Now)).WithMessage("Start date must be today or later.");
             RuleFor(x => x.Request.ReminderTimes)
                 .Custom((value, context) =>
                 {

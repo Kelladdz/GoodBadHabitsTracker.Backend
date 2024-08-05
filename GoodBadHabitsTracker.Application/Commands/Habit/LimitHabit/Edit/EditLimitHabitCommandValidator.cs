@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Create
+namespace GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Edit
 {
-    public sealed class EditLimitHabitCommandValidator : AbstractValidator<CreateLimitHabitCommand>
+    public sealed class EditQuitHabitCommandValidator : AbstractValidator<EditLimitHabitCommand>
     {
-        public EditLimitHabitCommandValidator()
+        public EditQuitHabitCommandValidator()
         {
             RuleFor(x => x.Request.Name)
                 .NotEmpty().WithMessage("Name is required.")
@@ -21,8 +21,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Create
                 .Must(x => x == false).WithMessage("IsQuit should be false set for limiting habit.");
             RuleFor(x => x.Request.Frequency)
                 .Must(x => x == Frequencies.PerDay || x == Frequencies.PerWeek || x == Frequencies.PerMonth).WithMessage("Invalid frequency");
-            RuleFor(x => x.Request.IsTimeBased)
-                .NotNull().WithMessage("For limiting habit, IsTimeBased shouldn't be null.");
             RuleFor(x => x.Request.Quantity)
                 .NotNull().WithMessage("For limiting habit, quantity shouldn't be null.");
             RuleFor(x => x.Request.RepeatMode)
@@ -33,8 +31,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Habit.LimitHabit.Create
                 .Empty().WithMessage("For limiting habit, list of repeat days should be empty.");
             RuleFor(x => x.Request.RepeatInterval)
                 .Must(x => x == 0).WithMessage("For limiting habit, repeat interval value should be 0.");
-            RuleFor(x => x.Request.StartDate)
-                .Must(x => x >= DateOnly.FromDateTime(DateTime.Now)).WithMessage("Start date must be today or later.");
             RuleFor(x => x.Request.ReminderTimes)
                 .Empty().WithMessage("For limiting habit, list of reminder times should be empty.");
         }

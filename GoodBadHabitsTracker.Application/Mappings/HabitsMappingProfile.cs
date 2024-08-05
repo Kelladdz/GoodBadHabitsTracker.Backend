@@ -15,9 +15,12 @@ namespace GoodBadHabitsTracker.Application.Mappings
     {
         public HabitsMappingProfile()
         {
-            CreateMap<HabitRequest, GoodHabit>();
-            CreateMap<HabitRequest, LimitHabit>();
-            CreateMap<HabitRequest, QuitHabit>();
+            CreateMap<CreateHabitRequest, GoodHabit>();
+            CreateMap<CreateHabitRequest, LimitHabit>();
+            CreateMap<CreateHabitRequest, QuitHabit>();
+            CreateMap<EditHabitRequest, GoodHabit>();
+            CreateMap<EditHabitRequest, LimitHabit>();
+            CreateMap<EditHabitRequest, QuitHabit>();
         }
     }
 }

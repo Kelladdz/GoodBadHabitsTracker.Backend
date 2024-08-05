@@ -2,6 +2,8 @@
 using GoodBadHabitsTracker.Core.Models.Habit;
 using GoodBadHabitsTracker.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Net;
 
 namespace GoodBadHabitsTracker.Infrastructure.Repositories
 {
@@ -37,6 +39,33 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                 var searchedHabits = filteredHabits.Where(h => h.Name!.ToLower().Contains(term, StringComparison.OrdinalIgnoreCase)).ToList();
                 return searchedHabits;
             }
+        }
+
+        public async Task<bool> EditAsync(GoodHabit habitToUpdate, CancellationToken cancellationToken)
+        {
+            var habit = await dbContext.GoodHabits.FirstOrDefaultAsync(h => h.Id == habitToUpdate.Id);
+
+            if (habit is null) return false;
+
+            habit.Name = habitToUpdate.Name;
+            habit.IconPath = habitToUpdate.IconPath;
+            habit.Quantity = habitToUpdate.Quantity;
+            habit.Frequency = habitToUpdate.Frequency;
+            habit.RepeatMode = habitToUpdate.RepeatMode;
+
+            habit.RepeatDaysOfWeek.Clear();
+            habit.RepeatDaysOfWeek.AddRange(habitToUpdate.RepeatDaysOfWeek);
+
+            habit.RepeatDaysOfMonth.Clear();
+            habit.RepeatDaysOfMonth.AddRange(habitToUpdate.RepeatDaysOfMonth);
+
+            habit.RepeatInterval = habitToUpdate.RepeatInterval;
+            habit.StartDate = habitToUpdate.StartDate;
+
+            habit.ReminderTimes.Clear();
+            habit.ReminderTimes.AddRange(habitToUpdate.ReminderTimes);
+
+            return await dbContext.SaveChangesAsync() > 0;
         }
     }
 }
