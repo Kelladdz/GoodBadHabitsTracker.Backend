@@ -22,6 +22,31 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.DayResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("HabitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HabitId");
+
+                    b.ToTable("DayResults");
+                });
+
             modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Group", b =>
                 {
                     b.Property<Guid>("Id")
@@ -39,34 +64,84 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Group");
                 });
 
-            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit.Habit", b =>
+            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
+
+                    b.Property<int>("Frequency")
+                        .HasColumnType("int")
+                        .HasColumnName("Frequency");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("GroupId");
+
+                    b.Property<int>("HabitType")
+                        .HasColumnType("int")
+                        .HasColumnName("HabitType");
 
                     b.Property<string>("IconPath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("IconPath");
 
-                    b.Property<bool>("IsGood")
-                        .HasColumnType("bit");
+                    b.Property<bool>("IsTimeBased")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsTimeBased");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Name");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("Quantity");
+
+                    b.Property<string>("ReminderTimes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(96)")
+                        .HasColumnName("ReminderTimes");
+
+                    b.Property<string>("RepeatDaysOfMonth")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("RepeatDaysOfMonth");
+
+                    b.Property<string>("RepeatDaysOfWeek")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("RepeatDaysOfWeek");
+
+                    b.Property<int>("RepeatInterval")
+                        .HasColumnType("int")
+                        .HasColumnName("RepeatInterval");
+
+                    b.Property<int>("RepeatMode")
+                        .HasColumnType("int")
+                        .HasColumnName("RepeatMode");
 
                     b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("StartDate");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
-                    b.ToTable((string)null);
+                    b.HasIndex("GroupId");
 
-                    b.UseTpcMappingStrategy();
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Habits", (string)null);
                 });
 
             modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.User", b =>
@@ -290,103 +365,13 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit.GoodHabit", b =>
+            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.DayResult", b =>
                 {
-                    b.HasBaseType("GoodBadHabitsTracker.Core.Models.Habit.Habit");
-
-                    b.Property<int>("Frequency")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsTimeBased")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReminderTimes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RepeatDaysOfMonth")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RepeatDaysOfWeek")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RepeatInterval")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RepeatMode")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("Name");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Good Habits", (string)null);
-                });
-
-            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit.LimitHabit", b =>
-                {
-                    b.HasBaseType("GoodBadHabitsTracker.Core.Models.Habit.Habit");
-
-                    b.Property<int>("Frequency")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsQuit")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsTimeBased")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("Name");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Limit Habits", (string)null);
-                });
-
-            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit.QuitHabit", b =>
-                {
-                    b.HasBaseType("GoodBadHabitsTracker.Core.Models.Habit.Habit");
-
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsQuit")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("Name");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Quit Habits", (string)null);
+                    b.HasOne("GoodBadHabitsTracker.Core.Models.Habit", null)
+                        .WithMany("DayResults")
+                        .HasForeignKey("HabitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Group", b =>
@@ -396,6 +381,51 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit", b =>
+                {
+                    b.HasOne("GoodBadHabitsTracker.Core.Models.Group", "Group")
+                        .WithMany("Habits")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.HasOne("GoodBadHabitsTracker.Core.Models.User", "User")
+                        .WithMany("Habits")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.Comment", "Comments", b1 =>
+                        {
+                            b1.Property<Guid>("HabitId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Body")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<DateOnly>("Date")
+                                .HasColumnType("date");
+
+                            b1.HasKey("HabitId", "Id");
+
+                            b1.ToTable("Comment");
+
+                            b1.WithOwner()
+                                .HasForeignKey("HabitId");
+                        });
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Group");
 
                     b.Navigation("User");
                 });
@@ -451,252 +481,21 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit.GoodHabit", b =>
-                {
-                    b.HasOne("GoodBadHabitsTracker.Core.Models.Group", "Group")
-                        .WithMany("GoodHabits")
-                        .HasForeignKey("GroupId");
-
-                    b.HasOne("GoodBadHabitsTracker.Core.Models.User", "User")
-                        .WithMany("GoodHabits")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.Comment", "Comments", b1 =>
-                        {
-                            b1.Property<Guid>("GoodHabitId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("Body")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateOnly>("Date")
-                                .HasColumnType("date");
-
-                            b1.HasKey("GoodHabitId", "Id");
-
-                            b1.ToTable("Good Habits_Comments");
-
-                            b1.WithOwner()
-                                .HasForeignKey("GoodHabitId");
-                        });
-
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.DayResult", "DayResults", b1 =>
-                        {
-                            b1.Property<Guid>("GoodHabitId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<DateOnly>("Date")
-                                .HasColumnType("date");
-
-                            b1.Property<int>("Progress")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Status")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("GoodHabitId", "Id");
-
-                            b1.ToTable("Good Habits_DayResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("GoodHabitId");
-                        });
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("DayResults");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit.LimitHabit", b =>
-                {
-                    b.HasOne("GoodBadHabitsTracker.Core.Models.Group", "Group")
-                        .WithMany("LimitHabits")
-                        .HasForeignKey("GroupId");
-
-                    b.HasOne("GoodBadHabitsTracker.Core.Models.User", "User")
-                        .WithMany("LimitHabits")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.Comment", "Comments", b1 =>
-                        {
-                            b1.Property<Guid>("LimitHabitId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("Body")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateOnly>("Date")
-                                .HasColumnType("date");
-
-                            b1.HasKey("LimitHabitId", "Id");
-
-                            b1.ToTable("Limit Habits_Comments");
-
-                            b1.WithOwner()
-                                .HasForeignKey("LimitHabitId");
-                        });
-
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.DayResult", "DayResults", b1 =>
-                        {
-                            b1.Property<Guid>("LimitHabitId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<DateOnly>("Date")
-                                .HasColumnType("date");
-
-                            b1.Property<int>("Progress")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Status")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("LimitHabitId", "Id");
-
-                            b1.ToTable("Limit Habits_DayResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("LimitHabitId");
-                        });
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("DayResults");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit.QuitHabit", b =>
-                {
-                    b.HasOne("GoodBadHabitsTracker.Core.Models.Group", "Group")
-                        .WithMany("QuitHabits")
-                        .HasForeignKey("GroupId");
-
-                    b.HasOne("GoodBadHabitsTracker.Core.Models.User", "User")
-                        .WithMany("QuitHabits")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.Comment", "Comments", b1 =>
-                        {
-                            b1.Property<Guid>("QuitHabitId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("Body")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateOnly>("Date")
-                                .HasColumnType("date");
-
-                            b1.HasKey("QuitHabitId", "Id");
-
-                            b1.ToTable("Quit Habits_Comments");
-
-                            b1.WithOwner()
-                                .HasForeignKey("QuitHabitId");
-                        });
-
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.DayResult", "DayResults", b1 =>
-                        {
-                            b1.Property<Guid>("QuitHabitId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<DateOnly>("Date")
-                                .HasColumnType("date");
-
-                            b1.Property<int>("Progress")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Status")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("QuitHabitId", "Id");
-
-                            b1.ToTable("Quit Habits_DayResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("QuitHabitId");
-                        });
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("DayResults");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Group", b =>
                 {
-                    b.Navigation("GoodHabits");
+                    b.Navigation("Habits");
+                });
 
-                    b.Navigation("LimitHabits");
-
-                    b.Navigation("QuitHabits");
+            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Habit", b =>
+                {
+                    b.Navigation("DayResults");
                 });
 
             modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.User", b =>
                 {
-                    b.Navigation("GoodHabits");
-
                     b.Navigation("Groups");
 
-                    b.Navigation("LimitHabits");
-
-                    b.Navigation("QuitHabits");
+                    b.Navigation("Habits");
                 });
 #pragma warning restore 612, 618
         }

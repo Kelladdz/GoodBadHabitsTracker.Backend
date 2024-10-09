@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GoodBadHabitsTracker.Application.Exceptions
+﻿namespace GoodBadHabitsTracker.Application.Exceptions
 {
-    public class ValidationException : Exception
+    public sealed class ValidationException : Exception
     {
         public ValidationException(IReadOnlyCollection<ValidationError> errors) : base("Validation failed")
         {
@@ -15,5 +9,5 @@ namespace GoodBadHabitsTracker.Application.Exceptions
         public IReadOnlyCollection<ValidationError> Errors { get; }
     }
 
-    public record ValidationError(string Propertyname, string ErrorMessage);
+    public sealed record ValidationError(string PropertyName, string ErrorMessage);
 }

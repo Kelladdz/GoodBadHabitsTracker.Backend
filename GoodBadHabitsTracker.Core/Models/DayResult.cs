@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using GoodBadHabitsTracker.Core.Enums;
 
 namespace GoodBadHabitsTracker.Core.Models
 {
-    public record DayResult(int Progress, string Status, DateOnly Date);
+    [Owned]
+    public class DayResult
+    {
+        [JsonIgnore]
+        public Guid Id { get; private init; } = Guid.NewGuid();
+        public required int Progress { get; set; }
+        public required Statuses Status { get; set; }
+        public DateOnly Date { get; private init; } = DateOnly.FromDateTime(DateTime.Now);
+        public Guid HabitId { get; set; }
+    }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-
-using System.Net;
-using System.Text.Json;
-using GoodBadHabitsTracker.Application.Exceptions;
+﻿using GoodBadHabitsTracker.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoodBadHabitsTracker.WebApi.Middleware
@@ -71,7 +67,7 @@ namespace GoodBadHabitsTracker.WebApi.Middleware
         }
     }
 
-    internal record ExceptionDetails(int Status, string Type, string Title, string Detail, object? Errors);
+    public record ExceptionDetails(int Status, string Type, string Title, string Detail, object? Errors);
 
     public static class ExceptionHandlingMiddlewareExtensions
     {

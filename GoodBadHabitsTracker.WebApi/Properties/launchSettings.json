@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "http": {
+    "production": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

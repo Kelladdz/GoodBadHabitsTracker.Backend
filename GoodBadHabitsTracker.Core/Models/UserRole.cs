@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Core.Models
 {
-    public class UserRole : IdentityRole<Guid>
+    public sealed class UserRole : IdentityRole<Guid>
     {
 
     }

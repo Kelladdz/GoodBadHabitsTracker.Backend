@@ -3,9 +3,16 @@ using GoodBadHabitsTracker.Infrastructure.Extensions;
 using GoodBadHabitsTracker.WebApi.Middleware;
 using Serilog;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.ResponseCompression;
+using GoodBadHabitsTracker.WebApi.Conventions;
+using GoodBadHabitsTracker.WebApi.Utils;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var containerBuilder = new ContainerBuilder();
 
 builder.Host.UseSerilog((hostingContext, services, loggerConfiguration) =>
 {
@@ -13,6 +20,26 @@ builder.Host.UseSerilog((hostingContext, services, loggerConfiguration) =>
     .ReadFrom.Configuration(hostingContext.Configuration)
     .ReadFrom.Services(services);
 });
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(containerBuilder =>
+    {
+        containerBuilder.BuildMediator();
+        containerBuilder.BuildAutoMapper();
+    });
+
+builder.Services.AddOptions();
+builder.Services.AddResponseCompression(options =>
+{
+    options.Providers.Add<GzipCompressionProvider>();
+    options.EnableForHttps = true;
+});
+builder.Services.AddOutputCache()
+    .AddStackExchangeRedisCache(options =>
+    {
+        options.InstanceName = "GoodBadHabitsTracker";
+        options.Configuration = "localhost:6379";
+    });
 
 builder.Services.AddControllers()
                 .AddNewtonsoftJson(options =>
@@ -22,14 +49,27 @@ builder.Services.AddControllers()
                 });
 builder.Services.AddDateOnlyTimeOnlyStringConverters();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x => x.UseDateOnlyTimeOnlyStringConverters());
 
-var app = builder.Build();
+var mvcBuilder = builder.Services
+    .AddLogging()
+    .AddMvc()
+    .AddNewtonsoftJson();
 
-app.UseSerilogRequestLogging();
+mvcBuilder.AddMvcOptions(o =>
+{
+    o.Conventions.Add(new GenericControllerConventions());
+    var formatter = o.InputFormatters.OfType<NewtonsoftJsonInputFormatter>().First();
+});
+mvcBuilder.ConfigureApplicationPartManager(c =>
+{
+    c.FeatureProviders.Add(new GenericControllerFeatureProvider());
+});
+
+var app = builder.Build();
+app.UseOutputCache();
 
 app.UseExceptionHandlingMiddleware();
 
@@ -39,7 +79,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseResponseCompression();
 app.UseHsts();
 app.UseHttpsRedirection();
 
@@ -49,8 +89,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 
-
-
 app.UseAuthorization();
 
 app.Run();
+
+public partial class Program { }

@@ -1,12 +1,6 @@
-﻿using Azure.Core;
-using GoodBadHabitsTracker.Core.Models;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Application.Exceptions;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
@@ -25,7 +19,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
             };
 
             var createUserResult = await userManager.CreateAsync(user, command.Request.Password);
-            cancellationToken.ThrowIfCancellationRequested();
             if (!createUserResult.Succeeded) 
                 throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to create user: " + string.Join(", ", createUserResult.Errors.Select(e => e.Description)));
 

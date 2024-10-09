@@ -26,6 +26,7 @@ using Microsoft.Extensions.Configuration;
 using FluentAssertions.Common;
 using System.Security.Authentication;
 using GoodBadHabitsTracker.Application.Commands.Auth.Login;
+using Xunit.Abstractions;
 
 namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
 {
@@ -36,8 +37,10 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
         private readonly DataGenerator _dataGenerator;
         private readonly Mock<IMediator> _mediatorMock;
         private readonly AuthController _controller;
-        public AuthControllerTests()
+        private readonly ITestOutputHelper _outputHelper;
+        public AuthControllerTests(ITestOutputHelper outputHelper)
         {
+            _outputHelper = outputHelper;
             _dataGenerator = new DataGenerator();
             _mediatorMock = new Mock<IMediator>();
             _controller = new AuthController(_mediatorMock.Object)
@@ -106,8 +109,8 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             //ARRANGE
             var request = _dataGenerator.SeedLoginRequest();
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomString();
-            var userFingerprint = _dataGenerator.SeedRandomString();
+            var refreshToken = _dataGenerator.SeedRandomString(32);
+            var userFingerprint = _dataGenerator.SeedRandomString(32);
 
             _mediatorMock.Setup(x => x.Send(It.IsAny<LoginCommand>(), default)).ReturnsAsync(new LoginResponse(accessToken, refreshToken, userFingerprint));
 

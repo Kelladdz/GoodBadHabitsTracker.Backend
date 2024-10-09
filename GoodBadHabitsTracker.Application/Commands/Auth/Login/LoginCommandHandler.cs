@@ -1,17 +1,8 @@
-﻿using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
-using GoodBadHabitsTracker.Core.Models;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GoodBadHabitsTracker.Application.Exceptions;
-using Azure.Core;
-using System.Security.Authentication;
-using Azure;
-using Microsoft.AspNetCore.Http;
+using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
+using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
@@ -39,17 +30,18 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
 
             var userSession = new UserSession(user.Id, user.UserName!, user.Email, userRoles);
 
-            var accessToken = accessTokenHandler.GenerateAccessToken(userSession, out string userFingerprint);
-            if (accessToken is null) throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
+            var accessToken = accessTokenHandler.GenerateAccessToken(userSession, out string userFingerprint)
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
 
-            var refreshToken = refreshTokenHandler.GenerateRefreshToken();
-            if (refreshToken is null) throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
+            var refreshToken = refreshTokenHandler.GenerateRefreshToken()
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
 
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpirationDate = DateTime.UtcNow.AddDays(7);
 
             var userUpdateResult = await userManager.UpdateAsync(user);
-            if (!userUpdateResult.Succeeded) throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
+            if (!userUpdateResult.Succeeded) 
+                throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
 
             return new LoginResponse(accessToken, refreshToken, userFingerprint);
         }

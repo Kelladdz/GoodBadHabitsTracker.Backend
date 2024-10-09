@@ -1,17 +1,12 @@
-﻿using GoodBadHabitsTracker.Core.Models;
-using GoodBadHabitsTracker.Infrastructure.Configurations;
-using GoodBadHabitsTracker.Core.Interfaces;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
+using GoodBadHabitsTracker.Core.Models;
+using GoodBadHabitsTracker.Infrastructure.Configurations;
+using GoodBadHabitsTracker.Core.Interfaces;
 
 namespace GoodBadHabitsTracker.Infrastructure.Security.AccessTokenHandler
 {

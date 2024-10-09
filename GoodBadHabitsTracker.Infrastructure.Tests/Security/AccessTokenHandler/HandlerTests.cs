@@ -104,7 +104,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Tests.Security.AccessTokenHandler
         [Fact]
         public void GenerateUserFingerprintHash__Generates()
         {
-            var userFingerprint = _dataGenerator.SeedRandomString();
+            var userFingerprint = _dataGenerator.SeedRandomString(32);
             string expectedHash;
             using (var sha256 = SHA256.Create())
             {

@@ -19,8 +19,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
     {
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddOptions();
-
+            
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Key").Value!));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var issuer = configuration.GetSection("JwtSettings:Issuer").Value!;

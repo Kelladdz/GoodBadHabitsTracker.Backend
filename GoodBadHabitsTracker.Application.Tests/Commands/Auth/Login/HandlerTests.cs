@@ -1,22 +1,12 @@
-﻿using Azure.Core;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Moq;
+using Microsoft.AspNetCore.Identity;
 using GoodBadHabitsTracker.Application.Commands.Auth.Login;
 using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
 using GoodBadHabitsTracker.Application.Exceptions;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.TestMisc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Authentication;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
 {
@@ -50,8 +40,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomString();
-            string expectedUserFingerprint = _dataGenerator.SeedRandomString();
+            var refreshToken = _dataGenerator.SeedRandomString(32);
+            string expectedUserFingerprint = _dataGenerator.SeedRandomString(32);
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email});
@@ -156,8 +146,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomString();
-            string expectedUserFingerprint = _dataGenerator.SeedRandomString();
+            var refreshToken = _dataGenerator.SeedRandomString(32);
+            string expectedUserFingerprint = _dataGenerator.SeedRandomString(32);
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email });
@@ -279,7 +269,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            string expectedUserFingerprint = _dataGenerator.SeedRandomString();
+            string expectedUserFingerprint = _dataGenerator.SeedRandomString(32);
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email });
@@ -328,8 +318,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth.Login
             var userId = Guid.NewGuid();
             var userSession = new UserSession(userId, request.Email, request.Email, ["User"]);
             var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomString();
-            string expectedUserFingerprint = _dataGenerator.SeedRandomString();
+            var refreshToken = _dataGenerator.SeedRandomString(32);
+            string expectedUserFingerprint = _dataGenerator.SeedRandomString(32);
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(request.Email))
                 .ReturnsAsync(new User { Email = request.Email });

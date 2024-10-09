@@ -1,8 +1,8 @@
-﻿using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using GoodBadHabitsTracker.Application.Commands.Auth.Register;
 using GoodBadHabitsTracker.Application.Commands.Auth.Login;
+using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
 
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
