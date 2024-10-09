@@ -7,6 +7,7 @@ using GoodBadHabitsTracker.Application.Queries.Generic.Search;
 using GoodBadHabitsTracker.Application.Commands.Generic.Insert;
 using Microsoft.AspNetCore.JsonPatch;
 using GoodBadHabitsTracker.Application.Commands.Generic.Update;
+using GoodBadHabitsTracker.Application.Commands.Generic.Delete;
 
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
@@ -53,6 +54,13 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         public async Task<IActionResult> Patch([FromRoute] Guid id, [FromBody] JsonPatchDocument<TEntity> request)
         {
             var response = await _mediator.Send(new UpdateCommand<TEntity>(id, request), _cancellationToken);
+            return response ? NoContent() : BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var response = await _mediator.Send(new DeleteCommand<TEntity>(id), _cancellationToken);
             return response ? NoContent() : BadRequest();
         }
     }

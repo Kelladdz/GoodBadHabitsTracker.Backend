@@ -77,9 +77,24 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
             if (typeof(TEntity) == typeof(Habit))
             {
                 var habit = entityToInsert as Habit;
+
                 var newHabit = habit!.HabitType switch
                 {
-                    HabitTypes.Good => habit,
+                    HabitTypes.Good => new Habit 
+                    { 
+                        Name = habit.Name,
+                        HabitType = habit.HabitType,
+                        IconPath = habit.IconPath,
+                        IsTimeBased = habit.IsTimeBased,
+                        Quantity = habit.Quantity,
+                        Frequency = habit.Frequency,
+                        RepeatMode = habit.RepeatMode,
+                        RepeatDaysOfWeek = habit.RepeatDaysOfWeek,
+                        RepeatDaysOfMonth = habit.RepeatDaysOfMonth,
+                        RepeatInterval = habit.RepeatInterval,
+                        StartDate = habit.StartDate,    
+                        UserId = userId,
+                    },
                     HabitTypes.Limit => new Habit
                     {
                         Name = habit.Name,
@@ -127,6 +142,18 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                 return false;
 
             document.ApplyTo(entity);
+
+            return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var entity = await _dbContext.Set<TEntity>().FindAsync(id, cancellationToken);
+
+            if (entity is null)
+                return false;
+
+            _dbContext.Set<TEntity>().Remove(entity);
 
             return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
         }

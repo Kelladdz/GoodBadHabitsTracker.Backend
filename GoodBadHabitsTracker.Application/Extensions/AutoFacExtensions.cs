@@ -11,6 +11,7 @@ using GoodBadHabitsTracker.Application.Queries.Generic.ReadById;
 using GoodBadHabitsTracker.Application.Queries.Generic.Search;
 using GoodBadHabitsTracker.Application.Mappings;
 using GoodBadHabitsTracker.Application.Abstractions.Behaviors;
+using GoodBadHabitsTracker.Application.Commands.Generic.Delete;
 
 namespace GoodBadHabitsTracker.Application.Extensions
 {
@@ -26,6 +27,7 @@ namespace GoodBadHabitsTracker.Application.Extensions
             builder.RegisterGeneric(typeof(SearchQueryHandler<>)).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(InsertCommandHandler<,>)).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(UpdateCommandHandler<>)).AsImplementedInterfaces();
+            builder.RegisterGeneric(typeof(DeleteCommandHandler<>)).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(ReadByIdQueryValidator<>)).As(typeof(IValidator<>)).InstancePerLifetimeScope();
             builder.RegisterGeneric(typeof(SearchQueryValidator<>)).As(typeof(IValidator<>)).InstancePerLifetimeScope();
             builder.RegisterGeneric(typeof(InsertCommandValidator<,>)).As(typeof(IValidator<>)).InstancePerLifetimeScope();
