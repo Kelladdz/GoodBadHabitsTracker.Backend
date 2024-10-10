@@ -5,6 +5,9 @@ using GoodBadHabitsTracker.Core.Enums;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Infrastructure.Persistance;
+using GoodBadHabitsTracker.Infrastructure.Extensions;
+using Microsoft.AspNetCore.JsonPatch.Operations;
+using Newtonsoft.Json.Linq;
 
 namespace GoodBadHabitsTracker.Infrastructure.Repositories
 {
@@ -18,13 +21,22 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async ValueTask<TEntity> ReadByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<TEntity> ReadByIdAsync(Guid id, CancellationToken cancellationToken)
         {
 
-            var entity = await _dbContext.Set<TEntity>()
-                .FindAsync(id, cancellationToken);
+            if (typeof(TEntity) == typeof(Habit))
+            {
+                var habit = await _dbContext.Habits
+                    .Include(x => x.DayResults)
+                    .Include(x => x.Comments)
+                    .AsNoTracking()
+                    .AsSplitQuery()
+                    .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
+
+                return habit as TEntity;
+            }
+            else throw new NotImplementedException();
                 
-            return entity;
         }
             
 
@@ -137,7 +149,18 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
         public async Task<bool> UpdateAsync(JsonPatchDocument<TEntity> document, Guid id, CancellationToken cancellationToken)
         {
             var entity = await _dbContext.Set<TEntity>().FindAsync(id, cancellationToken);
-                
+            if (document.Operations.Any(o => o.OperationType == OperationType.Add 
+            && o.path == "/dayResults/-" 
+            && (int)JObject.Parse(o.value.ToString()!)["progress"]! < (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("Quantity")!.GetValue(entity)!
+            && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["status"]!.ToString()) == Statuses.Completed))
+                throw new InvalidOperationException("Progress can't be less than quantity if status is completed");
+
+            if (document.Operations.Any(o => o.OperationType == OperationType.Add
+            && o.path == "/dayResults/-"
+            && (int)JObject.Parse(o.value.ToString()!)["progress"]! >= (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("Quantity")!.GetValue(entity)!
+            && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["status"]!.ToString()) != Statuses.Completed))
+                throw new InvalidOperationException("Progress can't be more than quantity if status is not completed");
+
             if (entity is null)
                 return false;
 
