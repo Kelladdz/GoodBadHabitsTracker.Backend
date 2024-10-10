@@ -18,6 +18,9 @@ namespace GoodBadHabitsTracker.Application.Queries.Generic.ReadById
                 var habitId = query.Id;
 
                 var entity = await _genericRepository.ReadByIdAsync(habitId, cancellationToken);
+                if (entity is null)
+                    return null;
+
                 var response = new GenericResponse<TEntity>(entity);
 
                 return response;

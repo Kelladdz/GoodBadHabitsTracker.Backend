@@ -24,10 +24,9 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
             var userId = Guid.Parse("c0f91415-4590-473c-eb0f-08dc84395b6a");
 
             var newEntity = await _genericRepository.InsertAsync(entityToInsert, userId, cancellationToken);
-            var response = new GenericResponse<TEntity>(newEntity);
+            var response = newEntity is not null ? new GenericResponse<TEntity>(newEntity) : null;
 
             return response;
         }
     }
-
 }

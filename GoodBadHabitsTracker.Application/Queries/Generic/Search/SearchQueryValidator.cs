@@ -2,7 +2,6 @@
 
 namespace GoodBadHabitsTracker.Application.Queries.Generic.Search
 {
-
     public class SearchQueryValidator<TEntity> : AbstractValidator<SearchQuery<TEntity>>
         where TEntity : class
     {

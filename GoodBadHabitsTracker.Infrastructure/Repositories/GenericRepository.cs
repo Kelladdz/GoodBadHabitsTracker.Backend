@@ -145,9 +145,9 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
 
 
                     _dbContext.Habits.Add(newHabit);
-                    return await _dbContext.SaveChangesAsync(cancellationToken) > 0
-                    ? newHabit as TEntity
-                    : throw new InvalidOperationException("Something goes wrong");
+                return await _dbContext.SaveChangesAsync(cancellationToken) > 0
+                ? newHabit as TEntity
+                : null;
                 
                 
             }
@@ -164,7 +164,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                 _dbContext.Groups.Add(newGroup);
                 return await _dbContext.SaveChangesAsync(cancellationToken) > 0
                     ? newGroup as TEntity
-                    : throw new InvalidOperationException("Something goes wrong");
+                    : null;
             }
             else throw new InvalidOperationException("This method is available only for Habit and Group entities");
         }
@@ -172,17 +172,84 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
         public async Task<bool> UpdateAsync(JsonPatchDocument<TEntity> document, Guid id, CancellationToken cancellationToken)
         {
             var entity = await _dbContext.Set<TEntity>().FindAsync(id, cancellationToken);
+            var quantity = (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("Quantity")!.GetValue(entity)!;
+            var repeatDaysOfMonth = (int[])Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatDaysOfMonth")!.GetValue(entity)!;
+            var repeatDaysOfWeek = (DayOfWeek[])Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatDaysOfWeek")!.GetValue(entity)!;
+            var repeatInterval = (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatInterval")!.GetValue(entity)!;
+
+
             if (document.Operations.Any(o => o.OperationType == OperationType.Add 
             && o.path == "/dayResults/-" 
-            && (int)JObject.Parse(o.value.ToString()!)["progress"]! < (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("Quantity")!.GetValue(entity)!
+            && (int)JObject.Parse(o.value.ToString()!)["progress"]! < quantity
             && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["status"]!.ToString()) == Statuses.Completed))
                 throw new InvalidOperationException("Progress can't be less than quantity if status is completed");
 
             if (document.Operations.Any(o => o.OperationType == OperationType.Add
             && o.path == "/dayResults/-"
-            && (int)JObject.Parse(o.value.ToString()!)["progress"]! >= (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("Quantity")!.GetValue(entity)!
+            && (int)JObject.Parse(o.value.ToString()!)["progress"]! >= quantity
             && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["status"]!.ToString()) != Statuses.Completed))
                 throw new InvalidOperationException("Progress can't be more than quantity if status is not completed");
+
+            if (document.Operations
+                .Any(o => o.OperationType == OperationType.Replace
+                    && o.path == "/repeatMode"
+                    && (int)o.value == (int)RepeatModes.Daily)
+            && !document.Operations
+                .Any(o => o.OperationType == OperationType.Add
+                    && o.path == "/repeatDaysOfWeek/-"))
+                throw new InvalidOperationException("RepeatDaysOfWeek should be added if RepeatMode is Daily");
+
+            if (document.Operations
+                .Any(o => o.OperationType == OperationType.Replace
+                    && o.path == "/repeatMode"
+                    && (int)o.value == (int)RepeatModes.Monthly)
+            && !document.Operations
+                .Any(o => o.OperationType == OperationType.Add
+                    && o.path == "/repeatDaysOfMonth/-"))
+                throw new InvalidOperationException("RepeatDaysOfMonth should be added if RepeatMode is Monthly");
+
+            if (document.Operations
+                .Any(o => o.OperationType == OperationType.Replace
+                    && o.path == "/repeatMode"
+                    && (int)o.value == (int)RepeatModes.Interval)
+            && !document.Operations
+                .Any(o => o.OperationType == OperationType.Replace
+                    && o.path == "/repeatInterval"
+                    && ((int)o.value > 0 && (int)o.value < 7)))
+                throw new InvalidOperationException("RepeatDaysOfMonth should be added if RepeatMode is Monthly");
+
+            if (document.Operations.Any(o => o.OperationType == OperationType.Replace
+                 && o.path == "/repeatMode"
+                 && (int)o.value == (int)RepeatModes.Daily))
+            {
+                if (repeatDaysOfMonth.Length != 0)
+                    (entity as Habit)!.RepeatDaysOfMonth.Clear();
+                
+                if (repeatInterval != 0)
+                    (entity as Habit)!.RepeatInterval = 0;
+            }
+
+            if (document.Operations.Any(o => o.OperationType == OperationType.Replace
+                 && o.path == "/repeatMode"
+                 && (int)o.value == (int)RepeatModes.Monthly))
+            {
+                if (repeatDaysOfWeek.Length != 0)
+                    (entity as Habit)!.RepeatDaysOfWeek.Clear();
+
+                if (repeatInterval != 0)
+                    (entity as Habit)!.RepeatInterval = 0;
+            }
+
+            if (document.Operations.Any(o => o.OperationType == OperationType.Replace
+                 && o.path == "/repeatMode"
+                 && (int)o.value == (int)RepeatModes.Interval))
+            {
+                if (repeatDaysOfWeek.Length != 0)
+                    (entity as Habit)!.RepeatDaysOfWeek.Clear();
+
+                if (repeatDaysOfMonth.Length != 0)
+                    (entity as Habit)!.RepeatDaysOfMonth.Clear();
+            }
 
             if (entity is null)
                 return false;

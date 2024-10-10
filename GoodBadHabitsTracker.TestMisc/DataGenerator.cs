@@ -16,7 +16,7 @@ namespace GoodBadHabitsTracker.TestMisc
     {
         private readonly Random random = new();
 
-        public GenericResponse<Habit> SeedHabitResponse()
+        public Habit SeedHabit()
         {
             var habitGenerator = new Faker<Habit>()
                 .RuleFor(h => h.Id, f => f.Random.Guid())
@@ -33,10 +33,36 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(h => h.RepeatInterval, (f, h) => h.RepeatMode == RepeatModes.Interval ? f.Random.Int(2, 7) : 0)
                 .RuleFor(h => h.ReminderTimes, (f, h) => h.HabitType == HabitTypes.Good ? Enumerable.Range(0, random.Next(1, 5)).Select(x => f.Date.SoonTimeOnly()).ToList() : []);
             var habit = habitGenerator.Generate();
+            return habit;
+        }
+
+        public List<Habit> SeedHabitsCollection(int number)
+        {
+            var habitGenerator = new Faker<Habit>()
+                .RuleFor(h => h.Id, f => f.Random.Guid())
+                .RuleFor(h => h.Name, f => f.Name.JobTitle())
+                .RuleFor(h => h.HabitType, f => f.PickRandom(HabitTypes.Good, HabitTypes.Limit, HabitTypes.Quit))
+                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
+                .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? false : f.Random.Bool())
+                .RuleFor(h => h.Quantity, (f, h) => h.HabitType != HabitTypes.Quit ? f.Random.Int(1, 3600) : null)
+                .RuleFor(h => h.Frequency, (f, h) => h.HabitType != HabitTypes.Quit ? f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth) : Frequencies.NotApplicable)
+                .RuleFor(h => h.RepeatMode, (f, h) => h.HabitType == HabitTypes.Good ? f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval) : RepeatModes.NotApplicable)
+                .RuleFor(h => h.RepeatDaysOfWeek, (f, h) => h.RepeatMode == RepeatModes.Daily ? Enumerable.Range(1, random.Next(2, 7)).Select(x => f.PickRandom(Enum.GetValues<DayOfWeek>())).ToList() : [])
+                .RuleFor(h => h.RepeatDaysOfMonth, (f, h) => h.RepeatMode == RepeatModes.Monthly ? Enumerable.Range(1, random.Next(2, 28)).Select(x => f.Random.Int(1, 28)).ToList() : [])
+                .RuleFor(h => h.RepeatInterval, (f, h) => h.RepeatMode == RepeatModes.Interval ? f.Random.Int(2, 7) : 0)
+                .RuleFor(h => h.ReminderTimes, (f, h) => h.HabitType == HabitTypes.Good ? Enumerable.Range(0, random.Next(1, 5)).Select(x => f.Date.SoonTimeOnly()).ToList() : []);
+            var habits = habitGenerator.Generate(number);
+            return habits;
+        }
+
+        public GenericResponse<Habit> SeedHabitResponse()
+        {
+            var habit = SeedHabit();
             return new GenericResponse<Habit>(habit);
         }
 
-        public IEnumerable<GenericResponse<Habit>> SeedHabitResponseCollection()
+        public List<GenericResponse<Habit>> SeedHabitResponseCollection()
         {
             var count = random.Next(1, 10);
             var habitGenerator = new Faker<Habit>()
@@ -196,6 +222,17 @@ namespace GoodBadHabitsTracker.TestMisc
             return quitHabit;
         }
 
+        public Group SeedGroup()
+        {
+            var habitRequestGenerator = new Faker<Group>()
+                .RuleFor(g => g.Id, f => f.Random.Guid())
+                .RuleFor(g => g.Name, f => f.Name.JobTitle())
+                .RuleFor(g => g.UserId, f => f.Random.Guid())
+                .RuleFor(g => g.Habits, f => []);
+            var group = habitRequestGenerator.Generate();
+            return group;
+        }
+
         public JsonPatchDocument<Habit> SeedHabitJsonPatchDocument()
         {
             var jsonPatchDocumentGenerator = new Faker<JsonPatchDocument<Habit>>()
@@ -213,6 +250,27 @@ namespace GoodBadHabitsTracker.TestMisc
                     return h.Operations;
                 });
                     
+            var jsonPatchDocument = jsonPatchDocumentGenerator.Generate();
+            return jsonPatchDocument;
+        }
+
+        public JsonPatchDocument<Group> SeedGroupJsonPatchDocument()
+        {
+            var jsonPatchDocumentGenerator = new Faker<JsonPatchDocument<Group>>()
+                .RuleFor(h => h.Operations, (f, h) =>
+                {
+
+                    var operation = new Operation<Group>()
+                    {
+                        path = "/name",
+                        op = "replace",
+                        value = f.Name.JobTitle()
+                    };
+                    h.Operations.Add(operation);
+
+                    return h.Operations;
+                });
+
             var jsonPatchDocument = jsonPatchDocumentGenerator.Generate();
             return jsonPatchDocument;
         }

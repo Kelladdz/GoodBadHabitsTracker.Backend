@@ -9,15 +9,16 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
 {
     public class InsertCommandValidatorTests 
     {
-        private readonly InsertCommandValidator<Core.Models.Habit, HabitRequest> _validator;
+        private readonly InsertCommandValidator<Core.Models.Habit, HabitRequest> _habitsValidator;
+        private readonly InsertCommandValidator<Core.Models.Group, GroupRequest> _groupsValidator;
         private readonly DataGenerator _dataGenerator;
 
         public InsertCommandValidatorTests()
         {
-            _validator = new InsertCommandValidator<Core.Models.Habit, HabitRequest>();
+            _habitsValidator = new InsertCommandValidator<Core.Models.Habit, HabitRequest>();
+            _groupsValidator = new InsertCommandValidator<Core.Models.Group, GroupRequest>();
             _dataGenerator = new DataGenerator();
         }
-
 
        [Fact]
         public void Habit_ValidRequest_DoesntThrowsException()
@@ -26,10 +27,21 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             var request = _dataGenerator.SeedHabitRequest();
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldNotHaveValidationErrorFor(model => model.Request.Name);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.IconPath);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.HabitType);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.StartDate);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.IsTimeBased);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.Quantity);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.Frequency);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.RepeatMode);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.RepeatDaysOfWeek);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.RepeatDaysOfMonth);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.RepeatInterval);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.ReminderTimes);
         }
 
         [Fact]
@@ -41,7 +53,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Name = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Name).WithErrorMessage("Name cannot be null");
@@ -56,7 +68,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Name = "";
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Name).WithErrorMessage("Name is required");
@@ -71,7 +83,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Name = _dataGenerator.SeedRandomString(2);
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Name).WithErrorMessage("Name should be at least 3 characters");
@@ -86,7 +98,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Name = _dataGenerator.SeedRandomString(51);
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Name).WithErrorMessage("Name should not exceed 50 characters");
@@ -101,7 +113,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.IconPath = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.IconPath).WithErrorMessage("Icon path cannot be null");
@@ -116,7 +128,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.HabitType = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.HabitType).WithErrorMessage("Habit type cannot be null");
@@ -131,7 +143,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.HabitType = HabitTypes.Quit + 1;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.HabitType).WithErrorMessage("Invalid habit type");
@@ -146,7 +158,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.StartDate = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.StartDate).WithErrorMessage("Start date cannot be null");
@@ -161,7 +173,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.StartDate = new DateOnly(2023, 7, 14);
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.StartDate).WithErrorMessage("Start date should be today or later");
@@ -177,7 +189,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.IsTimeBased = true;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.IsTimeBased).WithErrorMessage("For breaking a habit, IsTimeBased should be null");
@@ -192,7 +204,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.IsTimeBased = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.IsTimeBased).WithErrorMessage("For good and limiting habit, IsTimeBased flag cannot be null");
@@ -207,7 +219,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Quantity = 100;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Quantity).WithErrorMessage("For breaking a habit, Quantity should be null");
@@ -222,7 +234,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Quantity = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Quantity).WithErrorMessage("For good and limiting habit Quantity cannot be null");
@@ -237,7 +249,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Frequency = Frequencies.PerDay;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Frequency).WithErrorMessage("For breaking a habit, Frequency should be null");
@@ -252,7 +264,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Frequency = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Frequency).WithErrorMessage("For good and limiting habit, Frequency cannot be null");
@@ -267,7 +279,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.Frequency = Frequencies.PerMonth + 1;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.Frequency).WithErrorMessage("Invalid Frequency");
@@ -282,7 +294,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatMode = RepeatModes.Daily;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatMode).WithErrorMessage("For breaking or limiting a habit, RepeatMode should be null");
@@ -297,7 +309,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatMode = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatMode).WithErrorMessage("For good habit, RepeatMode cannot be null");
@@ -312,7 +324,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatMode = RepeatModes.Interval + 1;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatMode).WithErrorMessage("Invalid RepeatMode");
@@ -327,7 +339,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatDaysOfWeek = [DayOfWeek.Saturday + 1];
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatDaysOfWeek).WithErrorMessage("Invalid day of week");
@@ -341,7 +353,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatDaysOfWeek = [DayOfWeek.Monday];
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatDaysOfWeek).WithErrorMessage("If habit isn't in daily repeat mode, then RepeatDaysOfWeek should be null");
@@ -355,7 +367,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatDaysOfWeek = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatDaysOfWeek).WithErrorMessage("If habit is in daily repeat mode, then RepeatDaysOfWeek cannot be null");
@@ -370,7 +382,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatDaysOfMonth = [44];
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatDaysOfMonth).WithErrorMessage("Invalid day of month: 44");
@@ -384,7 +396,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatDaysOfMonth = [13];
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatDaysOfMonth).WithErrorMessage("If habit isn't in monthly repeat mode, then RepeatDaysOfMonth should be null");
@@ -398,7 +410,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatDaysOfMonth = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatDaysOfMonth).WithErrorMessage("If habit is in monthly repeat mode, then RepeatDaysOfMonth cannot be null");
@@ -413,7 +425,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatInterval = 10;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatInterval).WithErrorMessage("Interval should be greater than 1 and less than 8");
@@ -427,7 +439,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatInterval = 2;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatInterval).WithErrorMessage("If habit isn't in interval repeat mode, then RepeatInterval should be null");
@@ -441,13 +453,14 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.RepeatInterval = null;
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.RepeatInterval).WithErrorMessage("If habit is in interval repeat mode, then RepeatInterval cannot be null");
         }
+
         [Fact]
-        public void ReminderTimesIsNotNullAndHabitTypeIsNotGood_ThrowsException()
+        public void Habit_ReminderTimesIsNotNullAndHabitTypeIsNotGood_ThrowsException()
         {
             //ARRANGE
             var request = _dataGenerator.SeedLimitHabitRequest();
@@ -455,10 +468,90 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             request.ReminderTimes = [new TimeOnly(10, 30)];
 
             //ACT
-            var result = _validator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
+            var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
             result.ShouldHaveValidationErrorFor(model => model.Request.ReminderTimes).WithErrorMessage("For breaking or limiting habit, ReminderTimes should be null");
+        }
+
+        [Fact]
+        public void Group_ValidRequest_DoesntThrowsException()
+        {
+            //ARRANGE
+            var request = new GroupRequest
+            {
+                Name = _dataGenerator.SeedRandomString(10)
+            };
+
+            //ACT
+            var result = _groupsValidator.TestValidate(new InsertCommand<Core.Models.Group, GroupRequest>(request));
+
+            //ASSERT
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.Name);
+        }
+
+        [Fact]
+        public void Group_NameIsNull_ThrowsException()
+        {
+            //ARRANGE
+            var request = new GroupRequest
+            {
+                Name = null
+            };
+
+            //ACT
+            var result = _groupsValidator.TestValidate(new InsertCommand<Core.Models.Group, GroupRequest>(request));
+
+            //ASSERT
+            result.ShouldHaveValidationErrorFor(model => model.Request.Name).WithErrorMessage("Name cannot be null");
+        }
+
+        [Fact]
+        public void Group_NameIsEmpty_ThrowsException()
+        {
+            //ARRANGE
+            var request = new GroupRequest
+            {
+                Name = ""
+            };
+
+            //ACT
+            var result = _groupsValidator.TestValidate(new InsertCommand<Core.Models.Group, GroupRequest>(request));
+
+            //ASSERT
+            result.ShouldHaveValidationErrorFor(model => model.Request.Name).WithErrorMessage("Name is required");
+        }
+
+        [Fact]
+        public void Group_NameIsTooShort_ThrowsException()
+        {
+            //ARRANGE
+            var request = new GroupRequest
+            {
+                Name = _dataGenerator.SeedRandomString(2)
+            };
+
+            //ACT
+            var result = _groupsValidator.TestValidate(new InsertCommand<Core.Models.Group, GroupRequest>(request));
+
+            //ASSERT
+            result.ShouldHaveValidationErrorFor(model => model.Request.Name).WithErrorMessage("Name should be at least 3 characters");
+        }
+
+        [Fact]
+        public void Group_NameIsTooLong_ThrowsException()
+        {
+            //ARRANGE
+            var request = new GroupRequest
+            {
+                Name = _dataGenerator.SeedRandomString(51)
+            };
+
+            //ACT
+            var result = _groupsValidator.TestValidate(new InsertCommand<Core.Models.Group, GroupRequest>(request));
+
+            //ASSERT
+            result.ShouldHaveValidationErrorFor(model => model.Request.Name).WithErrorMessage("Name should not exceed 15 characters");
         }
     }
 }
