@@ -81,6 +81,14 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                         return Task.CompletedTask;
                     };
                 });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("GBHTPolicy", policy =>
+                {
+                    policy.RequireClaim("roles", "User")
+                        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                });
+            });
         }
     }
 }
