@@ -84,8 +84,12 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Update
                                     switch (pathProperty)
                                     {
                                         case "Name":
-                                            if (string.IsNullOrWhiteSpace(value.ToString())
+                                            if (typeof(TEntity) == typeof(Habit) && string.IsNullOrWhiteSpace(value.ToString())
                                             || value.ToString()!.Length < 3 || value.ToString()!.Length > 50)
+                                            {
+                                                context.AddFailure("Invalid name");
+                                            } else if (typeof(TEntity) == typeof(Group) && string.IsNullOrWhiteSpace(value.ToString())
+                                            || value.ToString()!.Length < 3 || value.ToString()!.Length > 15)
                                             {
                                                 context.AddFailure("Invalid name");
                                             }

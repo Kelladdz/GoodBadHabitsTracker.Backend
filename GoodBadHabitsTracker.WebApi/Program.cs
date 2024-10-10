@@ -9,6 +9,9 @@ using GoodBadHabitsTracker.WebApi.Utils;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,7 +54,17 @@ builder.Services.AddDateOnlyTimeOnlyStringConverters();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(x => x.UseDateOnlyTimeOnlyStringConverters());
+builder.Services.AddSwaggerGen(x =>
+{
+    x.UseDateOnlyTimeOnlyStringConverters();
+    x.AddSecurityDefinition("GHBTAuth", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    x.OperationFilter<SecurityRequirementsOperationFilter>();
+});
 
 var mvcBuilder = builder.Services
     .AddLogging()

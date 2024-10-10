@@ -5,7 +5,6 @@ using GoodBadHabitsTracker.Core.Enums;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Infrastructure.Persistance;
-using GoodBadHabitsTracker.Infrastructure.Extensions;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Newtonsoft.Json.Linq;
 
@@ -35,8 +34,17 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
 
                 return habit as TEntity;
             }
+            else if (typeof(TEntity) == typeof(Group))
+            {
+               var group = await _dbContext.Groups
+                    .Include(x => x.Habits)
+                    .AsNoTracking()
+                    .AsSplitQuery()
+                    .FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
+
+                return group as TEntity;
+            }
             else throw new NotImplementedException();
-                
         }
             
 
@@ -143,7 +151,22 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                 
                 
             }
-            else throw new NotImplementedException();
+            else if (typeof(TEntity) == typeof(Group))
+            {
+                var group = entityToInsert as Group;
+
+                var newGroup = new Group
+                {
+                    Name = group!.Name,
+                    UserId = userId,
+                };
+
+                _dbContext.Groups.Add(newGroup);
+                return await _dbContext.SaveChangesAsync(cancellationToken) > 0
+                    ? newGroup as TEntity
+                    : throw new InvalidOperationException("Something goes wrong");
+            }
+            else throw new InvalidOperationException("This method is available only for Habit and Group entities");
         }
 
         public async Task<bool> UpdateAsync(JsonPatchDocument<TEntity> document, Guid id, CancellationToken cancellationToken)

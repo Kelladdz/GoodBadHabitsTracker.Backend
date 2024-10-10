@@ -11,6 +11,8 @@ namespace GoodBadHabitsTracker.Application.Mappings
         {
             CreateMap<HabitRequest, Habit>();
             CreateMap<Habit, GenericResponse<Habit>>();
+            CreateMap<GroupRequest, Group>();
+            CreateMap<Group, GenericResponse<Group>>();
         }
     }
 }

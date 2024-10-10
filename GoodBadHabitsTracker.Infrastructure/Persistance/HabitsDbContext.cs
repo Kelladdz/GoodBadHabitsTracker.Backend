@@ -17,13 +17,22 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
         public HabitsDbContext() { }
 
         public DbSet<Habit> Habits { get; set; }
+        public DbSet<Group> Groups { get; set; }
         public DbSet<DayResult> DayResults { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new HabitsConfiguration());
+            builder.ApplyConfiguration(new GroupsConfiguration());
+
+            builder.Entity<User>()
+                .HasMany(u => u.Habits)
+                .WithOne(h => h.User)
+                .HasForeignKey(h => h.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

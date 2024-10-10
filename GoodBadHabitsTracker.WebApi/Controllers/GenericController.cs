@@ -8,6 +8,7 @@ using GoodBadHabitsTracker.Application.Commands.Generic.Insert;
 using Microsoft.AspNetCore.JsonPatch;
 using GoodBadHabitsTracker.Application.Commands.Generic.Update;
 using GoodBadHabitsTracker.Application.Commands.Generic.Delete;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
@@ -15,7 +16,6 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
     [ApiController]
     [GenericControllerConventions]
     [Route("api/[controller]")]
-
     public class GenericController<TEntity, TRequest, TResponse> : ControllerBase
         where TEntity : class
         where TRequest : class
