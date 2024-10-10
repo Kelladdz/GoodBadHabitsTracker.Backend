@@ -15,6 +15,7 @@ using GoodBadHabitsTracker.Application.Queries.Generic.Search;
 using GoodBadHabitsTracker.Application.Commands.Generic.Insert;
 using GoodBadHabitsTracker.Core.Enums;
 using GoodBadHabitsTracker.Application.Commands.Generic.Update;
+using GoodBadHabitsTracker.Application.Commands.Generic.Delete;
 
 namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
 {
@@ -264,6 +265,43 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             // ASSERT
             await action.Should().ThrowAsync<ValidationException>()
                 .Where(x => x.Errors.FirstOrDefault()!.ErrorMessage == "Operation is required");
+        }
+
+        [Fact]
+        public async Task Habit_Delete_ValidRequest_ResponseIsTrue_ReturnsNoContent()
+        {
+            //ARRANGE
+            var id = Guid.NewGuid();
+
+            _mediatorMock.Setup(x => x.Send(It.Is<DeleteCommand<Habit>>(a => a.Id == id), default))
+                .ReturnsAsync(true);
+
+            //ACT
+            var result = await _habitsController.Delete(id) as NoContentResult;
+
+            //ASSERT
+            result!.StatusCode.Should().Be(StatusCodes.Status204NoContent);
+
+            _mediatorMock.Verify(x => x.Send(It.Is<DeleteCommand<Habit>>(a => a.Id == id), default), Times.Once);
+        }
+
+        [Fact]
+        public async Task Habit_Delete_ValidRequest_ResponseIsFalse_ReturnsBadRequest()
+        {
+            //ARRANGE
+            var id = Guid.NewGuid();
+            var document = _dataGenerator.SeedHabitJsonPatchDocument();
+
+            _mediatorMock.Setup(x => x.Send(It.Is<DeleteCommand<Habit>>(a => a.Id == id), default))
+                .ReturnsAsync(false);
+
+            //ACT
+            var result = await _habitsController.Delete(id) as BadRequestResult;
+
+            //ASSERT
+            result!.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+
+            _mediatorMock.Verify(x => x.Send(It.Is<DeleteCommand<Habit>>(a => a.Id == id), default), Times.Once);
         }
     }
 }
