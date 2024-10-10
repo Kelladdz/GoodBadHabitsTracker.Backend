@@ -4,6 +4,7 @@ using GoodBadHabitsTracker.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoodBadHabitsTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(HabitsDbContext))]
-    partial class HabitsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009235838_SomeChangesInUserEntity")]
+    partial class SomeChangesInUserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,29 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.DayResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("HabitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DayResults");
+                });
 
             modelBuilder.Entity("GoodBadHabitsTracker.Core.Models.Group", b =>
                 {
@@ -164,6 +190,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RefreshToken")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RefreshTokenExpirationDate")
@@ -347,60 +374,6 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.Comment", "Comments", b1 =>
-                        {
-                            b1.Property<Guid>("HabitId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Body")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateOnly>("Date")
-                                .HasColumnType("date");
-
-                            b1.HasKey("HabitId", "Id");
-
-                            b1.ToTable("Comment");
-
-                            b1.WithOwner()
-                                .HasForeignKey("HabitId");
-                        });
-
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.DayResult", "DayResults", b1 =>
-                        {
-                            b1.Property<Guid>("HabitId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<DateOnly>("Date")
-                                .HasColumnType("date");
-
-                            b1.Property<int>("Progress")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Status")
-                                .HasColumnType("int");
-
-                            b1.HasKey("HabitId", "Id");
-
-                            b1.ToTable("DayResults");
-
-                            b1.WithOwner()
-                                .HasForeignKey("HabitId");
-                        });
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("DayResults");
 
                     b.Navigation("Group");
 

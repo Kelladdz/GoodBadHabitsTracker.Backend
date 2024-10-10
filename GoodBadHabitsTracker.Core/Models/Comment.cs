@@ -7,7 +7,7 @@ namespace GoodBadHabitsTracker.Core.Models
     public class Comment
     {
         [JsonIgnore]
-        public Guid Id { get; set; }
+        public Guid Id { get; private init; } = Guid.NewGuid();
         public required string Body { get; set; } 
         public DateOnly Date { get; private init; } = DateOnly.FromDateTime(DateTime.Now);
         public Guid HabitId { get; set; }

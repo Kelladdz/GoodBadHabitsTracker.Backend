@@ -81,6 +81,10 @@ namespace GoodBadHabitsTracker.Infrastructure.Configurations
                 .HasColumnName("Quantity")
                 .HasColumnType("int");
 
+            builder.OwnsMany(h => h.DayResults);
+
+            builder.OwnsMany(h => h.Comments);
+
             builder.HasOne(h => h.User)
                 .WithMany(user => user.Habits)
                 .HasForeignKey(h => h.UserId)

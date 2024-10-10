@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using GoodBadHabitsTracker.Core.Enums;
 using GoodBadHabitsTracker.Core.Models;
+using CommandLine;
+using Newtonsoft.Json.Linq;
 
 
 
@@ -13,10 +15,8 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Update
     {
         public UpdateCommandValidator()
         {
-            var entityPropertiesNames = typeof(TEntity)
-                                .GetType()
-                                .GetProperties()
-                                .Select(property => property.Name);
+            var entityPropertiesNames = Activator.CreateInstance<TEntity>()!.GetType().GetProperties()
+                .Select(x => x.Name).ToList();
 
             var pathsPossibles = new List<string>();
 
@@ -154,6 +154,33 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Update
                                             if (!TimeOnly.TryParse(value.ToString(), out TimeOnly time))
                                             {
                                                 context.AddFailure("Invalid time");
+                                            }
+                                            break;
+                                        case "Comments":
+                                            if (Activator.CreateInstance<Comment>().GetType().GetProperty("Body").GetValue(value).ToString().Length > 255)
+                                                context.AddFailure("Comment is too long");
+                                            if (string.IsNullOrWhiteSpace(Activator.CreateInstance<Comment>().GetType().GetProperty("Body").GetValue(value).ToString()))
+                                                context.AddFailure("Comment cannot be empty");
+                                            break;
+                                        case "DayResults":
+                                            var dayResultsJObject = JObject.Parse(value.ToString());
+                                            var status = (Statuses)Enum.Parse(typeof(Statuses), dayResultsJObject["status"].ToString());
+                                            var progress = (int)dayResultsJObject["progress"];
+
+                                            if (status == null || progress == null)
+                                            {
+                                                context.AddFailure("Invalid DayResult properties");
+                                                break;
+                                            }
+
+                                            if (!Enum.IsDefined(typeof(Statuses), status!))
+                                            {
+                                                context.AddFailure("Invalid DayResult status");
+                                            }
+
+                                            if (progress < 0)
+                                            {
+                                                context.AddFailure("Progress should be greater than or equal to 0");
                                             }
                                             break;
                                         default:

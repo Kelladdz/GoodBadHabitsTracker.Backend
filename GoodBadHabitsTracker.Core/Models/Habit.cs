@@ -17,10 +17,7 @@ namespace GoodBadHabitsTracker.Core.Models
         public List<DayOfWeek> RepeatDaysOfWeek { get; init; } = [];
         public List<int> RepeatDaysOfMonth { get; init; } = [];
         public int RepeatInterval { get; set; }
-        [JsonConverter(typeof(DateOnlyConverter))]
         public required DateOnly StartDate { get; set; }
-
-        [JsonConverter(typeof(TimeOnlyConverter))]
         public List<TimeOnly> ReminderTimes { get; init; } = [];
         [JsonIgnore]
         public User User { get; init; } = default!;
@@ -30,5 +27,7 @@ namespace GoodBadHabitsTracker.Core.Models
         public Group Group { get; set; } = default!;
         [JsonIgnore]
         public Guid GroupId { get; set; } = default!;
+        public ICollection<Comment> Comments { get; init; } = new List<Comment>();
+        public ICollection<DayResult> DayResults { get; init; } = new List<DayResult>();
     }
 }
