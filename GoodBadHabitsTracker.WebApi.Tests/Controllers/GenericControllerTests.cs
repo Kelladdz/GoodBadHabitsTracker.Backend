@@ -78,65 +78,6 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public async Task Habit_Search_ValidRequest_ResponseIsNotNull_ReturnsOkWithHabitsResponseCollection()
-        {
-            //ARRANGE
-            var term = _dataGenerator.SeedRandomString(16);
-            var date = DateOnly.FromDateTime(DateTime.Now);
-            var response = _dataGenerator.SeedHabitResponseCollection();
-
-            _mediatorMock.Setup(x => x.Send(It.Is<SearchQuery<Habit>>(a => a.Term == term && a.Date == date), default)).ReturnsAsync(response);
-
-            //ACT
-            var result = await _habitsController.Search(term, date) as OkObjectResult;
-            var value = result!.Value;
-
-            // ASSERT
-            result.StatusCode.Should().Be(StatusCodes.Status200OK);
-            value.Should().BeEquivalentTo(response);
-
-            _mediatorMock.Verify(x => x.Send(It.Is<SearchQuery<Habit>>(a => a.Term == term && a.Date == date), default), Times.Once);
-        }
-
-        [Fact]
-        public async Task Habit_Search_ValidRequest_ResponseIsNull_ReturnsNotFoundWithEmptyArray()
-        {
-            //ARRANGE
-            var term = _dataGenerator.SeedRandomString(16);
-            var date = DateOnly.FromDateTime(DateTime.Now);
-            var response = new List<GenericResponse<Habit>>();
-
-            _mediatorMock.Setup(x => x.Send(It.Is<SearchQuery<Habit>>(a => a.Term == term && a.Date == date), default)).ReturnsAsync(response);
-
-            //ACT
-            var result = await _habitsController.Search(term, date) as NotFoundObjectResult;
-            var value = result!.Value;
-
-            // ASSERT
-            result.StatusCode.Should().Be(StatusCodes.Status404NotFound);
-            value.Should().BeEquivalentTo(response);
-        }
-
-        [Fact]
-        public async Task Habit_Search_InvalidDate_ThrowsExceptionAndReturnsBadRequest()
-        {
-            //ARRANGE
-            var term = null as string;
-            var date = DateOnly.FromDateTime(DateTime.Now).AddDays(8);
-            var exception = new ValidationException(new List<ValidationError> { new ValidationError("Date", "The date must be within the next 7 days.") });
-
-            _mediatorMock.Setup(x => x.Send(It.Is<SearchQuery<Habit>>(a => a.Term == term && a.Date == date), default)).ThrowsAsync(exception);
-
-            //ACT
-            Func<Task> action = async () => await _habitsController.Search(term, date);
-
-            // ASSERT
-            await action.Should().ThrowAsync<ValidationException>().Where(x => x.Errors.FirstOrDefault()!.ErrorMessage == "The date must be within the next 7 days.");
-       
-            _mediatorMock.Verify(x => x.Send(It.Is<SearchQuery<Habit>>(a => a.Term == term && a.Date == date), default), Times.Once);
-        }
-
-        [Fact]
         public async Task Habit_Post_ValidRequest_ReturnsCreatedActionWithActionNameRouteValuesAndHabitResponse()
         {
             //ARRANGE
@@ -189,7 +130,7 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             {
                 Name = _dataGenerator.SeedRandomString(16),
                 HabitType = HabitTypes.Good,
-                IconPath = "",
+                IconId = 0,
                 StartDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-5)),
                 ReminderTimes = new TimeOnly[1],
                 IsTimeBased = false,

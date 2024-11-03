@@ -16,7 +16,7 @@ namespace GoodBadHabitsTracker.Application.Queries.Generic.Search
         {
             var term = query.Term;
             var date = query.Date;
-            var userId = Guid.Parse("c0f91415-4590-473c-eb0f-08dc84395b6a");
+            var userId = Guid.Parse("5162ee1a-b50b-4972-92d8-08dce8c110ea");
 
             var entities = await _genericRepository.SearchAsync(term, date, userId, cancellationToken);
             if (entities is null)

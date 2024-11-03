@@ -9,7 +9,7 @@ namespace GoodBadHabitsTracker.Core.Models
         public Guid Id { get; private init; } = Guid.NewGuid();
         public required string Name { get; set; }
         public required HabitTypes HabitType { get; init; }
-        public required string IconPath { get; set; }
+        public required int IconId { get; set; }
         public bool IsTimeBased { get; set; }
         public int? Quantity { get; set; }
         public required Frequencies Frequency { get; set; }

@@ -23,9 +23,9 @@ namespace GoodBadHabitsTracker.Infrastructure.Configurations
                 .HasColumnType("nvarchar(50)")
                 .IsRequired();
 
-            builder.Property(h => h.IconPath)
-                .HasColumnName("IconPath")
-                .HasColumnType("nvarchar(100)")
+            builder.Property(h => h.IconId)
+                .HasColumnName("IconId")
+                .HasColumnType("int")
                 .IsRequired();
 
             builder.Property(h => h.HabitType)

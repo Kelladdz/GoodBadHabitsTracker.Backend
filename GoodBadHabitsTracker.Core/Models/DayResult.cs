@@ -9,9 +9,9 @@ namespace GoodBadHabitsTracker.Core.Models
     {
         [JsonIgnore]
         public Guid Id { get; private init; } = Guid.NewGuid();
-        public required int Progress { get; set; }
+        public int Progress { get; set; }
         public required Statuses Status { get; set; }
-        public DateOnly Date { get; private init; } = DateOnly.FromDateTime(DateTime.Now);
-        public Guid HabitId { get; set; }
+        public DateOnly Date { get; init; } 
+        public Guid HabitId { get; init; }
     }
 }

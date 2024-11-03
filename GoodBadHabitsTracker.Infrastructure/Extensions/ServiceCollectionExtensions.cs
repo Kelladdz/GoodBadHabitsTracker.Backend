@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Infrastructure.Repositories;
+using Hangfire;
 
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
@@ -24,11 +25,11 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddRoles<UserRole>()
                 .AddRoleStore<RoleStore<UserRole, HabitsDbContext, Guid>>();
 
+
             services.AddScoped<IAccessTokenHandler, Security.AccessTokenHandler.Handler>();
             services.AddScoped<IRefreshTokenHandler, Security.RefreshTokenHandler.Handler>();
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
 
             services.AddJwt(configuration);
             services.AddAuthorization(options =>

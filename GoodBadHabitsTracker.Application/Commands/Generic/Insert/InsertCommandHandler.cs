@@ -21,7 +21,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
         public async Task<GenericResponse<TEntity>> Handle(InsertCommand<TEntity, TRequest> request, CancellationToken cancellationToken)
         {
             var entityToInsert = _mapper.Map<TEntity>(request.Request);
-            var userId = Guid.Parse("c0f91415-4590-473c-eb0f-08dc84395b6a");
+            var userId = Guid.Parse("5162ee1a-b50b-4972-92d8-08dce8c110ea");
 
             var newEntity = await _genericRepository.InsertAsync(entityToInsert, userId, cancellationToken);
             var response = newEntity is not null ? new GenericResponse<TEntity>(newEntity) : null;

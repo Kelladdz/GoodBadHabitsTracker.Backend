@@ -19,7 +19,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
                .MinimumLength(3).WithMessage("Name should be at least 3 characters")
                .MaximumLength(50).WithMessage("Name should not exceed 50 characters");
 
-                RuleFor(x => (x.Request as HabitRequest)!.IconPath)
+                RuleFor(x => (x.Request as HabitRequest)!.IconId)
                     .NotNull().WithMessage("Icon path cannot be null");
 
                 RuleFor(x => (x.Request as HabitRequest)!.HabitType)
@@ -80,7 +80,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
                 RuleFor(x => (x.Request as HabitRequest)!.RepeatDaysOfWeek)
                     .Custom((value, context) =>
                     {
-                        if ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Daily && value != null)
+                        if ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Daily && value is not null)
                         {
                             foreach (var day in (context.InstanceToValidate.Request as HabitRequest)!.RepeatDaysOfWeek!)
                             {
@@ -90,18 +90,18 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
                         }
 
                         else if
-                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode != RepeatModes.Daily && value != null)
+                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode != RepeatModes.Daily && value is not null)
                             context.AddFailure("If habit isn't in daily repeat mode, then RepeatDaysOfWeek should be null");
 
                         else if
-                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Daily && value == null)
+                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Daily && value is null)
                             context.AddFailure("If habit is in daily repeat mode, then RepeatDaysOfWeek cannot be null");
                     });
 
                 RuleFor(x => (x.Request as HabitRequest)!.RepeatDaysOfMonth)
                     .Custom((value, context) =>
                     {
-                        if ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Monthly && value != null)
+                        if ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Monthly && value is not null)
                         {
                             foreach (var day in (context.InstanceToValidate.Request as HabitRequest)!.RepeatDaysOfMonth!)
                             {
@@ -110,33 +110,33 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
                             }
                         }
                         else if
-                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode != RepeatModes.Monthly && value != null)
+                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode != RepeatModes.Monthly && value is not null)
                             context.AddFailure("If habit isn't in monthly repeat mode, then RepeatDaysOfMonth should be null");
 
                         else if
-                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Monthly && value == null)
+                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Monthly && value is null)
                             context.AddFailure("If habit is in monthly repeat mode, then RepeatDaysOfMonth cannot be null");
                     });
 
                 RuleFor(x => (x.Request as HabitRequest)!.RepeatInterval)
                     .Custom((value, context) =>
                     {
-                        if ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Interval && (value > 1 || value < 8))
+                        if ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Interval && (value < 1 || value > 8))
                             context.AddFailure("Interval should be greater than 1 and less than 8");
 
                         else if
-                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode != RepeatModes.Interval && (value > 1 || value < 8))
+                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode != RepeatModes.Interval && value is not null)
                             context.AddFailure("If habit isn't in interval repeat mode, then RepeatInterval should be null");
 
                         else if
-                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Interval && value == null)
+                        ((context.InstanceToValidate.Request as HabitRequest)!.RepeatMode == RepeatModes.Interval && value is null)
                             context.AddFailure("If habit is in interval repeat mode, then RepeatInterval cannot be null");
                     });
 
                 RuleFor(x => (x.Request as HabitRequest)!.ReminderTimes)
                     .Custom((value, context) =>
                     {
-                        if ((context.InstanceToValidate.Request as HabitRequest)!.HabitType != HabitTypes.Good && value != null)
+                        if ((context.InstanceToValidate.Request as HabitRequest)!.HabitType != HabitTypes.Good && value is not null)
                             context.AddFailure("For breaking or limiting habit, ReminderTimes should be null");
                     });
             }

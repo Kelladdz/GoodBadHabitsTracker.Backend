@@ -31,7 +31,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
 
             //ASSERT
             result.ShouldNotHaveValidationErrorFor(model => model.Request.Name);
-            result.ShouldNotHaveValidationErrorFor(model => model.Request.IconPath);
+            result.ShouldNotHaveValidationErrorFor(model => model.Request.IconId);
             result.ShouldNotHaveValidationErrorFor(model => model.Request.HabitType);
             result.ShouldNotHaveValidationErrorFor(model => model.Request.StartDate);
             result.ShouldNotHaveValidationErrorFor(model => model.Request.IsTimeBased);
@@ -110,13 +110,13 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Generic.Insert
             //ARRANGE
             var request = _dataGenerator.SeedHabitRequest();
 
-            request.IconPath = null;
+            request.IconId = null;
 
             //ACT
             var result = _habitsValidator.TestValidate(new InsertCommand<Core.Models.Habit, HabitRequest>(request));
 
             //ASSERT
-            result.ShouldHaveValidationErrorFor(model => model.Request.IconPath).WithErrorMessage("Icon path cannot be null");
+            result.ShouldHaveValidationErrorFor(model => model.Request.IconId).WithErrorMessage("Icon path cannot be null");
         }
 
         [Fact]

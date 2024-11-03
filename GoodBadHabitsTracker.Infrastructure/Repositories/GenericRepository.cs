@@ -7,6 +7,7 @@ using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Infrastructure.Persistance;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace GoodBadHabitsTracker.Infrastructure.Repositories
 {
@@ -47,7 +48,28 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
             else throw new NotImplementedException();
         }
             
+        public async Task<IEnumerable<TEntity>> ReadAllAsync(Guid userId, CancellationToken cancellationToken)
+        {
+            if (typeof(TEntity) == typeof(Habit))
+            {
+                var habits = await _dbContext.Habits
+                    .Where(h => h.UserId == userId)
+                    .AsNoTracking()
+                    .ToListAsync(cancellationToken);
 
+                return habits as IEnumerable<TEntity>;
+            }
+            else if (typeof(TEntity) == typeof(Group))
+            {
+                var groups = await _dbContext.Groups
+                    .Where(g => g.UserId == userId)
+                    .AsNoTracking()
+                    .ToListAsync(cancellationToken);
+
+                return groups as IEnumerable<TEntity>;
+            }
+            else throw new NotImplementedException();
+        }
         public async Task<IEnumerable<TEntity>> SearchAsync(string? term, DateOnly date, Guid userId, CancellationToken cancellationToken)
         {
             if (typeof(TEntity) == typeof(Habit))
@@ -97,14 +119,13 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
             if (typeof(TEntity) == typeof(Habit))
             {
                 var habit = entityToInsert as Habit;
-
                 var newHabit = habit!.HabitType switch
                 {
                     HabitTypes.Good => new Habit 
                     { 
                         Name = habit.Name,
                         HabitType = habit.HabitType,
-                        IconPath = habit.IconPath,
+                        IconId = habit.IconId,
                         IsTimeBased = habit.IsTimeBased,
                         Quantity = habit.Quantity,
                         Frequency = habit.Frequency,
@@ -114,12 +135,13 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                         RepeatInterval = habit.RepeatInterval,
                         StartDate = habit.StartDate,    
                         UserId = userId,
+                        GroupId = habit.GroupId,
                     },
                     HabitTypes.Limit => new Habit
                     {
                         Name = habit.Name,
                         HabitType = habit.HabitType,
-                        IconPath = habit.IconPath,
+                        IconId = habit.IconId,
                         IsTimeBased = habit.IsTimeBased,
                         Quantity = habit.Quantity,
                         Frequency = habit.Frequency,
@@ -127,18 +149,20 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                         RepeatInterval = 0,
                         StartDate = habit.StartDate,
                         UserId = userId,
+                        GroupId = habit.GroupId,
                     },
                     HabitTypes.Quit => new Habit
                     {
                         Name = habit.Name,
                         HabitType = habit.HabitType,
-                        IconPath = habit.IconPath,
+                        IconId = habit.IconId,
                         IsTimeBased = false,
                         Frequency = Frequencies.NotApplicable,
                         RepeatMode = RepeatModes.NotApplicable,
                         RepeatInterval = 0,
                         StartDate = habit.StartDate,
                         UserId = userId,
+                        GroupId = habit.GroupId,
                     },
                     _ => throw new InvalidOperationException("Something goes wrong")
                 };
@@ -172,83 +196,105 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
         public async Task<bool> UpdateAsync(JsonPatchDocument<TEntity> document, Guid id, CancellationToken cancellationToken)
         {
             var entity = await _dbContext.Set<TEntity>().FindAsync(id, cancellationToken);
-            var quantity = (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("Quantity")!.GetValue(entity)!;
-            var repeatDaysOfMonth = (int[])Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatDaysOfMonth")!.GetValue(entity)!;
-            var repeatDaysOfWeek = (DayOfWeek[])Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatDaysOfWeek")!.GetValue(entity)!;
-            var repeatInterval = (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatInterval")!.GetValue(entity)!;
 
-
-            if (document.Operations.Any(o => o.OperationType == OperationType.Add 
-            && o.path == "/dayResults/-" 
-            && (int)JObject.Parse(o.value.ToString()!)["progress"]! < quantity
-            && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["status"]!.ToString()) == Statuses.Completed))
-                throw new InvalidOperationException("Progress can't be less than quantity if status is completed");
-
-            if (document.Operations.Any(o => o.OperationType == OperationType.Add
-            && o.path == "/dayResults/-"
-            && (int)JObject.Parse(o.value.ToString()!)["progress"]! >= quantity
-            && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["status"]!.ToString()) != Statuses.Completed))
-                throw new InvalidOperationException("Progress can't be more than quantity if status is not completed");
-
-            if (document.Operations
-                .Any(o => o.OperationType == OperationType.Replace
-                    && o.path == "/repeatMode"
-                    && (int)o.value == (int)RepeatModes.Daily)
-            && !document.Operations
-                .Any(o => o.OperationType == OperationType.Add
-                    && o.path == "/repeatDaysOfWeek/-"))
-                throw new InvalidOperationException("RepeatDaysOfWeek should be added if RepeatMode is Daily");
-
-            if (document.Operations
-                .Any(o => o.OperationType == OperationType.Replace
-                    && o.path == "/repeatMode"
-                    && (int)o.value == (int)RepeatModes.Monthly)
-            && !document.Operations
-                .Any(o => o.OperationType == OperationType.Add
-                    && o.path == "/repeatDaysOfMonth/-"))
-                throw new InvalidOperationException("RepeatDaysOfMonth should be added if RepeatMode is Monthly");
-
-            if (document.Operations
-                .Any(o => o.OperationType == OperationType.Replace
-                    && o.path == "/repeatMode"
-                    && (int)o.value == (int)RepeatModes.Interval)
-            && !document.Operations
-                .Any(o => o.OperationType == OperationType.Replace
-                    && o.path == "/repeatInterval"
-                    && ((int)o.value > 0 && (int)o.value < 7)))
-                throw new InvalidOperationException("RepeatDaysOfMonth should be added if RepeatMode is Monthly");
-
-            if (document.Operations.Any(o => o.OperationType == OperationType.Replace
-                 && o.path == "/repeatMode"
-                 && (int)o.value == (int)RepeatModes.Daily))
-            {
-                if (repeatDaysOfMonth.Length != 0)
-                    (entity as Habit)!.RepeatDaysOfMonth.Clear();
+            if (typeof(TEntity) == typeof(Habit))
+            {   var dayResultsDates = (entity as Habit)!.DayResults.Select(dayResult => dayResult.Date.ToString("o", CultureInfo.InvariantCulture)).ToList();
                 
-                if (repeatInterval != 0)
-                    (entity as Habit)!.RepeatInterval = 0;
-            }
+                if (document.Operations.Any(o => o.OperationType == OperationType.Add
+                   && o.path == "/dayResults/-"
+                   && dayResultsDates.Contains((string)JObject.Parse(o.value.ToString()!)["Date"]!)))
+                    throw new InvalidOperationException("Two day results cannot have one date, use replace operation instead");
 
-            if (document.Operations.Any(o => o.OperationType == OperationType.Replace
-                 && o.path == "/repeatMode"
-                 && (int)o.value == (int)RepeatModes.Monthly))
-            {
-                if (repeatDaysOfWeek.Length != 0)
-                    (entity as Habit)!.RepeatDaysOfWeek.Clear();
+                if ((int)Activator.CreateInstance<TEntity>().GetType().GetProperty("HabitType")!.GetValue(entity)! != 2)
+                {
+                    var quantity = (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("Quantity")!.GetValue(entity)!;
 
-                if (repeatInterval != 0)
-                    (entity as Habit)!.RepeatInterval = 0;
-            }
+                    if (document.Operations.Any(o => o.OperationType == OperationType.Add
+                        && o.path == "/dayResults/-"
+                        && (int)JObject.Parse(o.value.ToString()!)["Progress"]! < quantity
+                        && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["Status"]!.ToString()) == Statuses.Completed))
+                                throw new InvalidOperationException("Progress can't be less than quantity if status is completed");
 
-            if (document.Operations.Any(o => o.OperationType == OperationType.Replace
-                 && o.path == "/repeatMode"
-                 && (int)o.value == (int)RepeatModes.Interval))
-            {
-                if (repeatDaysOfWeek.Length != 0)
-                    (entity as Habit)!.RepeatDaysOfWeek.Clear();
+                    if (document.Operations.Any(o => o.OperationType == OperationType.Add
+                        && o.path == "/dayResults/-"
+                        && (int)JObject.Parse(o.value.ToString()!)["Progress"]! >= quantity
+                        && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["Status"]!.ToString()) != Statuses.Completed))
+                            throw new InvalidOperationException("Progress can't be more than quantity if status is not completed");
 
-                if (repeatDaysOfMonth.Length != 0)
-                    (entity as Habit)!.RepeatDaysOfMonth.Clear();
+                    if (document.Operations.Any(o => o.OperationType == OperationType.Add
+                        && o.path == "/dayResults/-"
+                        && (int)JObject.Parse(o.value.ToString()!)["Progress"]! >= quantity
+                        && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["Status"]!.ToString()) != Statuses.Completed))
+                        throw new InvalidOperationException("Progress can't be more than quantity if status is not completed");
+                } 
+
+                if ((int)Activator.CreateInstance<TEntity>().GetType().GetProperty("HabitType")!.GetValue(entity)! == 0)
+                {
+                    var repeatDaysOfMonth = Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatDaysOfMonth")!.GetValue(entity)! as List<int?>;
+                    var repeatDaysOfWeek = Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatDaysOfWeek")!.GetValue(entity)! as List<DayOfWeek?>;
+                    var repeatInterval = (int)Activator.CreateInstance<TEntity>().GetType().GetProperty("RepeatInterval")!.GetValue(entity)!;
+
+                    if (document.Operations
+                    .Any(o => o.OperationType == OperationType.Replace
+                        && o.path == "/repeatMode"
+                        && (int)o.value == (int)RepeatModes.Daily)
+                && !document.Operations
+                    .Any(o => o.OperationType == OperationType.Add
+                        && o.path == "/repeatDaysOfWeek/-"))
+                        throw new InvalidOperationException("RepeatDaysOfWeek should be added if RepeatMode is Daily");
+
+                    if (document.Operations
+                        .Any(o => o.OperationType == OperationType.Replace
+                            && o.path == "/repeatMode"
+                            && (int)o.value == (int)RepeatModes.Monthly)
+                    && !document.Operations
+                        .Any(o => o.OperationType == OperationType.Add
+                            && o.path == "/repeatDaysOfMonth/-"))
+                        throw new InvalidOperationException("RepeatDaysOfMonth should be added if RepeatMode is Monthly");
+
+                    if (document.Operations
+                        .Any(o => o.OperationType == OperationType.Replace
+                            && o.path == "/repeatMode"
+                            && (int)o.value == (int)RepeatModes.Interval)
+                    && !document.Operations
+                        .Any(o => o.OperationType == OperationType.Replace
+                            && o.path == "/repeatInterval"
+                            && ((int)o.value > 0 && (int)o.value < 7)))
+                        throw new InvalidOperationException("RepeatDaysOfMonth should be added if RepeatMode is Monthly");
+
+                    if (document.Operations.Any(o => o.OperationType == OperationType.Replace
+                         && o.path == "/repeatMode"
+                         && (int)o.value == (int)RepeatModes.Daily))
+                    {
+                        if (repeatDaysOfMonth.Count != 0)
+                            (entity as Habit)!.RepeatDaysOfMonth.Clear();
+
+                        if (repeatInterval != 0)
+                            (entity as Habit)!.RepeatInterval = 0;
+                    }
+
+                    if (document.Operations.Any(o => o.OperationType == OperationType.Replace
+                         && o.path == "/repeatMode"
+                         && (int)o.value == (int)RepeatModes.Monthly))
+                    {
+                        if (repeatDaysOfWeek!.Count != 0)
+                            (entity as Habit)!.RepeatDaysOfWeek.Clear();
+
+                        if (repeatInterval != 0)
+                            (entity as Habit)!.RepeatInterval = 0;
+                    }
+
+                    if (document.Operations.Any(o => o.OperationType == OperationType.Replace
+                         && o.path == "/repeatMode"
+                         && (int)o.value == (int)RepeatModes.Interval))
+                    {
+                        if (repeatDaysOfWeek.Count != 0)
+                            (entity as Habit)!.RepeatDaysOfWeek.Clear();
+
+                        if (repeatDaysOfMonth.Count != 0)
+                            (entity as Habit)!.RepeatDaysOfMonth.Clear();
+                    }
+                }
             }
 
             if (entity is null)
@@ -258,6 +304,8 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
 
             return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
         }
+
+        
 
         public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
         {

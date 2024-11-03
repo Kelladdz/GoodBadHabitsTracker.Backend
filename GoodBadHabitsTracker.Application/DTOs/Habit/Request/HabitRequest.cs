@@ -6,7 +6,7 @@ namespace GoodBadHabitsTracker.Application.DTOs.Habit.Request
     {
         public string? Name { get; set; }
         public HabitTypes? HabitType { get; set; }
-        public string? IconPath { get; set; }
+        public int? IconId { get; set; }
         public DateOnly? StartDate { get; set; }
         public bool? IsTimeBased { get; set; }
         public int? Quantity { get; set; }
@@ -16,5 +16,6 @@ namespace GoodBadHabitsTracker.Application.DTOs.Habit.Request
         public DayOfWeek[]? RepeatDaysOfWeek { get; set; }
         public int? RepeatInterval { get; set; }
         public TimeOnly[]? ReminderTimes { get; set; }
+        public Guid? GroupId { get; set; }
     }
 }

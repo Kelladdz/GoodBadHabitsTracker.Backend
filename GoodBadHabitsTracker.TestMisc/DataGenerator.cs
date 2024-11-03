@@ -1,14 +1,14 @@
 ﻿using Bogus;
-using GoodBadHabitsTracker.Core.Enums;
-using GoodBadHabitsTracker.Core.Models;
+using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
 using GoodBadHabitsTracker.Application.DTOs.Generic.Response;
 using GoodBadHabitsTracker.Application.DTOs.Habit.Request;
+using GoodBadHabitsTracker.Core.Enums;
+using GoodBadHabitsTracker.Core.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
 
 namespace GoodBadHabitsTracker.TestMisc
 {
@@ -22,7 +22,7 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(h => h.Id, f => f.Random.Guid())
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => f.PickRandom(HabitTypes.Good, HabitTypes.Limit, HabitTypes.Quit))
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? false : f.Random.Bool())
                 .RuleFor(h => h.Quantity, (f, h) => h.HabitType != HabitTypes.Quit ? f.Random.Int(1, 3600) : null)
@@ -42,7 +42,7 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(h => h.Id, f => f.Random.Guid())
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => f.PickRandom(HabitTypes.Good, HabitTypes.Limit, HabitTypes.Quit))
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? false : f.Random.Bool())
                 .RuleFor(h => h.Quantity, (f, h) => h.HabitType != HabitTypes.Quit ? f.Random.Int(1, 3600) : null)
@@ -69,7 +69,7 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(h => h.Id, f => f.Random.Guid())
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => f.PickRandom(HabitTypes.Good, HabitTypes.Limit, HabitTypes.Quit))
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? false : f.Random.Bool())
                 .RuleFor(h => h.Quantity, (f, h) => h.HabitType != HabitTypes.Quit ? f.Random.Int(1, 3600) : null)
@@ -94,7 +94,7 @@ namespace GoodBadHabitsTracker.TestMisc
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => f.PickRandom(HabitTypes.Good, HabitTypes.Limit, HabitTypes.Quit))
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? (bool?)null : f.Random.Bool())
                 .RuleFor(h => h.Quantity, (f, h) => h.HabitType == HabitTypes.Quit ? null : f.Random.Int(1, 3600))
@@ -113,7 +113,7 @@ namespace GoodBadHabitsTracker.TestMisc
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => HabitTypes.Good)
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => f.Random.Bool())
                 .RuleFor(h => h.Quantity, f => f.Random.Int(1, 3600))
@@ -132,7 +132,7 @@ namespace GoodBadHabitsTracker.TestMisc
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => HabitTypes.Good)
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => f.Random.Bool())
                 .RuleFor(h => h.Quantity, f => f.Random.Int(1, 3600))
@@ -151,7 +151,7 @@ namespace GoodBadHabitsTracker.TestMisc
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => HabitTypes.Good)
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => f.Random.Bool())
                 .RuleFor(h => h.Quantity, f => f.Random.Int(1, 3600))
@@ -170,7 +170,7 @@ namespace GoodBadHabitsTracker.TestMisc
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => HabitTypes.Good)
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => f.Random.Bool())
                 .RuleFor(h => h.Quantity, f => f.Random.Int(1, 3600))
@@ -189,7 +189,7 @@ namespace GoodBadHabitsTracker.TestMisc
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => HabitTypes.Limit)
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => f.Random.Bool())
                 .RuleFor(h => h.Quantity, f => f.Random.Int(1, 3600))
@@ -208,7 +208,7 @@ namespace GoodBadHabitsTracker.TestMisc
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
                 .RuleFor(h => h.HabitType, f => HabitTypes.Quit)
-                .RuleFor(h => h.IconPath, f => f.Internet.Avatar())
+                .RuleFor(h => h.IconId, f => f.UniqueIndex)
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, f => null)
                 .RuleFor(h => h.Quantity, f => null)

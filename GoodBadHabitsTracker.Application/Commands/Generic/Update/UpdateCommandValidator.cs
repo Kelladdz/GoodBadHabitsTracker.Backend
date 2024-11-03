@@ -161,7 +161,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Update
                                                 case "DayResults":
                                                     var dayResultsJObject = JObject.Parse(value.ToString()!);
                                                     var status = (Statuses)Enum.Parse(typeof(Statuses), dayResultsJObject["Status"]!.ToString());
-                                                    var progress = (int)dayResultsJObject["Progress"]!;
+                                                    var progress = (int?)dayResultsJObject["Progress"];
 
                                                     if (progress < 0)
                                                     {

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Hangfire;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -80,7 +81,13 @@ mvcBuilder.ConfigureApplicationPartManager(c =>
 {
     c.FeatureProviders.Add(new GenericControllerFeatureProvider());
 });
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:8080").AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("Set-Cookie");
+    });
+});
 var app = builder.Build();
 app.UseOutputCache();
 
@@ -98,7 +105,7 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 app.UseRouting();
-
+app.UseCors();
 
 app.UseAuthentication();
 

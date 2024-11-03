@@ -14,6 +14,7 @@ using GoodBadHabitsTracker.Application.Abstractions.Behaviors;
 using GoodBadHabitsTracker.Application.Commands.Generic.Delete;
 using GoodBadHabitsTracker.Application.Commands.Auth.Login;
 using GoodBadHabitsTracker.Application.Commands.Auth.Register;
+using GoodBadHabitsTracker.Application.Queries.Generic.GetAll;
 
 namespace GoodBadHabitsTracker.Application.Extensions
 {
@@ -26,6 +27,7 @@ namespace GoodBadHabitsTracker.Application.Extensions
             builder.RegisterMediatR(mediatrConfiguration);
             builder.RegisterGeneric(typeof(ValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(ReadByIdQueryHandler<>)).AsImplementedInterfaces();
+            builder.RegisterGeneric(typeof(GetAllQueryHandler<>)).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(SearchQueryHandler<>)).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(InsertCommandHandler<,>)).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(UpdateCommandHandler<>)).AsImplementedInterfaces();

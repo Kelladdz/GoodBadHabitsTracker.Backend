@@ -4,6 +4,7 @@ using GoodBadHabitsTracker.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoodBadHabitsTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(HabitsDbContext))]
-    partial class HabitsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241025013300_ChangeHabitIconProperty")]
+    partial class ChangeHabitIconProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -349,7 +352,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.Habit.Comments#GoodBadHabitsTracker.Core.Models.Comment", "Comments", b1 =>
+                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.Comment", "Comments", b1 =>
                         {
                             b1.Property<Guid>("HabitId")
                                 .HasColumnType("uniqueidentifier");
@@ -367,13 +370,13 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
 
                             b1.HasKey("HabitId", "Id");
 
-                            b1.ToTable("Comments", (string)null);
+                            b1.ToTable("Comments");
 
                             b1.WithOwner()
                                 .HasForeignKey("HabitId");
                         });
 
-                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.Habit.DayResults#GoodBadHabitsTracker.Core.Models.DayResult", "DayResults", b1 =>
+                    b.OwnsMany("GoodBadHabitsTracker.Core.Models.DayResult", "DayResults", b1 =>
                         {
                             b1.Property<Guid>("HabitId")
                                 .HasColumnType("uniqueidentifier");
@@ -393,7 +396,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Migrations
 
                             b1.HasKey("HabitId", "Id");
 
-                            b1.ToTable("DayResults", (string)null);
+                            b1.ToTable("DayResults");
 
                             b1.WithOwner()
                                 .HasForeignKey("HabitId");

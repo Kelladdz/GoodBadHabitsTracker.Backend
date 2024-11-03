@@ -8,7 +8,7 @@ using GoodBadHabitsTracker.Application.Commands.Generic.Insert;
 using Microsoft.AspNetCore.JsonPatch;
 using GoodBadHabitsTracker.Application.Commands.Generic.Update;
 using GoodBadHabitsTracker.Application.Commands.Generic.Delete;
-using Microsoft.AspNetCore.Authorization;
+using GoodBadHabitsTracker.Application.Queries.Generic.GetAll;
 
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
@@ -36,12 +36,20 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             return response is null ? NotFound() : Ok(response);
         }
 
-        [HttpGet("search")]
+        [OutputCache]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var response = await _mediator.Send(new GetAllQuery<TEntity>(), _cancellationToken);
+            return response.Any() ? Ok(response) : NotFound(response);
+        }
+
+        /*[HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] string? term, [FromQuery] DateOnly date)
         {
             var response = await _mediator.Send(new SearchQuery<TEntity>(term, date), _cancellationToken);
-            return response.Any() ? Ok(response) : NotFound(response);
-        }
+            return response is not null ? Ok(response) : NotFound();
+        }*/
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] TRequest request)
