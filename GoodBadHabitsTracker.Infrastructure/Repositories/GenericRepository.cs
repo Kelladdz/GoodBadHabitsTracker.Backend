@@ -168,7 +168,36 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                 };
 
 
-                    _dbContext.Habits.Add(newHabit);
+                
+
+                var currentDayResult = habit!.HabitType switch
+                {
+                    HabitTypes.Good => new DayResult
+                    {
+                        Progress = 0,
+                        Status = Statuses.InProgress,
+                        Date = DateOnly.FromDateTime(DateTime.Now),
+                        HabitId = newHabit.Id
+                    },
+                    HabitTypes.Limit => new DayResult
+                    {
+                        Progress = 0,
+                        Status = Statuses.InProgress,
+                        Date = DateOnly.FromDateTime(DateTime.Now),
+                        HabitId = newHabit.Id
+                    },
+                    HabitTypes.Quit => new DayResult
+                    {
+                        Status = Statuses.InProgress,
+                        Date = DateOnly.FromDateTime(DateTime.Now),
+                        HabitId = newHabit.Id
+                    },
+                    _ => throw new InvalidOperationException("Something goes wrong")
+                };
+
+                newHabit.DayResults.Add(currentDayResult);
+                _dbContext.Habits.Add(newHabit);
+
                 return await _dbContext.SaveChangesAsync(cancellationToken) > 0
                 ? newHabit as TEntity
                 : null;
