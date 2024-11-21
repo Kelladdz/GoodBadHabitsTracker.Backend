@@ -20,7 +20,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
 
             var createUserResult = await userManager.CreateAsync(user, command.Request.Password);
             if (!createUserResult.Succeeded) 
-                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to create user: " + string.Join(", ", createUserResult.Errors.Select(e => e.Description)));
+                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to create role: " + string.Join(", ", createUserResult.Errors.Select(e => e.Description)));
 
             var isRoleExists = await roleManager.RoleExistsAsync("User");
             if (!isRoleExists)

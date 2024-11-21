@@ -15,6 +15,7 @@ using GoodBadHabitsTracker.Application.Commands.Generic.Delete;
 using GoodBadHabitsTracker.Application.Commands.Auth.Login;
 using GoodBadHabitsTracker.Application.Commands.Auth.Register;
 using GoodBadHabitsTracker.Application.Queries.Generic.GetAll;
+using GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken;
 
 namespace GoodBadHabitsTracker.Application.Extensions
 {
@@ -37,6 +38,7 @@ namespace GoodBadHabitsTracker.Application.Extensions
             builder.RegisterGeneric(typeof(UpdateCommandValidator<>)).As(typeof(IValidator<>)).InstancePerLifetimeScope();
             builder.RegisterType<LoginCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<RegisterCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<RefreshTokenCommandHandler>().AsImplementedInterfaces();
             return builder;
         }
 

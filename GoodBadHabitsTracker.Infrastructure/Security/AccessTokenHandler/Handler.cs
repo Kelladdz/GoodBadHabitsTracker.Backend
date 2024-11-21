@@ -69,5 +69,38 @@ namespace GoodBadHabitsTracker.Infrastructure.Security.AccessTokenHandler
 
             return userFingerprintHash;
         }
+
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _jwtSettings.SigningCredentials.Key,
+                ValidateIssuer = true,
+                ValidIssuer = _jwtSettings.Issuer,
+                ValidateAudience = true,
+                ValidAudience = _jwtSettings.Audience,
+                ValidateLifetime = false,
+            };
+
+            var handler = new JwtSecurityTokenHandler();
+            var principal = handler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken is null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
+
+        public ClaimsPrincipal GetClaims(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var readedToken = handler.ReadJwtToken(token);
+
+            var ClaimsIdentity = new ClaimsIdentity(readedToken.Claims, "Token");
+            var principal = new ClaimsPrincipal(ClaimsIdentity);
+
+            return principal;
+        }
     }
 }

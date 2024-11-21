@@ -13,6 +13,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Hangfire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using GoodBadHabitsTracker.Infrastructure.Configurations;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +35,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     });
 
 builder.Services.AddOptions();
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddResponseCompression(options =>
 {
     options.Providers.Add<GzipCompressionProvider>();
@@ -58,12 +61,31 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x =>
 {
     x.UseDateOnlyTimeOnlyStringConverters();
-    x.AddSecurityDefinition("GHBTAuth", new OpenApiSecurityScheme
+    x.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
+        Name = "JWT Authentication",
+        Description = "Enter your JWT token in this field",
         In = ParameterLocation.Header,
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        BearerFormat = "JWT"
     });
+    var securityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            },
+            []
+        }
+    };
+
+    x.AddSecurityRequirement(securityRequirement);
     x.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 

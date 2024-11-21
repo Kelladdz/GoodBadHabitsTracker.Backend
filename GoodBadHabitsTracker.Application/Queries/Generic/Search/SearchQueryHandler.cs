@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Application.DTOs.Generic.Response;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace GoodBadHabitsTracker.Application.Queries.Generic.Search
 {
@@ -8,15 +11,18 @@ namespace GoodBadHabitsTracker.Application.Queries.Generic.Search
         where TEntity : class
     {
         private readonly IGenericRepository<TEntity> _genericRepository;
-        public SearchQueryHandler(IGenericRepository<TEntity> genericRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public SearchQueryHandler(IGenericRepository<TEntity> genericRepository, IHttpContextAccessor httpContextAccessor)
         {
             _genericRepository = genericRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IEnumerable<GenericResponse<TEntity>>> Handle(SearchQuery<TEntity> query, CancellationToken cancellationToken)
         {
             var term = query.Term;
             var date = query.Date;
-            var userId = Guid.Parse("5162ee1a-b50b-4972-92d8-08dce8c110ea");
+            var accessToken = _httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var userId = Guid.Parse(new JwtSecurityTokenHandler().ReadJwtToken(accessToken).Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value);
 
             var entities = await _genericRepository.SearchAsync(term, date, userId, cancellationToken);
             if (entities is null)

@@ -175,10 +175,10 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Update
                                         else if (context.InstanceToValidate.OperationType == OperationType.Remove)
                                         {
                                             if (pathProperty != "RepeatDaysOfMonth"
-                                            || pathProperty != "RepeatDaysOfWeek"
-                                            || pathProperty != "ReminderTimes"
-                                            || pathProperty != "Comments"
-                                            || pathProperty != "DayResults")
+                                            && pathProperty != "RepeatDaysOfWeek"
+                                            && pathProperty != "ReminderTimes"
+                                            && pathProperty != "Comments"
+                                            && pathProperty != "DayResults")
                                             {
                                                 context.AddFailure($"{pathProperty} is not allowed to remove");
                                             }

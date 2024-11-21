@@ -7,7 +7,7 @@ using GoodBadHabitsTracker.Core.Interfaces;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
 {
-    public sealed class LoginCommandHandler
+    internal sealed class LoginCommandHandler
         (UserManager<User> userManager,
         IAccessTokenHandler accessTokenHandler,
         IRefreshTokenHandler refreshTokenHandler) : IRequestHandler<LoginCommand, LoginResponse>

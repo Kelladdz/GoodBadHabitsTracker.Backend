@@ -1,12 +1,12 @@
 ﻿using GoodBadHabitsTracker.Application.DTOs.Generic.Response;
 using GoodBadHabitsTracker.Core.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace GoodBadHabitsTracker.Application.Queries.Generic.GetAll
 {
@@ -14,15 +14,17 @@ namespace GoodBadHabitsTracker.Application.Queries.Generic.GetAll
         where TEntity : class
     {
         private readonly IGenericRepository<TEntity> _genericRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GetAllQueryHandler(IGenericRepository<TEntity> genericRepository)
+        public GetAllQueryHandler(IGenericRepository<TEntity> genericRepository, IHttpContextAccessor httpContextAccessor)
         {
             _genericRepository = genericRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IEnumerable<GenericResponse<TEntity>>> Handle(GetAllQuery<TEntity> request, CancellationToken cancellationToken)
         {
-            var userId = Guid.Parse("5162ee1a-b50b-4972-92d8-08dce8c110ea");
-
+            var accessToken = _httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var userId = Guid.Parse(new JwtSecurityTokenHandler().ReadJwtToken(accessToken).Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value);
             var entities = await _genericRepository.ReadAllAsync(userId, cancellationToken);
             if (entities is null)
                 return null;

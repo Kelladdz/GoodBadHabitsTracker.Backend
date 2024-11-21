@@ -7,6 +7,7 @@ using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Infrastructure.Repositories;
 using Hangfire;
+using GoodBadHabitsTracker.Infrastructure.Services;
 
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
@@ -26,17 +27,14 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddRoleStore<RoleStore<UserRole, HabitsDbContext, Guid>>();
 
 
-            services.AddScoped<IAccessTokenHandler, Security.AccessTokenHandler.Handler>();
-            services.AddScoped<IRefreshTokenHandler, Security.RefreshTokenHandler.Handler>();
+            services.AddSingleton<IAccessTokenHandler, Security.AccessTokenHandler.Handler>();
+            services.AddSingleton<IRefreshTokenHandler, Security.RefreshTokenHandler.Handler>();
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddJwt(configuration);
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Jwt", policy =>
-                    policy.RequireClaim("authenticationMethod", "EmailPassword"));
-            });
+            services.AddAuthorization();
         }
     }
 }
