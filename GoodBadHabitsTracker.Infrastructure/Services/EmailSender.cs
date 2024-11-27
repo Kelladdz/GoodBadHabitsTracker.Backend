@@ -10,12 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace GoodBadHabitsTracker.Infrastructure.Services
 {
     public class EmailSender(IOptions<MailSettings> mailSettings, IWebHostEnvironment environment) : IEmailSender
     {
-        public Task SendWelcomeMessageAsync(User user, string email)
+        public Task SendConfirmationLinkAsync(User user, string link)
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
@@ -27,7 +28,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
 
                 emailMessage.Subject = "Welcome To GoodBadHabitsTracker.";
                 BodyBuilder emailBodyBuilder = new BodyBuilder();
-                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\welcome.html").Replace("{userName}", user.UserName);
+                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\welcome.html").Replace("{userName}", user.UserName).Replace("{link}", link);
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
                 using (SmtpClient mailClient = new SmtpClient())
@@ -42,7 +43,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
             }
             return Task.CompletedTask;
         }
-        public Task SendPasswordResetLinkAsync(User user, string email, string resetLink, string token)
+        public Task SendPasswordResetLinkAsync(User user, string link)
         {
             using (MimeMessage emailMessage = new MimeMessage())
 
@@ -56,7 +57,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
                 emailMessage.Subject = "Password Reset Request";
 
                 BodyBuilder emailBodyBuilder = new BodyBuilder();
-                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\resetPassword.html").Replace("{token}", token).Replace("{userId}", user.Id.ToString());
+                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\resetPassword.html").Replace("{userName}", user.UserName).Replace("{link}", link);
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
                 using (SmtpClient mailClient = new SmtpClient())

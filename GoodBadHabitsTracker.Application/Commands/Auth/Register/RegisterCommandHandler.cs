@@ -1,15 +1,16 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using GoodBadHabitsTracker.Core.Models;
+using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
 using GoodBadHabitsTracker.Application.Exceptions;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
 {
     internal sealed class RegisterCommandHandler(
         UserManager<User> userManager,
-        RoleManager<UserRole> roleManager) : IRequestHandler<RegisterCommand, User>
+        RoleManager<UserRole> roleManager) : IRequestHandler<RegisterCommand, RegisterResponse>
     {
-        public async Task<User> Handle(RegisterCommand command, CancellationToken cancellationToken)
+        public async Task<RegisterResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
             User user = new()
             {
@@ -36,7 +37,9 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
             if (!addToRoleResult.Succeeded)
                 throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to add user to role: " + string.Join(", ", addToRoleResult.Errors.Select(e => e.Description)));
 
-            return user;
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            token = token.Replace("+", "%2B").Replace("/", "%2F");
+            return new RegisterResponse(user, token);
         }
     }
 }

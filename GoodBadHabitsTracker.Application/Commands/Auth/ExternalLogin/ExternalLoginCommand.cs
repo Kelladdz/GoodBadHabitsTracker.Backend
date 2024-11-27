@@ -2,7 +2,7 @@
 using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
 using GoodBadHabitsTracker.Application.Abstractions.Messaging;
 
-namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
+namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
 {
-    public sealed record LoginCommand(LoginRequest Request) : ICommand<LoginResponse>;
+    public record ExternalLoginCommand(ExternalLoginRequest Request) : ICommand<LoginResponse>;
 }

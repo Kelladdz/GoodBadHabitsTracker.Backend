@@ -19,33 +19,35 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
     {
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
             
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Key").Value!));
-            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var issuer = configuration.GetSection("JwtSettings:Issuer").Value!;
-            var audience = configuration.GetSection("JwtSettings:Audience").Value!;
 
-            services.Configure<JwtSettings>(options =>
-            {
-                options.Issuer = issuer;
-                options.Audience = audience;
-                options.SigningCredentials = signingCredentials;
-            });
-
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingCredentials.Key,
-                ValidateIssuer = true,
-                ValidIssuer = issuer,
-                ValidateAudience = true,
-                ValidAudience = audience,
-                ValidateLifetime = true,
-            };
+            
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+                .AddJwtBearer("PasswordLogin", options =>
                 {
+                    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Key").Value!));
+                    var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                    var issuer = configuration["JwtSettings:Issuer"];
+                    var audience = configuration["JwtSettings:Audience"];
+
+                    
+
+
+                    var tokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingCredentials.Key,
+                        ValidateIssuer = true,
+                        ValidIssuer = issuer,
+                        ValidateAudience = true,
+                        ValidAudience = audience,
+                        ValidateLifetime = true,
+                    };
+
+                    options.Authority = configuration["JwtSettings:Authority"];
                     options.RequireHttpsMetadata = false; //ONLY IN DEVELOPMENT
                     options.TokenValidationParameters = tokenValidationParameters;
                     options.SaveToken = true;
@@ -80,7 +82,30 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         return Task.CompletedTask;
                     };
-                });
+                })
+                .AddJwtBearer("Auth0Login", options =>
+                {
+                    options.UseSecurityTokenValidators = true;
+                    options.MetadataAddress = configuration["JwtSettings:Configuration"];
+                    options.Authority = configuration["JwtSettings:Auth0Issuer"];
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = configuration["JwtSettings:Auth0Issuer"],
+                        ValidAudience = configuration["JwtSettings:Auth0Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Auth0Key"])),
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true
+                    };
+                    new JwtBearerEvents().OnAuthenticationFailed = (context) =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    };
+                })
+                .AddCookie("Identity.External")
+                .AddCookie("Identity.Application");
         }
     }
 }

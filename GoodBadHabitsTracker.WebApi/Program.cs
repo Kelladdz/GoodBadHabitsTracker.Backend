@@ -15,6 +15,7 @@ using Swashbuckle.AspNetCore.Filters;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
+using FluentAssertions.Common;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,7 +48,7 @@ builder.Services.AddOutputCache()
         options.InstanceName = "GoodBadHabitsTracker";
         options.Configuration = "localhost:6379";
     });
-
+builder.Services.AddHttpClient();
 builder.Services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
@@ -58,6 +59,11 @@ builder.Services.AddDateOnlyTimeOnlyStringConverters();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = false;
+});
 builder.Services.AddSwaggerGen(x =>
 {
     x.UseDateOnlyTimeOnlyStringConverters();

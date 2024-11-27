@@ -19,6 +19,7 @@ namespace GoodBadHabitsTracker.Core.Models
 #pragma warning disable CS8765 
         public required override string Email { get; set; }
 #pragma warning restore CS8765 
+        public string? ImageUrl { get; set; }
     }
 }
 

@@ -17,7 +17,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
     [ApiController]
     [GenericControllerConventions]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = "GBHTPolicy")]
 
     public class GenericController<TEntity, TRequest, TResponse> : ControllerBase
         where TEntity : class
