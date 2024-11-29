@@ -65,7 +65,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Tests.Security.AccessTokenHandler
 
             IOptions<JwtSettings> _jwtOptions = Options.Create(_jwtSettings);
 
-            _accessTokenHandler = new Handler(_jwtOptions);
+            _accessTokenHandler = new Infrastructure.Security.AccessTokenHandler.TokenHandler(_jwtOptions);
         }
 
         [Fact]

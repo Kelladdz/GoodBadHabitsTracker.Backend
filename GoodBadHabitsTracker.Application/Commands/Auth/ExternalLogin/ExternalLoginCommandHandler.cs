@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
+using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Text.Json;
+using AutoMapper;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
 {
     internal sealed class ExternalLoginCommandHandler(
+        IMapper mapper,
         IIdTokenHandler idTokenHandler,
-        IAccessTokenHandler accessTokenHandler,
+        ITokenHandler tokenHandler,
         SignInManager<User> signInManager,
-        UserManager<User> userManager) : IRequestHandler<ExternalLoginCommand, LoginResponse>
+        UserManager<User> userManager) : IRequestHandler<ExternalLoginCommand, bool>
     {
-        public async Task<LoginResponse> Handle(ExternalLoginCommand command, CancellationToken cancellationToken)
+        public async Task<bool> Handle(ExternalLoginCommand command, CancellationToken cancellationToken)
         {
             var request = command.Request
                 ?? throw new HttpRequestException("Request cannot be null.");
@@ -67,7 +72,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
                 var updateTokensResult = await signInManager.UpdateExternalAuthenticationTokensAsync(userInfo);
                 if (!updateTokensResult.Succeeded) throw new InvalidOperationException("User tokens cannot be updated.");
 
-                return new LoginResponse(accessToken, refreshToken, null);
+                return true;
             }
             else
             {
@@ -107,7 +112,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
                     var updateTokensResult = await signInManager.UpdateExternalAuthenticationTokensAsync(userInfo);
                     if (!updateTokensResult.Succeeded) throw new InvalidOperationException("User tokens cannot be updated.");
 
-                    return new LoginResponse(accessToken, refreshToken!, null);
+                    return true;
                 }
                 else throw new InvalidOperationException($"Email claim not received from {userInfo.LoginProvider}");
             }

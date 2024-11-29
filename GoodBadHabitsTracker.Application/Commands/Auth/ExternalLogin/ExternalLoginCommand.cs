@@ -4,5 +4,5 @@ using GoodBadHabitsTracker.Application.Abstractions.Messaging;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
 {
-    public record ExternalLoginCommand(ExternalLoginRequest Request) : ICommand<LoginResponse>;
+    public record ExternalLoginCommand(ExternalLoginRequest Request) : ICommand<bool>;
 }

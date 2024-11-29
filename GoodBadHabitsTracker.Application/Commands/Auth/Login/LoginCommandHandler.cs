@@ -9,8 +9,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
 {
     internal sealed class LoginCommandHandler
         (UserManager<User> userManager,
-        IAccessTokenHandler accessTokenHandler,
-        IRefreshTokenHandler refreshTokenHandler) : IRequestHandler<LoginCommand, LoginResponse>
+        ITokenHandler tokenHandler) : IRequestHandler<LoginCommand, LoginResponse>
     {
         public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
         {
@@ -30,18 +29,11 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
 
             var userSession = new UserSession(user.Id, user.UserName!, user.Email, userRoles);
 
-            var accessToken = accessTokenHandler.GenerateAccessToken(userSession, out string userFingerprint)
+            var accessToken = tokenHandler.GenerateAccessToken(userSession, out string userFingerprint)
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
 
-            var refreshToken = refreshTokenHandler.GenerateRefreshToken()
+            var refreshToken = tokenHandler.GenerateRefreshToken(userSession)
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
-
-            user.RefreshToken = refreshToken;
-            user.RefreshTokenExpirationDate = DateTime.UtcNow.AddDays(7);
-
-            var userUpdateResult = await userManager.UpdateAsync(user);
-            if (!userUpdateResult.Succeeded) 
-                throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Something goes wrong. Try again.");
 
             return new LoginResponse(accessToken, refreshToken, userFingerprint);
         }

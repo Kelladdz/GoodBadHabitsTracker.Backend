@@ -14,8 +14,6 @@ namespace GoodBadHabitsTracker.Core.Models
     {
         public List<Habit> Habits { get; init; } = new();
         public ICollection<Group> Groups { get; init; } = new List<Group>();
-        public string? RefreshToken { get; set; }
-        public DateTime? RefreshTokenExpirationDate { get; set; }
 #pragma warning disable CS8765 
         public required override string Email { get; set; }
 #pragma warning restore CS8765 

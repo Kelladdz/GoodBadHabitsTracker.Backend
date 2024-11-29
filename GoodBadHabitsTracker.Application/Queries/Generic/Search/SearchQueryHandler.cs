@@ -4,6 +4,10 @@ using GoodBadHabitsTracker.Application.DTOs.Generic.Response;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using GoodBadHabitsTracker.Application.Exceptions;
+using Microsoft.AspNetCore.Identity;
+using GoodBadHabitsTracker.Core.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GoodBadHabitsTracker.Application.Queries.Generic.Search
 {
@@ -12,19 +16,28 @@ namespace GoodBadHabitsTracker.Application.Queries.Generic.Search
     {
         private readonly IGenericRepository<TEntity> _genericRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public SearchQueryHandler(IGenericRepository<TEntity> genericRepository, IHttpContextAccessor httpContextAccessor)
+        private readonly IIdTokenHandler _idTokenHandler;
+        private readonly UserManager<User> _userManager;
+        public SearchQueryHandler(IGenericRepository<TEntity> genericRepository, 
+            IHttpContextAccessor httpContextAccessor,
+            IIdTokenHandler idTokenHandler,
+            UserManager<User> userManager)
         {
             _genericRepository = genericRepository;
             _httpContextAccessor = httpContextAccessor;
+            _idTokenHandler = idTokenHandler;
+            _userManager = userManager;
         }
         public async Task<IEnumerable<GenericResponse<TEntity>>> Handle(SearchQuery<TEntity> query, CancellationToken cancellationToken)
         {
             var term = query.Term;
             var date = query.Date;
             var accessToken = _httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var userId = Guid.Parse(new JwtSecurityTokenHandler().ReadJwtToken(accessToken).Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value);
+            var userEmail = _idTokenHandler.GetClaimsPrincipalFromIdToken(accessToken).FindFirst(claim => claim.Type == ClaimTypes.Email)?.Value;
+            var user = await _userManager.FindByEmailAsync(userEmail)
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "User not found.");
 
-            var entities = await _genericRepository.SearchAsync(term, date, userId, cancellationToken);
+            var entities = await _genericRepository.SearchAsync(term, date, user.Id, cancellationToken);
             if (entities is null)
                 return null;
 

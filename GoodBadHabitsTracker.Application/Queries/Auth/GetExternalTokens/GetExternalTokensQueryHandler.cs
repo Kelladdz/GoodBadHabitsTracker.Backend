@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
 
 namespace GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens
 {
@@ -49,7 +50,7 @@ namespace GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens
             var jsonDocument = JsonDocument.Parse(responseString)
                 ?? throw new JsonException("Json document cannot be null.");
 
-            var externalTokensResponse = new GetExternalTokensResponse
+            var getExternalTokensResponse = new GetExternalTokensResponse
             {
                 AccessToken = jsonDocument.RootElement.GetProperty("access_token").GetString()!,
                 ExpiresIn = jsonDocument.RootElement.GetProperty("expires_in").GetInt32()!,
@@ -60,9 +61,9 @@ namespace GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens
             };
 
             if (jsonDocument.RootElement.TryGetProperty("refresh_token", out JsonElement json))
-                externalTokensResponse.RefreshToken = json.GetString();
+                getExternalTokensResponse.RefreshToken = json.GetString();
 
-            return externalTokensResponse;
+            return getExternalTokensResponse;
         }
     }
 }

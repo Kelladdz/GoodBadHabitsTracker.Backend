@@ -8,10 +8,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
-using GoodBadHabitsTracker.Infrastructure.Security.AccessTokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Net.Http.Headers;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
 {
@@ -32,8 +35,6 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
                     var issuer = configuration["JwtSettings:Issuer"];
                     var audience = configuration["JwtSettings:Audience"];
-
-                    
 
 
                     var tokenValidationParameters = new TokenValidationParameters
@@ -69,7 +70,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                         }
 
                         var jwtSettings = Options.Create(new JwtSettings());
-                        if (userFingerprintHash != new Handler(jwtSettings).GenerateUserFingerprintHash(context.Request.Cookies["__Secure-Fgp"].Replace("__Secure-Fgp=", "", StringComparison.InvariantCultureIgnoreCase)))
+                        if (userFingerprintHash != new Security.TokenHandler.TokenHandler(jwtSettings).GenerateUserFingerprintHash(context.Request.Cookies["__Secure-Fgp"].Replace("__Secure-Fgp=", "", StringComparison.InvariantCultureIgnoreCase)))
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                             return Task.CompletedTask;
@@ -88,10 +89,15 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     options.UseSecurityTokenValidators = true;
                     options.MetadataAddress = configuration["JwtSettings:Configuration"];
                     options.Authority = configuration["JwtSettings:Auth0Issuer"];
+                    var audiences = new List<string>();
+                    foreach (var audience in configuration.GetSection("JwtSettings:Auth0Audience").GetChildren()) 
+                    {
+                        audiences.Add(audience.Value);
+                    }
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidIssuer = configuration["JwtSettings:Auth0Issuer"],
-                        ValidAudience = configuration["JwtSettings:Auth0Audience"],
+                        ValidAudiences = audiences,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Auth0Key"])),
                         ValidateIssuer = true,
                         ValidateAudience = true,
@@ -105,7 +111,22 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     };
                 })
                 .AddCookie("Identity.External")
-                .AddCookie("Identity.Application");
+                .AddCookie("Identity.Application")
+                .AddPolicyScheme("MultiAuthSchemes", JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.ForwardDefaultSelector = context =>
+                    {
+                        string authorization = context.Request.Headers["Authorization"]!;
+                        if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
+                        {
+                            var token = authorization.Substring("Bearer ".Length).Trim();
+                            var jwtHandler = new JwtSecurityTokenHandler();
+                            return (jwtHandler.CanReadToken(token) && jwtHandler.ReadJwtToken(token).Issuer.Equals("https://localhost:7208/"))
+                                ? JwtBearerDefaults.AuthenticationScheme : "SecondJwtScheme";
+                        }
+                        return CookieAuthenticationDefaults.AuthenticationScheme;
+                    };
+                });
         }
     }
 }

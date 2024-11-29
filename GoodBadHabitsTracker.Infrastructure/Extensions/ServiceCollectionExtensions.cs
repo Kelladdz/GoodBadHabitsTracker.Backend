@@ -10,6 +10,7 @@ using Hangfire;
 using GoodBadHabitsTracker.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
 
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
@@ -36,10 +37,9 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             services.AddScoped<SignInManager<User>>();
             services.AddScoped<UserManager<User>>();
             
-            services.AddSingleton<IAccessTokenHandler, Security.AccessTokenHandler.Handler>();
-            services.AddSingleton<IRefreshTokenHandler, Security.RefreshTokenHandler.Handler>();
-            services.AddSingleton<IIdTokenHandler, Security.IdTokenHandler.Handler>();
-            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddTransient<ITokenHandler, TokenHandler>();
+            services.AddTransient<IIdTokenHandler, Security.IdTokenHandler.Handler>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

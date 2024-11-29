@@ -63,16 +63,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         public async Task<IActionResult> ExternalLogin(ExternalLoginRequest request, CancellationToken cancellationToken)
         {
             var response = await mediator.Send(new ExternalLoginCommand(request), cancellationToken);
-
-            Response.Cookies.Append("__Secure-Fgp", "ex", new CookieOptions
-            {
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = false,
-                Secure = true,
-                MaxAge = TimeSpan.FromMinutes(15),
-            });
-
-            return Ok(new { accessToken = response.AccessToken.ToString(), refreshToken = response.RefreshToken });
+            return Ok(response);
         }
 
 

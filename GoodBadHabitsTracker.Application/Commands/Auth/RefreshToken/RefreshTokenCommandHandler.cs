@@ -16,23 +16,30 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken
 {
     internal sealed class RefreshTokenCommandHandler
         (UserManager<User> userManager,
-        IAccessTokenHandler accessTokenHandler,
-        IRefreshTokenHandler refreshTokenHandler) : IRequestHandler<RefreshTokenCommand, LoginResponse>
+        ITokenHandler tokenHandler) : IRequestHandler<RefreshTokenCommand, LoginResponse>
     {
         public async Task<LoginResponse> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
         {
             var accessToken = command.Request.AccessToken;
             var refreshToken = command.Request.RefreshToken;
 
-            var principal = accessTokenHandler.GetPrincipalFromExpiredToken(command.Request.AccessToken);
-            var userId = principal.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value
+            var accessTokenPrincipal = tokenHandler.ValidateAndGetPrincipalFromToken(accessToken)
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid access token");
+            var refreshTokenPrincipal = tokenHandler.ValidateAndGetPrincipalFromToken(refreshToken)
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid refresh token");
+
+            var accessTokenPrincipalUserId = accessTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid access token");
+            var user = await userManager.FindByIdAsync(accessTokenPrincipalUserId)
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid access token");
 
-            var user = await userManager.FindByIdAsync(userId)
-                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Can't find user with this id.");
+            var refreshTokenPrincipalUserId = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid refresh token");
+            var refreshTokenExpiry = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value;
 
-            if (user.RefreshToken != refreshToken ||
-                    user.RefreshTokenExpirationDate <= DateTime.UtcNow) throw new UnauthorizedAccessException("Refresh Token is invalid.");
+            if (accessTokenPrincipalUserId is null || refreshTokenPrincipal is null 
+                || accessTokenPrincipalUserId != refreshTokenPrincipalUserId) 
+                throw new UnauthorizedAccessException("Refresh Token is invalid");
 
             var userRoles = await userManager.GetRolesAsync(user);
             if (userRoles.Count == 0)
@@ -42,16 +49,11 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken
             }
             var userSession = new UserSession(user.Id, user.UserName, user.Email, userRoles);
 
-            var newAccessToken = accessTokenHandler.GenerateAccessToken(userSession, out string userFingerprint)
+            var newAccessToken = tokenHandler.GenerateAccessToken(userSession, out string userFingerprint)
                 ?? throw new InvalidOperationException("New access token cannot be null.");
 
-            var newRefreshToken = refreshTokenHandler.GenerateRefreshToken()
+            var newRefreshToken = tokenHandler.GenerateRefreshToken(userSession)
                 ?? throw new InvalidOperationException("New refresh token cannot be null.");
-
-            user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpirationDate = DateTime.UtcNow.AddDays(7);
-            var userUpdateResult = await userManager.UpdateAsync(user);
-            if (!userUpdateResult.Succeeded) throw new InvalidOperationException("User update failed.");
 
             return new LoginResponse(newAccessToken, newRefreshToken, userFingerprint);
         }
