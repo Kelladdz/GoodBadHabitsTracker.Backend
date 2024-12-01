@@ -32,7 +32,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             _cancellationToken = CancellationToken.None;
         }
         [OutputCache]
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var response = await _mediator.Send(new ReadByIdQuery<TEntity>(id), _cancellationToken);
@@ -61,14 +61,14 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             return response is null ? BadRequest() : CreatedAtAction(nameof(GetById), new { id = (Guid)response.Entity.GetType().GetProperty("Id")!.GetValue(response.Entity)! }, response);
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id:guid}")]
         public async Task<IActionResult> Patch([FromRoute] Guid id, [FromBody] JsonPatchDocument<TEntity> request)
         {
             var response = await _mediator.Send(new UpdateCommand<TEntity>(id, request), _cancellationToken);
             return response ? NoContent() : BadRequest();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var response = await _mediator.Send(new DeleteCommand<TEntity>(id), _cancellationToken);

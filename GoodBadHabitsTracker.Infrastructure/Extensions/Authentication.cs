@@ -23,11 +23,6 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-
-            
-
-            
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer("PasswordLogin", options =>
                 {
@@ -90,7 +85,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     options.MetadataAddress = configuration["JwtSettings:Configuration"];
                     options.Authority = configuration["JwtSettings:Auth0Issuer"];
                     var audiences = new List<string>();
-                    foreach (var audience in configuration.GetSection("JwtSettings:Auth0Audience").GetChildren()) 
+                    foreach (var audience in configuration.GetSection("JwtSettings:Auth0Audience").GetChildren())
                     {
                         audiences.Add(audience.Value);
                     }
@@ -111,22 +106,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     };
                 })
                 .AddCookie("Identity.External")
-                .AddCookie("Identity.Application")
-                .AddPolicyScheme("MultiAuthSchemes", JwtBearerDefaults.AuthenticationScheme, options =>
-                {
-                    options.ForwardDefaultSelector = context =>
-                    {
-                        string authorization = context.Request.Headers["Authorization"]!;
-                        if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
-                        {
-                            var token = authorization.Substring("Bearer ".Length).Trim();
-                            var jwtHandler = new JwtSecurityTokenHandler();
-                            return (jwtHandler.CanReadToken(token) && jwtHandler.ReadJwtToken(token).Issuer.Equals("https://localhost:7208/"))
-                                ? JwtBearerDefaults.AuthenticationScheme : "SecondJwtScheme";
-                        }
-                        return CookieAuthenticationDefaults.AuthenticationScheme;
-                    };
-                });
+                .AddCookie("Identity.Application");
         }
     }
 }

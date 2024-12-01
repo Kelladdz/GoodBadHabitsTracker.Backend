@@ -11,6 +11,8 @@ using GoodBadHabitsTracker.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Configurations;
+using Amazon.S3;
 
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
@@ -34,14 +36,18 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddRoleStore<RoleStore<UserRole, HabitsDbContext, Guid>>()
                 .AddDefaultTokenProviders();
 
+            
+
             services.AddScoped<SignInManager<User>>();
             services.AddScoped<UserManager<User>>();
-            
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
             services.AddTransient<ITokenHandler, TokenHandler>();
             services.AddTransient<IIdTokenHandler, Security.IdTokenHandler.Handler>();
-            services.AddTransient<IEmailSender, EmailSender>();
+            
 
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            
 
             services.AddJwt(configuration);
             services.AddAuthorization(options =>

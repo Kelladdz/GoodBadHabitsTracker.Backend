@@ -21,6 +21,11 @@ using GoodBadHabitsTracker.Application.Commands.Auth.ResetPassword;
 using GoodBadHabitsTracker.Application.Commands.Auth.ConfirmEmail;
 using GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin;
 using GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens;
+using Amazon.S3;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using GoodBadHabitsTracker.Infrastructure.Configurations;
+using Amazon;
 
 namespace GoodBadHabitsTracker.Application.Extensions
 {
@@ -54,9 +59,9 @@ namespace GoodBadHabitsTracker.Application.Extensions
 
         public static ContainerBuilder BuildAutoMapper(this ContainerBuilder builder)
         {
-            builder.Register<IConfigurationProvider>(ctx => new MapperConfiguration(cfg => cfg.AddProfile(typeof(HabitsMappingProfile))))
+            builder.Register<AutoMapper.IConfigurationProvider>(ctx => new MapperConfiguration(cfg => cfg.AddProfile(typeof(HabitsMappingProfile))))
                 .SingleInstance();
-            builder.Register<IMapper>(ctx => new Mapper(ctx.Resolve<IConfigurationProvider>(), ctx.Resolve))
+            builder.Register<IMapper>(ctx => new Mapper(ctx.Resolve<AutoMapper.IConfigurationProvider>(), ctx.Resolve))
                 .InstancePerDependency();
 
             return builder;

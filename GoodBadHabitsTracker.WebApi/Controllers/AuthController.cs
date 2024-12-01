@@ -52,9 +52,16 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             Response.Cookies.Append("__Secure-Fgp", response.UserFingerprint, new CookieOptions
             {
                 SameSite = SameSiteMode.Strict,
-                HttpOnly = false,
+                HttpOnly = true,
                 Secure = true,
                 MaxAge = TimeSpan.FromMinutes(15),
+            });
+            Response.Cookies.Append("__Secure-Rt", response.RefreshToken, new CookieOptions
+            {
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = true,
+                Secure = true,
+                MaxAge = TimeSpan.FromDays(30),
             });
             return Ok(new { accessToken = response.AccessToken.ToString(), refreshToken = response.RefreshToken });
         }
@@ -105,15 +112,23 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         {
             var response = await mediator.Send(new RefreshTokenCommand(request, cancellationToken));
 
+            Response.Cookies.Delete("__Secure-Rt");
             Response.Cookies.Append("__Secure-Fgp", response.UserFingerprint, new CookieOptions
             {
                 SameSite = SameSiteMode.Strict,
-                HttpOnly = false,
+                HttpOnly = true,
                 Secure = true,
                 MaxAge = TimeSpan.FromMinutes(15),
             });
+            Response.Cookies.Append("__Secure-Rt", response.RefreshToken, new CookieOptions
+            {
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = true,
+                Secure = true,
+                MaxAge = TimeSpan.FromDays(30),
+            });
 
-            return Ok(new { accessToken = response.AccessToken.ToString(), refreshToken = response.RefreshToken });
+            return Ok(response.AccessToken.ToString());
         }
 
         [HttpPost("token")]

@@ -121,5 +121,4 @@ namespace GoodBadHabitsTracker.Infrastructure.Security.TokenHandler
 
             return new ClaimsIdentity(claims);
         }
-    }
-}
+    }}
