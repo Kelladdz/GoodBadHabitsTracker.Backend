@@ -11,13 +11,14 @@ using GoodBadHabitsTracker.Application.Commands.Habits.Update;
 using GoodBadHabitsTracker.Application.Commands.Habits.Delete;
 using GoodBadHabitsTracker.Application.DTOs.Request;
 using GoodBadHabitsTracker.Core.Models;
+using GoodBadHabitsTracker.Core.Interfaces;
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Policy = "GBHTPolicy")]
-    public class HabitsController(IMediator mediator, CancellationToken cancellationToken) : ControllerBase
+    public class HabitsController(IMediator mediator, IEmailSender emailSender, CancellationToken cancellationToken) : ControllerBase
     {
         [OutputCache]
         [HttpGet("{id:guid}")]
@@ -47,8 +48,12 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         public async Task<IActionResult> Post([FromBody] HabitRequest request)
         {
             var response = await mediator.Send(new CreateCommand(request), cancellationToken);
-            return response is not null ? CreatedAtAction(nameof(GetById), new { id = response!.Habit.Id! }, response) : BadRequest();
-        } 
+            if (response is not null) 
+            { 
+                await emailSender.SendMessageAfterNewHabitCreateAsync(response.User, response.Habit);
+                CreatedAtAction(nameof(GetById), new { id = response!.Habit.Id! }, response);
+            } 
+            else return BadRequest();
 
         [HttpPatch("{id:guid}")]
         public async Task<IActionResult> Patch([FromRoute] Guid id, [FromBody] JsonPatchDocument<Habit> request)

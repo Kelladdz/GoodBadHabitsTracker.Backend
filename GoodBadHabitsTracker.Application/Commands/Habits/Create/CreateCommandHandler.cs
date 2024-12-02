@@ -8,9 +8,9 @@ using GoodBadHabitsTracker.Application.DTOs.Response;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habits.Create
 {
-    internal sealed class CreateCommandHandler(IHabitsRepository habitRepository, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<CreateCommand, HabitResponse?>
+    internal sealed class CreateCommandHandler(IHabitsRepository habitRepository, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<CreateCommand, CreateHabitResponse?>
     {
-        public async Task<HabitResponse?> Handle(CreateCommand command, CancellationToken cancellationToken)
+        public async Task<CreateHabitResponse?> Handle(CreateCommand command, CancellationToken cancellationToken)
         {
             var user = await userAccessor.GetCurrentUser()
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "User not found");
@@ -21,7 +21,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Create
 
             var newHabit = await habitRepository.InsertAsync(habitToInsert, userId, cancellationToken);
 
-            return newHabit is not null ? new HabitResponse(newHabit) : null;
+            return newHabit is not null ? new CreateHabitResponse(newHabit, user) : null;
         }
     }
 }

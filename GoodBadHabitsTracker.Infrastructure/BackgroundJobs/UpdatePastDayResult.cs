@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace GoodBadHabitsTracker.Infrastructure.BackgroundJobs
 {
-    public class UpdatePastDayResult(IDayResultsRepository dayResultsRepository) : IJob
+    internal sealed class UpdatePastDayResult(IDayResultsRepository dayResultsRepository) : IJob
     {
         public async Task Execute(IJobExecutionContext context)
         => await dayResultsRepository.UpdateAllAsync();

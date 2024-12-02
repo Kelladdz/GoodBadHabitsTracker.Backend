@@ -6,5 +6,6 @@ namespace GoodBadHabitsTracker.Core.Interfaces
     {
         Task SendConfirmationLinkAsync(User user, string link);
         Task SendPasswordResetLinkAsync(User user, string link);
+        Task SendMessageAfterNewHabitCreateAsync(User user, Habit habit);
     }
 }
