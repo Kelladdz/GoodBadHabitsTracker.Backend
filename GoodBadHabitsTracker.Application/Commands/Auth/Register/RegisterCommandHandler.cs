@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using GoodBadHabitsTracker.Core.Models;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
 using GoodBadHabitsTracker.Application.Exceptions;
+using GoodBadHabitsTracker.Application.DTOs.Response;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
 {

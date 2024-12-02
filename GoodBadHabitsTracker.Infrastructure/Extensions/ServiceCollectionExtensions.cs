@@ -6,13 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Infrastructure.Repositories;
-using Hangfire;
 using GoodBadHabitsTracker.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
-using GoodBadHabitsTracker.Infrastructure.Configurations;
-using Amazon.S3;
+using Quartz;
+using GoodBadHabitsTracker.Infrastructure.BackgroundJobs;
+using GoodBadHabitsTracker.Infrastructure.Utils;
 
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
@@ -36,17 +35,34 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddRoleStore<RoleStore<UserRole, HabitsDbContext, Guid>>()
                 .AddDefaultTokenProviders();
 
-            
+
 
             services.AddScoped<SignInManager<User>>();
             services.AddScoped<UserManager<User>>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IHabitsRepository, HabitsRepository>();
+            services.AddScoped<IGroupsRepository, GroupsRepository>();
+            services.AddScoped<IDayResultsRepository, DayResultsRepository>();
+            services.AddScoped<ITokenHandler, TokenHandler>();
+            services.AddScoped<IIdTokenHandler, Security.IdTokenHandler.Handler>();
 
-            services.AddTransient<ITokenHandler, TokenHandler>();
-            services.AddTransient<IIdTokenHandler, Security.IdTokenHandler.Handler>();
-            
+            services.AddQuartz(options =>
+            {
+                var jobKey = JobKey.Create("UpdatePastDayResult");
 
+                options.AddJob<UpdatePastDayResult>(jobKey)
+                .AddTrigger(trigger => trigger
+                        .ForJob(jobKey)
+                        .StartNow()
+                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(2, 30)));
+
+            });
+
+            services.AddQuartzHostedService(options =>
+            {
+                options.WaitForJobsToComplete = true;
+            });
             
 
             services.AddJwt(configuration);

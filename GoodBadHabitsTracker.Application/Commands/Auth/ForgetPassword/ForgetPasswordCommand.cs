@@ -1,6 +1,6 @@
 ﻿using GoodBadHabitsTracker.Application.Abstractions.Messaging;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
+using GoodBadHabitsTracker.Application.DTOs.Request;
+using GoodBadHabitsTracker.Application.DTOs.Response;
 using GoodBadHabitsTracker.Core.Models;
 using System;
 using System.Collections.Generic;

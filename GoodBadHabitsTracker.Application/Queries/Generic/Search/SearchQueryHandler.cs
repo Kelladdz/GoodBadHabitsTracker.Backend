@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using GoodBadHabitsTracker.Core.Interfaces;
-using GoodBadHabitsTracker.Application.DTOs.Generic.Response;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,6 +7,7 @@ using GoodBadHabitsTracker.Application.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using GoodBadHabitsTracker.Core.Models;
 using Microsoft.IdentityModel.Tokens;
+using GoodBadHabitsTracker.Application.DTOs.Response;
 
 namespace GoodBadHabitsTracker.Application.Queries.Generic.Search
 {

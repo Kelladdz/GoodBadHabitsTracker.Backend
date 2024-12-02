@@ -57,10 +57,13 @@ namespace GoodBadHabitsTracker.Infrastructure.Security.TokenHandler
         }
         public ClaimsPrincipal ValidateAndGetPrincipalFromToken(string token)
         {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = _jwtSettings.SigningCredentials!.Key,
+                IssuerSigningKey = signingCredentials.Key,
                 ValidateIssuer = true,
                 ValidIssuer = _jwtSettings.Issuer,
                 ValidateAudience = true,

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace GoodBadHabitsTracker.WebApi.Conventions
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+/*    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     internal class GenericControllerConventions : Attribute, IControllerModelConvention
     {
         public void Apply(ControllerModel controller)
@@ -15,5 +15,5 @@ namespace GoodBadHabitsTracker.WebApi.Conventions
             controller.ControllerName = entityType.Name + "s";
             controller.RouteValues["Controller"] = entityType.Name + "s";
         }
-    }
+    }*/
 }

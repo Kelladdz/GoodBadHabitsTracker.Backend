@@ -1,15 +1,6 @@
-﻿using GoodBadHabitsTracker.Application.Commands.Auth.ForgetPassword;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
-using GoodBadHabitsTracker.Application.Exceptions;
-using GoodBadHabitsTracker.Core.Models;
+﻿using GoodBadHabitsTracker.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.ResetPassword
 {

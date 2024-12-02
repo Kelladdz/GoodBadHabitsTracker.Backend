@@ -8,7 +8,7 @@ using GoodBadHabitsTracker.Application.Abstractions.Messaging;
 namespace GoodBadHabitsTracker.Application.Abstractions.Behaviors
 {
     internal sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : ICommandBase
+        where TRequest : IRequestBase
     { 
         public async Task<TResponse> Handle(
             TRequest request,

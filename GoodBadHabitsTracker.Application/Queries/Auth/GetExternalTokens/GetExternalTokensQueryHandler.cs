@@ -1,15 +1,8 @@
-﻿using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MediatR;
 using System.Net.Http.Headers;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
+using GoodBadHabitsTracker.Application.DTOs.Response;
 
 namespace GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens
 {

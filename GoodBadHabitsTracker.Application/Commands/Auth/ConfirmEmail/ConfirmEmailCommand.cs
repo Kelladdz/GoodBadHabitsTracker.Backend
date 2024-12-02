@@ -1,5 +1,5 @@
 ﻿using GoodBadHabitsTracker.Application.Abstractions.Messaging;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
+using GoodBadHabitsTracker.Application.DTOs.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;

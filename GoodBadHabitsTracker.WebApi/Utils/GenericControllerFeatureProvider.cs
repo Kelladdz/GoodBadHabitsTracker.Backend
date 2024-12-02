@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace GoodBadHabitsTracker.WebApi.Utils
 {
-    public class GenericControllerFeatureProvider : IApplicationFeatureProvider<ControllerFeature>
+/*    public class GenericControllerFeatureProvider : IApplicationFeatureProvider<ControllerFeature>
     { 
         public void PopulateFeature(IEnumerable<ApplicationPart> parts, ControllerFeature feature)
         {
@@ -20,6 +20,6 @@ namespace GoodBadHabitsTracker.WebApi.Utils
                 feature.Controllers.Add(controllerType);
             }
         }
-    }
+    }*/
 }
 

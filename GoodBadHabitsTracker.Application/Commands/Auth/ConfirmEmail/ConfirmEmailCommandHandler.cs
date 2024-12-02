@@ -1,5 +1,5 @@
 ﻿using GoodBadHabitsTracker.Application.Commands.Auth.ForgetPassword;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
+using GoodBadHabitsTracker.Application.DTOs.Response;
 using GoodBadHabitsTracker.Application.Exceptions;
 using GoodBadHabitsTracker.Core.Models;
 using MediatR;

@@ -1,5 +1,4 @@
-﻿using GoodBadHabitsTracker.Application.DTOs.Generic.Response;
-using GoodBadHabitsTracker.Core.Interfaces;
+﻿using GoodBadHabitsTracker.Core.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -10,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Identity;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Application.Exceptions;
+using GoodBadHabitsTracker.Application.DTOs.Response;
 
 namespace GoodBadHabitsTracker.Application.Queries.Generic.GetAll
 {

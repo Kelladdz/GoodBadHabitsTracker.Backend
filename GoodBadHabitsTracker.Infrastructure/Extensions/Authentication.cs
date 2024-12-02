@@ -78,6 +78,8 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         return Task.CompletedTask;
                     };
+
+
                 })
                 .AddJwtBearer("Auth0Login", options =>
                 {

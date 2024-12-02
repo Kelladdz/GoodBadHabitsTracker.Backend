@@ -4,37 +4,29 @@ using GoodBadHabitsTracker.WebApi.Middleware;
 using Serilog;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.ResponseCompression;
-using GoodBadHabitsTracker.WebApi.Conventions;
-using GoodBadHabitsTracker.WebApi.Utils;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
-using FluentAssertions.Common;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var containerBuilder = new ContainerBuilder();
-
 builder.Host.UseSerilog((hostingContext, services, loggerConfiguration) =>
 {
     loggerConfiguration
     .ReadFrom.Configuration(hostingContext.Configuration)
     .ReadFrom.Services(services);
 });
-
+var containerBuilder = new ContainerBuilder();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
         containerBuilder.BuildMediator();
         containerBuilder.BuildAutoMapper();
     });
-
 builder.Services.AddOptions();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddResponseCompression(options =>
@@ -100,7 +92,7 @@ var mvcBuilder = builder.Services
     .AddMvc()
     .AddNewtonsoftJson();
 
-mvcBuilder.AddMvcOptions(o =>
+/*mvcBuilder.AddMvcOptions(o =>
 {
     o.Conventions.Add(new GenericControllerConventions());
     var formatter = o.InputFormatters.OfType<NewtonsoftJsonInputFormatter>().First();
@@ -108,7 +100,7 @@ mvcBuilder.AddMvcOptions(o =>
 mvcBuilder.ConfigureApplicationPartManager(c =>
 {
     c.FeatureProviders.Add(new GenericControllerFeatureProvider());
-});
+});*/
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -141,4 +133,3 @@ app.UseAuthorization();
 
 app.Run();
 
-public partial class Program { }

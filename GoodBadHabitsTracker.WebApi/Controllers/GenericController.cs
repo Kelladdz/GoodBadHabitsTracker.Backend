@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿/*using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using GoodBadHabitsTracker.WebApi.Conventions;
 using GoodBadHabitsTracker.Application.Queries.Generic.ReadById;
@@ -47,12 +47,12 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             return Ok(response);
         }
 
-        /*[HttpGet("search")]
+        *//*[HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] string? term, [FromQuery] DateOnly date)
         {
             var response = await _mediator.Send(new SearchQuery<TEntity>(term, date), _cancellationToken);
             return response is not null ? Ok(response) : NotFound();
-        }*/
+        }*//*
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] TRequest request)
@@ -76,3 +76,4 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         }
     }
 }
+*/

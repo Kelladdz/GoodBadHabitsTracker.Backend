@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using GoodBadHabitsTracker.Application.DTOs.Habit.Request;
+﻿/*using FluentValidation;
 using GoodBadHabitsTracker.Core.Enums;
 
 namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
@@ -11,7 +10,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
         public InsertCommandValidator()
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
-            if(typeof(TRequest) == typeof(HabitRequest))
+            if (typeof(TRequest) == typeof(HabitRequest))
             {
                 RuleFor(x => (x.Request as HabitRequest)!.Name)
                .NotNull().WithMessage("Name cannot be null")
@@ -140,8 +139,8 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
                             context.AddFailure("For breaking or limiting habit, ReminderTimes should be null");
                     });
             }
-           
-            else if(typeof(TRequest) == typeof(GroupRequest))
+
+            else if (typeof(TRequest) == typeof(GroupRequest))
             {
                 RuleFor(x => (x.Request as GroupRequest)!.Name)
                     .NotNull().WithMessage("Name cannot be null")
@@ -152,3 +151,4 @@ namespace GoodBadHabitsTracker.Application.Commands.Generic.Insert
         }
     }
 }
+*/

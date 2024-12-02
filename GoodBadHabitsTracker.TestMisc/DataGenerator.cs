@@ -1,7 +1,6 @@
 ﻿using Bogus;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
-using GoodBadHabitsTracker.Application.DTOs.Generic.Response;
-using GoodBadHabitsTracker.Application.DTOs.Habit.Request;
+using GoodBadHabitsTracker.Application.DTOs.Request;
+using GoodBadHabitsTracker.Application.DTOs.Response;
 using GoodBadHabitsTracker.Core.Enums;
 using GoodBadHabitsTracker.Core.Models;
 using Microsoft.AspNetCore.JsonPatch;

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using GoodBadHabitsTracker.Core.Interfaces;
-using GoodBadHabitsTracker.Application.DTOs.Generic.Response;
+using GoodBadHabitsTracker.Application.DTOs.Response;
 
 namespace GoodBadHabitsTracker.Application.Queries.Generic.ReadById
 {

@@ -1,15 +1,10 @@
 ﻿using MediatR;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
-using Azure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Text.Json;
 using AutoMapper;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin

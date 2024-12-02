@@ -2,21 +2,14 @@
 using MediatR;
 using GoodBadHabitsTracker.Application.Commands.Auth.Register;
 using GoodBadHabitsTracker.Application.Commands.Auth.Login;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
 using GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Application.Commands.Auth.ForgetPassword;
-using GoodBadHabitsTracker.Core.Models;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using System.Threading;
 using GoodBadHabitsTracker.Application.Commands.Auth.ResetPassword;
 using GoodBadHabitsTracker.Application.Commands.Auth.ConfirmEmail;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
 using GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin;
 using GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens;
+using GoodBadHabitsTracker.Application.DTOs.Request;
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
 {
@@ -128,7 +121,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
                 MaxAge = TimeSpan.FromDays(30),
             });
 
-            return Ok(response.AccessToken.ToString());
+            return Ok(new { accessToken = response.AccessToken.ToString() });
         }
 
         [HttpPost("token")]
