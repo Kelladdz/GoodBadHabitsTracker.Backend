@@ -9,6 +9,11 @@ namespace GoodBadHabitsTracker.Core.Interfaces
         Task<IEnumerable<Habit>> SearchAsync(string? term, DateOnly date, Guid userId, CancellationToken cancellationToken);
         Task<Habit?> InsertAsync(Habit habitToInsert, Guid id, CancellationToken cancellationToken);
         Task<bool> UpdateAsync(JsonPatchDocument<Habit> document, Guid id, CancellationToken cancellationToken);
+        Task<bool> UpdateAllAsync();
+        Task<bool> DeleteAllProgressAsync(Guid userId, CancellationToken cancellationToken);
+
+        Task<bool> PostInProgressTodayAsync(Guid userId, CancellationToken cancellationToken);
         Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken);
+        Task<bool> DeleteAllAsync(Guid userId, CancellationToken cancellationToken);
     }
 }

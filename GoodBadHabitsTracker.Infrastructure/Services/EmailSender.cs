@@ -20,39 +20,23 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
-                MailboxAddress emailFrom = new MailboxAddress(mailSettings.Value.DisplayName, mailSettings.Value.Email);
-                emailMessage.From.Add(emailFrom);
+                GetMessageDetails(user, emailMessage);
 
-                MailboxAddress emailTo = new MailboxAddress(user.UserName, user.Email);
-                emailMessage.To.Add(emailTo);
+                emailMessage.Subject = "Welcome To GoodBadHabitsTracker!";
 
-                emailMessage.Subject = "Welcome To GoodBadHabitsTracker.";
                 BodyBuilder emailBodyBuilder = new BodyBuilder();
                 emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\welcome.html").Replace("{userName}", user.UserName).Replace("{link}", link);
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
-                using (SmtpClient mailClient = new SmtpClient())
-                {
-
-                    mailClient.CheckCertificateRevocation = false;
-                    mailClient.Connect(mailSettings.Value.Host, mailSettings.Value.Port, MailKit.Security.SecureSocketOptions.StartTls);
-                    mailClient.Authenticate(mailSettings.Value.Email, mailSettings.Value.Password);
-                    mailClient.Send(emailMessage);
-                    mailClient.Disconnect(true);
-                }
+                SendEmail(emailMessage);
             }
             return Task.CompletedTask;
         }
         public Task SendPasswordResetLinkAsync(User user, string link)
         {
             using (MimeMessage emailMessage = new MimeMessage())
-
             {
-                MailboxAddress emailFrom = new MailboxAddress(mailSettings.Value.DisplayName, mailSettings.Value.Email);
-                emailMessage.From.Add(emailFrom);
-
-                MailboxAddress emailTo = new MailboxAddress(user.UserName, user.Email);
-                emailMessage.To.Add(emailTo);
+                GetMessageDetails(user, emailMessage);
 
                 emailMessage.Subject = "Password Reset Request";
 
@@ -60,14 +44,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
                 emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\resetPassword.html").Replace("{userName}", user.UserName).Replace("{link}", link);
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
-                using (SmtpClient mailClient = new SmtpClient())
-                {
-                    mailClient.CheckCertificateRevocation = false;
-                    mailClient.Connect(mailSettings.Value.Host, mailSettings.Value.Port, MailKit.Security.SecureSocketOptions.StartTls);
-                    mailClient.Authenticate(mailSettings.Value.Email, mailSettings.Value.Password);
-                    mailClient.Send(emailMessage);
-                    mailClient.Disconnect(true);
-                }
+                SendEmail(emailMessage);
             }
             return Task.CompletedTask;
         }
@@ -76,28 +53,33 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
-                MailboxAddress emailFrom = new MailboxAddress(mailSettings.Value.DisplayName, mailSettings.Value.Email);
-                emailMessage.From.Add(emailFrom);
-
-                MailboxAddress emailTo = new MailboxAddress(user.UserName, user.Email);
-                emailMessage.To.Add(emailTo);
-
-                emailMessage.Subject = "Congratulations";
+                GetMessageDetails(user, emailMessage);
 
                 BodyBuilder emailBodyBuilder = new BodyBuilder();
-                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\messageAfterGoodHabitCreate.html").Replace("{userName}", user.UserName).Replace("{habits}", GetHabits(habits));
+                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\messageAfterGoodHabitCreate.html").Replace("{userName}", user.UserName);
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
-                using (SmtpClient mailClient = new SmtpClient())
-                {
-                    mailClient.CheckCertificateRevocation = false;
-                    mailClient.Connect(mailSettings.Value.Host, mailSettings.Value.Port, MailKit.Security.SecureSocketOptions.StartTls);
-                    mailClient.Authenticate(mailSettings.Value.Email, mailSettings.Value.Password);
-                    mailClient.Send(emailMessage);
-                    mailClient.Disconnect(true);
-                }
+                SendEmail(emailMessage);
             }
             return Task.CompletedTask;
+        }
+        private void GetMessageDetails(User user, MimeMessage emailMessage)
+        {
+            MailboxAddress emailFrom = new MailboxAddress(mailSettings.Value.DisplayName, mailSettings.Value.Email);
+            emailMessage.From.Add(emailFrom);
+
+            MailboxAddress emailTo = new MailboxAddress(user.UserName, user.Email);
+            emailMessage.To.Add(emailTo);
+        }
+
+        private void SendEmail(MimeMessage emailMessage)
+        {
+            var mailClient = new SmtpClient { CheckCertificateRevocation = false };
+
+            mailClient.Connect(mailSettings.Value.Host, mailSettings.Value.Port, MailKit.Security.SecureSocketOptions.StartTls);
+            mailClient.Authenticate(mailSettings.Value.Email, mailSettings.Value.Password);
+            mailClient.Send(emailMessage);
+            mailClient.Disconnect(true);
         }
     }
 }

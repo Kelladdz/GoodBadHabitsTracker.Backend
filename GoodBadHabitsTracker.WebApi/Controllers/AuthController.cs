@@ -10,6 +10,7 @@ using GoodBadHabitsTracker.Application.Commands.Auth.ConfirmEmail;
 using GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin;
 using GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens;
 using GoodBadHabitsTracker.Application.DTOs.Request;
+using GoodBadHabitsTracker.Application.Commands.Auth.DeleteAccount;
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
 {
@@ -129,6 +130,13 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         {
             var response = await mediator.Send(new GetExternalTokensQuery(request, provider), cancellationToken);
             return response is not null ? Ok(response) : BadRequest("Something goes wrong");
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAccount(CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new DeleteAccountCommand(), cancellationToken) 
+                ? NoContent() : BadRequest("Something goes wrong");
         }
     }
 }

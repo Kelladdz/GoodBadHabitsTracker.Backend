@@ -2,6 +2,6 @@
 {
     public enum Statuses
     {
-        Completed, Failed, Skipped, InProgress
+        Completed, Failed, Skipped, InProgress, None
     }
 }

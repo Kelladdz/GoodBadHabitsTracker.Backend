@@ -23,6 +23,13 @@ using Microsoft.Extensions.Configuration;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
 using Amazon;
 using GoodBadHabitsTracker.Application.Queries.Generic.GetAll;
+using GoodBadHabitsTracker.Application.Commands.Auth.DeleteAccount;
+using FluentValidation;
+using GoodBadHabitsTracker.Application.Commands.Habits.Create;
+using GoodBadHabitsTracker.Application.Commands.Groups.Create;
+using GoodBadHabitsTracker.Application.Commands.Habits.DeleteAll;
+using GoodBadHabitsTracker.Application.Commands.Habits.DeleteAllProgress;
+using GoodBadHabitsTracker.Application.Commands.Habits.PostInProgressToday;
 
 namespace GoodBadHabitsTracker.Application.Extensions
 {
@@ -51,6 +58,11 @@ namespace GoodBadHabitsTracker.Application.Extensions
             builder.RegisterType<ResetPasswordCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<ExternalLoginCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<GetExternalTokensQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<DeleteAccountCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<Commands.Habits.Create.CreateCommandValidator>().AsImplementedInterfaces();
+            builder.RegisterType<Commands.Groups.Create.CreateCommandValidator>().AsImplementedInterfaces();
+            builder.RegisterType<Commands.Habits.Update.UpdateCommandValidator>().AsImplementedInterfaces();
+            builder.RegisterType<Commands.Groups.Update.UpdateCommandValidator>().AsImplementedInterfaces();
             builder.RegisterType<Queries.Habits.ReadAll.ReadAllQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<Queries.Habits.ReadById.ReadByIdQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<Queries.Habits.Search.SearchQueryHandler>().AsImplementedInterfaces();
@@ -61,7 +73,10 @@ namespace GoodBadHabitsTracker.Application.Extensions
             builder.RegisterType<Queries.Groups.ReadById.ReadByIdQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<Commands.Groups.Create.CreateCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<Commands.Groups.Update.UpdateCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<DeleteAllProgressCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<Commands.Groups.Delete.DeleteCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<DeleteAllCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<PostInProgressTodayCommandHandler>().AsImplementedInterfaces();
             return builder;
         }
 

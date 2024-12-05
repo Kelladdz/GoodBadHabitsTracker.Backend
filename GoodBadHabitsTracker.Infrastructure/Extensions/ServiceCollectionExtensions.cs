@@ -43,7 +43,6 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IHabitsRepository, HabitsRepository>();
             services.AddScoped<IGroupsRepository, GroupsRepository>();
-            services.AddScoped<IDayResultsRepository, DayResultsRepository>();
             services.AddScoped<ITokenHandler, TokenHandler>();
             services.AddScoped<IIdTokenHandler, Security.IdTokenHandler.Handler>();
 
@@ -55,7 +54,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddTrigger(trigger => trigger
                         .ForJob(jobKey)
                         .StartNow()
-                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(2, 30)));
+                       /* .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(2, 30))*/);
 
             });
 
