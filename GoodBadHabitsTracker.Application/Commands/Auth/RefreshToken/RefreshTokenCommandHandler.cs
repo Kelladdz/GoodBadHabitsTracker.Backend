@@ -32,18 +32,18 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken
             var refreshTokenPrincipal = tokenHandler.ValidateAndGetPrincipalFromToken(refreshToken)
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid refresh token");
 
-            var accessTokenPrincipalUserId = accessTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value
+            var accessTokenPrincipalUserId = accessTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid access token");
             var user = await userManager.FindByIdAsync(accessTokenPrincipalUserId)
-                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid access token");
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "User not found");
 
-            var refreshTokenPrincipalUserId = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value
+            var refreshTokenPrincipalUserId = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid refresh token");
             var refreshTokenExpiry = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "exp")?.Value;
 
             if (accessTokenPrincipalUserId is null || refreshTokenPrincipal is null 
                 || accessTokenPrincipalUserId != refreshTokenPrincipalUserId) 
-                throw new UnauthorizedAccessException("Refresh Token is invalid");
+                throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid refresh token");
 
             var userRoles = await userManager.GetRolesAsync(user);
             if (userRoles.Count == 0)
@@ -54,10 +54,10 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken
             var userSession = new UserSession(user.Id, user.UserName, user.Email, userRoles);
 
             var newAccessToken = tokenHandler.GenerateAccessToken(userSession, out string userFingerprint)
-                ?? throw new InvalidOperationException("New access token cannot be null.");
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "New access token cannot be null.");
 
             var newRefreshToken = tokenHandler.GenerateRefreshToken(userSession)
-                ?? throw new InvalidOperationException("New refresh token cannot be null.");
+                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "New refresh token cannot be null.");
 
             return new LoginResponse(newAccessToken, newRefreshToken, userFingerprint);
         }

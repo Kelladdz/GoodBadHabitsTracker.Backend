@@ -20,9 +20,9 @@ namespace GoodBadHabitsTracker.Core.Models
         public required DateOnly StartDate { get; set; }
         public List<TimeOnly> ReminderTimes { get; init; } = [];
         [JsonIgnore]
-        public User User { get; init; } = default!;
+        public User User { get; set; } = default!;
         [JsonIgnore]
-        public Guid UserId { get; init; } = default!;
+        public Guid UserId { get; set; } = default!;
         [JsonIgnore]
         public Group Group { get; set; } = default!;
         [JsonIgnore]

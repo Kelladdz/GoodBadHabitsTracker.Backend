@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
 using Quartz;
 using GoodBadHabitsTracker.Infrastructure.BackgroundJobs;
-using GoodBadHabitsTracker.Infrastructure.Utils;
+using GoodBadHabitsTracker.Infrastructure.Security.IdTokenHandler;
 
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
@@ -40,11 +40,10 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             services.AddScoped<SignInManager<User>>();
             services.AddScoped<UserManager<User>>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IHabitsRepository, HabitsRepository>();
             services.AddScoped<IGroupsRepository, GroupsRepository>();
             services.AddScoped<ITokenHandler, TokenHandler>();
-            services.AddScoped<IIdTokenHandler, Security.IdTokenHandler.Handler>();
+            services.AddScoped<IIdTokenHandler, IdTokenHandler>();
 
             services.AddQuartz(options =>
             {
@@ -65,15 +64,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             
 
             services.AddJwt(configuration);
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("GBHTPolicy", policy =>
-                {
-                    policy.RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes("PasswordLogin")
-                    .AddAuthenticationSchemes("Auth0Login");
-                });
-            });
+            services.AddAuthorization();
         }
     }
 }

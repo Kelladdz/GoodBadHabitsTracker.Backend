@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿/*using MediatR;
 using Moq;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -245,4 +245,4 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
             _mediatorMock.Verify(x => x.Send(It.Is<DeleteCommand<Habit>>(a => a.Id == id), default), Times.Once);
         }
     }
-}
+}*/

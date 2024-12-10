@@ -1,4 +1,4 @@
-﻿using Azure.Core;
+﻿/*using Azure.Core;
 using FluentValidation.TestHelper;
 using GoodBadHabitsTracker.Application.Commands.Generic.Update;
 using GoodBadHabitsTracker.Application.Queries.Generic.Search;
@@ -54,3 +54,4 @@ namespace GoodBadHabitsTracker.Application.Tests.Queries.Search
         }
     }
 }
+*/

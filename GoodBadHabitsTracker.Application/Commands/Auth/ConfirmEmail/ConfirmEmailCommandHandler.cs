@@ -13,20 +13,19 @@ using System.Threading.Tasks;
 namespace GoodBadHabitsTracker.Application.Commands.Auth.ConfirmEmail
 {
     internal sealed class ConfirmEmailCommandHandler(
-        UserManager<User> userManager) : IRequestHandler<ConfirmEmailCommand, bool>
+        UserManager<User> userManager) : IRequestHandler<ConfirmEmailCommand, IdentityResult>
     {
-        public async Task<bool> Handle(ConfirmEmailCommand command, CancellationToken cancellationToken)
+        public async Task<IdentityResult> Handle(ConfirmEmailCommand command, CancellationToken cancellationToken)
         {
-            var userId = command.Request.UserId.ToString();
-            var token = command.Request.Token;
-            token = token.Replace("%2B", "+").Replace("%2F", "/");
-            var user = await userManager.FindByIdAsync(userId)
-                ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, "User with this id does not exist");
+                var userId = command.Request.UserId.ToString();
+                var token = command.Request.Token;
+                token = token.Replace("%2B", "+").Replace("%2F", "/");
 
-            var result = await userManager.ConfirmEmailAsync(user, token)
-                ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to confirm email");
+                var user = await userManager.FindByIdAsync(userId);
+                if (user is null)
+                    return IdentityResult.Failed(new IdentityError { Code = "UserNotFound", Description = $"User with id {userId} not found." });
 
-            return result.Succeeded;
+                else return await userManager.ConfirmEmailAsync(user, token);
         }
     }
 }

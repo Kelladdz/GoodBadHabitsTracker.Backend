@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using GoodBadHabitsTracker.Infrastructure.Configurations;
+using GoodBadHabitsTracker.WebApi.Filters;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     {
         containerBuilder.BuildMediator();
         containerBuilder.BuildAutoMapper();
+        containerBuilder.BuildCustomServices();
     });
 builder.Services.AddOptions();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
@@ -59,13 +61,13 @@ builder.Services.AddRouting(options =>
 builder.Services.AddSwaggerGen(x =>
 {
     x.UseDateOnlyTimeOnlyStringConverters();
-    x.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    x.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
     {
         Name = "JWT Authentication",
         Description = "Enter your JWT token in this field",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Scheme = "bearer",
         BearerFormat = "JWT"
     });
     var securityRequirement = new OpenApiSecurityRequirement
@@ -85,6 +87,7 @@ builder.Services.AddSwaggerGen(x =>
 
     x.AddSecurityRequirement(securityRequirement);
     x.OperationFilter<SecurityRequirementsOperationFilter>();
+    x.OperationFilter<AuthenticationRequirementsOperationFilter>();
 });
 
 var mvcBuilder = builder.Services

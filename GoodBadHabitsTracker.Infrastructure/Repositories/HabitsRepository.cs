@@ -15,28 +15,21 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
 {
     public sealed class HabitsRepository(HabitsDbContext dbContext) : IHabitsRepository
     {
+        public async Task<Habit?> FindAsync(Guid id, CancellationToken cancellationToken)
+            => await dbContext.Habits
+                        .FindAsync(id, cancellationToken);
         public async Task<Habit?> ReadByIdAsync(Guid id, CancellationToken cancellationToken)
-        {
-            var habit = await dbContext.Habits
+            => await dbContext.Habits
                     .Include(x => x.DayResults)
                     .Include(x => x.Comments)
                     .AsNoTracking()
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
-
-            return habit;
-        }
-
         public async Task<IEnumerable<Habit>> ReadAllAsync(Guid userId, CancellationToken cancellationToken)
-        {
-            var habits = await dbContext.Habits
+            => await dbContext.Habits
                     .Where(h => h.UserId == userId)
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
-
-            return habits;
-        }
-
         public async Task<IEnumerable<Habit>> SearchAsync(string? term, DateOnly date, Guid userId, CancellationToken cancellationToken)
         {
 
@@ -70,56 +63,8 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
             }
         }
 
-        public async Task<Habit?> InsertAsync(Habit habitToInsert, Guid userId, CancellationToken cancellationToken)
+        public async Task InsertAsync(Habit habitToInsert, CancellationToken cancellationToken)
         {
-            var newHabit = habitToInsert!.HabitType switch
-            {
-                HabitTypes.Good => new Habit
-                {
-                    Name = habitToInsert.Name,
-                    HabitType = habitToInsert.HabitType,
-                    IconId = habitToInsert.IconId,
-                    IsTimeBased = habitToInsert.IsTimeBased,
-                    Quantity = habitToInsert.Quantity,
-                    Frequency = habitToInsert.Frequency,
-                    RepeatMode = habitToInsert.RepeatMode,
-                    RepeatDaysOfWeek = habitToInsert.RepeatDaysOfWeek,
-                    RepeatDaysOfMonth = habitToInsert.RepeatDaysOfMonth,
-                    RepeatInterval = habitToInsert.RepeatInterval,
-                    StartDate = habitToInsert.StartDate,
-                    UserId = userId,
-                    GroupId = habitToInsert.GroupId,
-                },
-                HabitTypes.Limit => new Habit
-                {
-                    Name = habitToInsert.Name,
-                    HabitType = habitToInsert.HabitType,
-                    IconId = habitToInsert.IconId,
-                    IsTimeBased = habitToInsert.IsTimeBased,
-                    Quantity = habitToInsert.Quantity,
-                    Frequency = habitToInsert.Frequency,
-                    RepeatMode = RepeatModes.NotApplicable,
-                    RepeatInterval = 0,
-                    StartDate = habitToInsert.StartDate,
-                    UserId = userId,
-                    GroupId = habitToInsert.GroupId,
-                },
-                HabitTypes.Quit => new Habit
-                {
-                    Name = habitToInsert.Name,
-                    HabitType = habitToInsert.HabitType,
-                    IconId = habitToInsert.IconId,
-                    IsTimeBased = false,
-                    Frequency = Frequencies.NotApplicable,
-                    RepeatMode = RepeatModes.NotApplicable,
-                    RepeatInterval = 0,
-                    StartDate = habitToInsert.StartDate,
-                    UserId = userId,
-                    GroupId = habitToInsert.GroupId,
-                },
-                _ => throw new InvalidOperationException("Something goes wrong")
-            };
-
             var currentDayResult = habitToInsert!.HabitType switch
             {
                 HabitTypes.Good => new DayResult
@@ -127,37 +72,31 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                     Progress = 0,
                     Status = Statuses.InProgress,
                     Date = DateOnly.FromDateTime(DateTime.Now),
-                    HabitId = newHabit.Id
+                    HabitId = habitToInsert.Id
                 },
                 HabitTypes.Limit => new DayResult
                 {
                     Progress = 0,
                     Status = Statuses.InProgress,
                     Date = DateOnly.FromDateTime(DateTime.Now),
-                    HabitId = newHabit.Id
+                    HabitId = habitToInsert.Id
                 },
                 HabitTypes.Quit => new DayResult
                 {
                     Status = Statuses.InProgress,
                     Date = DateOnly.FromDateTime(DateTime.Now),
-                    HabitId = newHabit.Id
+                    HabitId = habitToInsert.Id
                 },
                 _ => throw new InvalidOperationException("Something goes wrong")
             };
 
-            newHabit.DayResults.Add(currentDayResult);
-            dbContext.Habits.Add(newHabit);
-
-            return await dbContext.SaveChangesAsync(cancellationToken) > 0
-                ? newHabit : null;
+            habitToInsert.DayResults.Add(currentDayResult);
+            dbContext.Habits.Add(habitToInsert);
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<bool> UpdateAsync(JsonPatchDocument<Habit> document, Guid id, CancellationToken cancellationToken)
+        public async Task<bool> UpdateAsync(JsonPatchDocument document, Habit habitToUpdate, CancellationToken cancellationToken)
         {
-            var habitToUpdate = await dbContext.Habits
-                .FindAsync(id, cancellationToken)
-                ?? throw new InvalidOperationException("Habit not found");
-
             var dayResultsDates = habitToUpdate!.DayResults.Select(dayResult => dayResult.Date.ToString("o", CultureInfo.InvariantCulture)).ToList();
 
             if (document.Operations.Any(o => o.OperationType == OperationType.Add
@@ -260,23 +199,61 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
 
             return await dbContext.SaveChangesAsync(cancellationToken) > 0;
         }
-        public async Task<bool> DeleteAllProgressAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task DeleteAllProgressAsync(Guid userId, CancellationToken cancellationToken)
         {
+            var connectionString = dbContext.Database.GetConnectionString();
+            using var bulk = new SqlBulkCopy(connectionString, SqlBulkCopyOptions.Default);
+            using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                var allHabits = await dbContext.Habits
+                .Where(h => h.UserId == userId)
+                .Include(h => h.DayResults)
+                .ToListAsync(cancellationToken);
 
-                var habits = await dbContext.Habits
-                    .Where(habit => habit.UserId == userId)
-                    .Include(habit => habit.DayResults)
-                    .ToListAsync(cancellationToken);
-
-                foreach (var habit in habits)
+                var currentDay = DateOnly.FromDateTime(DateTime.Today);
+                foreach (var habit in allHabits)
                 {
                     habit.DayResults.Clear();
+                    habit.StartDate = currentDay;
                 }
-
                 await dbContext.SaveChangesAsync(cancellationToken);
-                return true;
+                transaction.CreateSavepoint("AllProgressDeleted");
+
+                var destinationTableName = "dbo.DayResults";
+                bulk.ColumnMappings.Add(nameof(DayResult.Id), "Id");
+                bulk.ColumnMappings.Add(nameof(DayResult.Progress), "Progress");
+                bulk.ColumnMappings.Add(nameof(DayResult.Status), "Status");
+                bulk.ColumnMappings.Add(nameof(DayResult.Date), "Date");
+                bulk.ColumnMappings.Add(nameof(DayResult.HabitId), "HabitId");
+
+                var dataTable = new DataTable();
+
+                dataTable.Columns.Add(nameof(DayResult.Id), typeof(Guid));
+                dataTable.Columns.Add(nameof(DayResult.Progress), typeof(int));
+                dataTable.Columns.Add(nameof(DayResult.Status), typeof(Statuses));
+                dataTable.Columns.Add(nameof(DayResult.Date), typeof(DateOnly));
+                dataTable.Columns.Add(nameof(DayResult.HabitId), typeof(Guid));
+
+                foreach (var habit in allHabits)
+                {
+                    var habitId = habit.Id;
+                    dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.InProgress, currentDay, habitId);
+                }
+                bulk.DestinationTableName = destinationTableName;
+                await bulk.WriteToServerAsync(dataTable, cancellationToken);
+                await dbContext.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch (Exception _)
+            {
+                await transaction.RollbackToSavepointAsync("AllProgressDeleted", cancellationToken);
+            }
+
+            
         }
-        public async Task<bool> UpdateAllAsync()
+        public async Task UpdateAllAsync()
         {
             var connectionString = dbContext.Database.GetConnectionString();
             using var bulk = new SqlBulkCopy(connectionString, SqlBulkCopyOptions.Default);
@@ -324,80 +301,24 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                 .Where(dayResult => dayResult.Date < DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1))
                 && dayResult.Status == Statuses.InProgress)
                 .ExecuteUpdateAsync(dayResult => dayResult.SetProperty(d => d.Status, Statuses.Failed));
-                return true;
             }
-            catch (Exception ex)
+            catch (Exception _)
             {
                 await transaction.RollbackAsync();
-                return false;
-            }
-        }
-        public async Task<bool> PostInProgressTodayAsync(Guid userId, CancellationToken cancellationToken)
-        {
-            var connectionString = dbContext.Database.GetConnectionString();
-            using var bulk = new SqlBulkCopy(connectionString, SqlBulkCopyOptions.Default);
-            using var transaction = await dbContext.Database.BeginTransactionAsync();
-
-            try
-            {
-                var habits = await dbContext.Habits
-                    .Include(habit => habit.DayResults)
-                    .Where(h => h.UserId == userId)
-                    .ToListAsync(cancellationToken);
-
-                var currentDay = DateOnly.FromDateTime(DateTime.Today);
-
-                var destinationTableName = "dbo.DayResults";
-                bulk.ColumnMappings.Add(nameof(DayResult.Id), "Id");
-                bulk.ColumnMappings.Add(nameof(DayResult.Progress), "Progress");
-                bulk.ColumnMappings.Add(nameof(DayResult.Status), "Status");
-                bulk.ColumnMappings.Add(nameof(DayResult.Date), "Date");
-                bulk.ColumnMappings.Add(nameof(DayResult.HabitId), "HabitId");
-
-                var dataTable = new DataTable();
-
-                dataTable.Columns.Add(nameof(DayResult.Id), typeof(Guid));
-                dataTable.Columns.Add(nameof(DayResult.Progress), typeof(int));
-                dataTable.Columns.Add(nameof(DayResult.Status), typeof(Statuses));
-                dataTable.Columns.Add(nameof(DayResult.Date), typeof(DateOnly));
-                dataTable.Columns.Add(nameof(DayResult.HabitId), typeof(Guid));
-
-                foreach (var habit in habits)
-                {
-                    var habitId = habit.Id;
-                    dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.InProgress, currentDay, habitId);
-                }
-                bulk.DestinationTableName = destinationTableName;
-                await bulk.WriteToServerAsync(dataTable, cancellationToken);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                return false;
             }
         }
 
-        public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
+
+        public async Task DeleteAsync(Habit habitToDelete, CancellationToken cancellationToken)
         {
-            var habitToRemove = await dbContext.Habits.FindAsync(id, cancellationToken)
-                ?? throw new InvalidOperationException("Habit not found");
-
-            dbContext.Habits.Remove(habitToRemove);
-
-            return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+            dbContext.Habits.Remove(habitToDelete);
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<bool> DeleteAllAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task DeleteAllAsync(IEnumerable<Habit> allHabits, CancellationToken cancellationToken)
         {
-            var habits = await dbContext.Habits
-                .Where(habit => habit.UserId == userId)
-                .ToListAsync(cancellationToken);
-
-            dbContext.Habits.RemoveRange(habits);
-
-            return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+            dbContext.Habits.RemoveRange(allHabits); 
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
         private static bool IsHabitMatched(DateOnly date, Habit habit)

@@ -10,17 +10,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.DeleteAccount
-{    internal sealed class DeleteAccountCommandHandler(
+{    
+    internal sealed class DeleteAccountCommandHandler(
         UserManager<User> userManager,
-        IUserAccessor userAccessor) : IRequestHandler<DeleteAccountCommand, bool>
+        IUserAccessor userAccessor) : IRequestHandler<DeleteAccountCommand, IdentityResult>
     {
-        public async Task<bool> Handle(DeleteAccountCommand command, CancellationToken cancellationToken)
+        public async Task<IdentityResult> Handle(DeleteAccountCommand command, CancellationToken cancellationToken)
         {
-            var user = await userAccessor.GetCurrentUser()
-                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "User not found");
+                var user = await userAccessor.GetCurrentUser();
+                if (user is null)
+                    return IdentityResult.Failed(new IdentityError { Code = "CurrentUserNotFound", Description = "Cannot find current user" });
 
-            var result = await userManager.DeleteAsync(user);
-            return result.Succeeded;
+                else return await userManager.DeleteAsync(user);     
         }
     }
 }

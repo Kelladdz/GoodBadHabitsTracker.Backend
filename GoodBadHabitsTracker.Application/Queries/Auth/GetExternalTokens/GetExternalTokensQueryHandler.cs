@@ -3,24 +3,30 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using GoodBadHabitsTracker.Application.DTOs.Response;
+using LanguageExt.Common;
+using GoodBadHabitsTracker.Application.Exceptions;
+using System.Net;
 
 namespace GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens
 {
     internal sealed class GetExternalTokensQueryHandler(
         IHttpClientFactory httpClientFactory,
-        IConfiguration configuration) : IRequestHandler<GetExternalTokensQuery, GetExternalTokensResponse>
+        IConfiguration configuration) : IRequestHandler<GetExternalTokensQuery, Result<GetExternalTokensResponse>>
     {
-        public async Task<GetExternalTokensResponse> Handle(GetExternalTokensQuery query, CancellationToken cancellationToken)
+        public async Task<Result<GetExternalTokensResponse>> Handle(GetExternalTokensQuery query, CancellationToken cancellationToken)
         {
-            if (query.Request is null) throw new HttpRequestException("Request cannot be null.");
+            if (query.Request is null) 
+                return new Result<GetExternalTokensResponse>(new AppException(HttpStatusCode.BadRequest, "Request cannot be null."));
 
             if (query.Request.GrantType is null ||
                 query.Request.Code is null ||
                 query.Request.RedirectUri is null ||
                 query.Request.ClientId is null ||
-                query.Request.CodeVerifier is null) throw new HttpRequestException("Any request data cannot be null.");
+                query.Request.CodeVerifier is null)
+                 return new Result<GetExternalTokensResponse>(new AppException(HttpStatusCode.BadRequest, "Any request data cannot be null."));
 
-            if (query.Provider is null || (query.Provider != "Google" && query.Provider != "Facebook")) throw new HttpRequestException("Provider is not correct.");
+            if (query.Provider is null || (query.Provider != "Google" && query.Provider != "Facebook"))
+                return new Result<GetExternalTokensResponse>(new AppException(HttpStatusCode.BadRequest, "Provider is not correct."));
 
             var client = httpClientFactory.CreateClient();
             var values = new Dictionary<string, string>
@@ -35,13 +41,15 @@ namespace GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var response = await client.PostAsync("https://dev-d3sgzf7qkeuvnndt.eu.auth0.com/oauth/token", new FormUrlEncodedContent(values), cancellationToken);
-            if (!response.IsSuccessStatusCode) throw new HttpRequestException("Response is not successful.");
+            if (!response.IsSuccessStatusCode)
+                return new Result<GetExternalTokensResponse>(new AppException(response.StatusCode, "Response is not successful."));
 
-            var responseString = await response.Content.ReadAsStringAsync()
-                ?? throw new InvalidOperationException("Response string cannot be null.");
+            var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
+            
 
-            var jsonDocument = JsonDocument.Parse(responseString)
-                ?? throw new JsonException("Json document cannot be null.");
+            var jsonDocument = JsonDocument.Parse(responseString);
+            if (jsonDocument is null)
+                return new Result<GetExternalTokensResponse>(new AppException(HttpStatusCode.BadRequest, "Json document cannot be null."));
 
             var getExternalTokensResponse = new GetExternalTokensResponse
             {
@@ -56,7 +64,7 @@ namespace GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens
             if (jsonDocument.RootElement.TryGetProperty("refresh_token", out JsonElement json))
                 getExternalTokensResponse.RefreshToken = json.GetString();
 
-            return getExternalTokensResponse;
+            return new Result<GetExternalTokensResponse>(getExternalTokensResponse);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace GoodBadHabitsTracker.Core.Interfaces
         string GenerateToken(ClaimsIdentity claimsIdentity, DateTime expiry);
         string GenerateAccessToken(UserSession userSession, out string userFingerprint);
         string GenerateRefreshToken(UserSession userSession);
+        string GenerateUserFingerprint();
         string GenerateUserFingerprintHash(string userFingerprint);
         ClaimsPrincipal ValidateAndGetPrincipalFromToken(string accessToken);
         IEnumerable<Claim> GetClaimsFromToken(string token);

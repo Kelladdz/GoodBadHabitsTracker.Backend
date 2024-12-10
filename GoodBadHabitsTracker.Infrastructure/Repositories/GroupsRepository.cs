@@ -3,61 +3,40 @@ using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Infrastructure.Persistance;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace GoodBadHabitsTracker.Infrastructure.Repositories
 {
     public sealed class GroupsRepository(HabitsDbContext dbContext) : IGroupsRepository
     {
+        public async Task<Group?> FindAsync(Guid id, CancellationToken cancellationToken)
+            => await dbContext.Groups
+                        .FindAsync(id, cancellationToken);
         public async Task<Group?> ReadByIdAsync(Guid id, CancellationToken cancellationToken)
-        {
-            var group = await dbContext.Groups
-                    .Include(x => x.Habits)
-                    .AsNoTracking()
-                    .AsSplitQuery()
-                    .FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
+            => await dbContext.Groups
+                        .Include(x => x.Habits)
+                        .AsNoTracking()
+                        .AsSplitQuery()
+                        .FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
 
-            return group;
-        }
         public async Task<IEnumerable<Group>> ReadAllAsync(Guid userId, CancellationToken cancellationToken)
+            => await dbContext.Groups
+                        .Where(g => g.UserId == userId)
+                        .AsNoTracking()
+                        .ToListAsync(cancellationToken);
+        public async Task InsertAsync(Group groupToInsert, CancellationToken cancellationToken)
         {
-            var groups = await dbContext.Groups
-                    .Where(g => g.UserId == userId)
-                    .AsNoTracking()
-                    .ToListAsync(cancellationToken);
-
-            return groups;
-        }
-        public async Task<Group?> InsertAsync(Group groupToInsert, Guid userId, CancellationToken cancellationToken)
-        {
-            var newGroup = new Group
-            {
-                Name = groupToInsert.Name,
-                UserId = userId,
-            };
-
-            dbContext.Groups.Add(newGroup);
-            return await dbContext.SaveChangesAsync(cancellationToken) > 0
-                ? newGroup : null;
+            dbContext.Groups.Add(groupToInsert);
+            await dbContext.SaveChangesAsync(cancellationToken);
         } 
-        public async Task<bool> UpdateAsync(JsonPatchDocument<Group> document, Guid id, CancellationToken cancellationToken)
+        public async Task UpdateAsync(JsonPatchDocument document, Group groupToUpdate, CancellationToken cancellationToken)
         {
-            var groupToUpdate = await dbContext.Groups
-                .FindAsync(id, cancellationToken)
-                ?? throw new InvalidOperationException("Group not found");
-
             document.ApplyTo(groupToUpdate);
-
-            return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
-        public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
+        public async Task DeleteAsync(Group groupToDelete, CancellationToken cancellationToken)
         {
-            var groupToRemove = await dbContext.Groups.FindAsync(id, cancellationToken)
-                ?? throw new InvalidOperationException("Group not found");
-
-            dbContext.Groups.Remove(groupToRemove);
-
-            return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+            dbContext.Groups.Remove(groupToDelete);
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
-    }
+    } 
 }

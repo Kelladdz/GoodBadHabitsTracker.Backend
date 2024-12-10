@@ -8,7 +8,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Configurations
         public const string Schemes = "Bearer";
         public string? Issuer { get; set; }
         public string? Subject { get; set; }
-        public string? Audience { get; set; }
+        public List<string>? Audience { get; set; }
         public DateTime NotBefore => DateTime.UtcNow;
         public DateTime IssuedAt => DateTime.UtcNow;
         public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(15);

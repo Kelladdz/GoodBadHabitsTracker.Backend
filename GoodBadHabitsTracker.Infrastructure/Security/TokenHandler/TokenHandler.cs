@@ -21,7 +21,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Security.TokenHandler
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = _jwtSettings.Issuer,
-                Audience = _jwtSettings.Audience,
+                Audience = _jwtSettings.Audience[0],
                 SigningCredentials = signingCredentials,
                 Expires = expiry,
                 NotBefore = _jwtSettings.NotBefore,
@@ -67,7 +67,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Security.TokenHandler
                 ValidateIssuer = true,
                 ValidIssuer = _jwtSettings.Issuer,
                 ValidateAudience = true,
-                ValidAudience = _jwtSettings.Audience,
+                ValidAudiences = _jwtSettings.Audience,
                 ValidateLifetime = false,
             };
 
@@ -88,7 +88,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Security.TokenHandler
             return claims;
         }
 
-        private static string GenerateUserFingerprint()
+        public string GenerateUserFingerprint()
         {
             string userFingerprint;
             var randomString = new byte[32];

@@ -1,5 +1,4 @@
-﻿using GoodBadHabitsTracker.Core.Models;
-using GoodBadHabitsTracker.Application.Abstractions.Messaging;
+﻿using GoodBadHabitsTracker.Application.Abstractions.Messaging;
 using GoodBadHabitsTracker.Application.DTOs.Request;
 using GoodBadHabitsTracker.Application.DTOs.Response;
 

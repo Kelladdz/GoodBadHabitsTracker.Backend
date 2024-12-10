@@ -29,7 +29,11 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Key").Value!));
                     var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
                     var issuer = configuration["JwtSettings:Issuer"];
-                    var audience = configuration["JwtSettings:Audience"];
+                    var audiences = new List<string>();
+                    foreach (var audience in configuration.GetSection("JwtSettings:Audience").GetChildren())
+                    {
+                        audiences.Add(audience.Value!);
+                    }
 
 
                     var tokenValidationParameters = new TokenValidationParameters
@@ -39,7 +43,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                         ValidateIssuer = true,
                         ValidIssuer = issuer,
                         ValidateAudience = true,
-                        ValidAudience = audience,
+                        ValidAudiences = audiences,
                         ValidateLifetime = true,
                     };
 
@@ -84,7 +88,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddJwtBearer("Auth0Login", options =>
                 {
                     options.UseSecurityTokenValidators = true;
-                    options.MetadataAddress = configuration["JwtSettings:Configuration"];
+                    options.MetadataAddress = configuration["JwtSettings:Configuration"]!;
                     options.Authority = configuration["JwtSettings:Auth0Issuer"];
                     var audiences = new List<string>();
                     foreach (var audience in configuration.GetSection("JwtSettings:Auth0Audience").GetChildren())
@@ -95,7 +99,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     {
                         ValidIssuer = configuration["JwtSettings:Auth0Issuer"],
                         ValidAudiences = audiences,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Auth0Key"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Auth0Key"]!)),
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateIssuerSigningKey = true,
@@ -108,7 +112,27 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     };
                 })
                 .AddCookie("Identity.External")
-                .AddCookie("Identity.Application");
+                .AddCookie("Identity.Application")
+                .AddPolicyScheme("Internal", "External", options =>
+                {
+                    options.ForwardDefaultSelector = context =>
+                    {
+                        string authorization = context.Request.Headers[HeaderNames.Authorization]!;
+                        if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
+                        {
+                            var token = authorization.Substring("Bearer ".Length).Trim();
+                            var jwtHandler = new JwtSecurityTokenHandler();
+
+                            if (jwtHandler.CanReadToken(token))
+                            {
+                                var jwtToken = jwtHandler.ReadJwtToken(token);
+                                return jwtToken.Issuer.Equals(configuration["JwtSettings:Issuer"])
+                                    ? "PasswordLogin" : "Auth0Login";
+                            }
+                        }
+                        return "PasswordLogin";
+                    };
+                }); 
         }
     }
 }

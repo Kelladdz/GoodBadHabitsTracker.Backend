@@ -1,4 +1,5 @@
-﻿using Bogus;
+﻿using Amazon.Runtime.Internal.Transform;
+using Bogus;
 using GoodBadHabitsTracker.Application.DTOs.Request;
 using GoodBadHabitsTracker.Application.DTOs.Response;
 using GoodBadHabitsTracker.Core.Enums;
@@ -11,11 +12,11 @@ using System.Text;
 
 namespace GoodBadHabitsTracker.TestMisc
 {
-    public sealed class DataGenerator()
+    public static class DataGenerator
     {
-        private readonly Random random = new();
+        private static readonly Random random = new();
 
-        public Habit SeedHabit()
+        public static Habit SeedHabit()
         {
             var habitGenerator = new Faker<Habit>()
                 .RuleFor(h => h.Id, f => f.Random.Guid())
@@ -25,17 +26,21 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? false : f.Random.Bool())
                 .RuleFor(h => h.Quantity, (f, h) => h.HabitType != HabitTypes.Quit ? f.Random.Int(1, 3600) : null)
-                .RuleFor(h => h.Frequency, (f, h) => h.HabitType != HabitTypes.Quit ? f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth) : Frequencies.NotApplicable)
-                .RuleFor(h => h.RepeatMode, (f, h) => h.HabitType == HabitTypes.Good ? f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval) : RepeatModes.NotApplicable)
+                .RuleFor(h => h.Frequency, (f, h) => h.HabitType != HabitTypes.Quit ? f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth) : Frequencies.NonApplicable)
+                .RuleFor(h => h.RepeatMode, (f, h) => h.HabitType == HabitTypes.Good ? f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval) : RepeatModes.NonApplicable)
                 .RuleFor(h => h.RepeatDaysOfWeek, (f, h) => h.RepeatMode == RepeatModes.Daily ? Enumerable.Range(1, random.Next(2, 7)).Select(x => f.PickRandom(Enum.GetValues<DayOfWeek>())).ToList() : [])
                 .RuleFor(h => h.RepeatDaysOfMonth, (f, h) => h.RepeatMode == RepeatModes.Monthly ? Enumerable.Range(1, random.Next(2, 28)).Select(x => f.Random.Int(1, 28)).ToList() : [])
                 .RuleFor(h => h.RepeatInterval, (f, h) => h.RepeatMode == RepeatModes.Interval ? f.Random.Int(2, 7) : 0)
-                .RuleFor(h => h.ReminderTimes, (f, h) => h.HabitType == HabitTypes.Good ? Enumerable.Range(0, random.Next(1, 5)).Select(x => f.Date.SoonTimeOnly()).ToList() : []);
+                .RuleFor(h => h.ReminderTimes, (f, h) => h.HabitType == HabitTypes.Good ? Enumerable.Range(0, random.Next(1, 5)).Select(x => f.Date.SoonTimeOnly()).ToList() : [])
+                .RuleFor(h => h.UserId, f => f.Random.Guid())
+                .RuleFor(h => h.GroupId, f => f.Random.Guid())
+                .RuleFor(h => h.Comments, f => new List<Comment>())
+                .RuleFor(h => h.DayResults, f => new List<DayResult>());
             var habit = habitGenerator.Generate();
             return habit;
         }
 
-        public List<Habit> SeedHabitsCollection(int number)
+        public static List<Habit> SeedHabitsCollection(int number)
         {
             var habitGenerator = new Faker<Habit>()
                 .RuleFor(h => h.Id, f => f.Random.Guid())
@@ -45,8 +50,8 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? false : f.Random.Bool())
                 .RuleFor(h => h.Quantity, (f, h) => h.HabitType != HabitTypes.Quit ? f.Random.Int(1, 3600) : null)
-                .RuleFor(h => h.Frequency, (f, h) => h.HabitType != HabitTypes.Quit ? f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth) : Frequencies.NotApplicable)
-                .RuleFor(h => h.RepeatMode, (f, h) => h.HabitType == HabitTypes.Good ? f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval) : RepeatModes.NotApplicable)
+                .RuleFor(h => h.Frequency, (f, h) => h.HabitType != HabitTypes.Quit ? f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth) : Frequencies.NonApplicable)
+                .RuleFor(h => h.RepeatMode, (f, h) => h.HabitType == HabitTypes.Good ? f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval) : RepeatModes.NonApplicable)
                 .RuleFor(h => h.RepeatDaysOfWeek, (f, h) => h.RepeatMode == RepeatModes.Daily ? Enumerable.Range(1, random.Next(2, 7)).Select(x => f.PickRandom(Enum.GetValues<DayOfWeek>())).ToList() : [])
                 .RuleFor(h => h.RepeatDaysOfMonth, (f, h) => h.RepeatMode == RepeatModes.Monthly ? Enumerable.Range(1, random.Next(2, 28)).Select(x => f.Random.Int(1, 28)).ToList() : [])
                 .RuleFor(h => h.RepeatInterval, (f, h) => h.RepeatMode == RepeatModes.Interval ? f.Random.Int(2, 7) : 0)
@@ -55,13 +60,13 @@ namespace GoodBadHabitsTracker.TestMisc
             return habits;
         }
 
-        public GenericResponse<Habit> SeedHabitResponse()
+        public static GenericResponse<Habit> SeedHabitResponse()
         {
             var habit = SeedHabit();
             return new GenericResponse<Habit>(habit);
         }
 
-        public List<GenericResponse<Habit>> SeedHabitResponseCollection()
+        public static List<GenericResponse<Habit>> SeedHabitResponseCollection()
         {
             var count = random.Next(1, 10);
             var habitGenerator = new Faker<Habit>()
@@ -72,8 +77,8 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
                 .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? false : f.Random.Bool())
                 .RuleFor(h => h.Quantity, (f, h) => h.HabitType != HabitTypes.Quit ? f.Random.Int(1, 3600) : null)
-                .RuleFor(h => h.Frequency, (f, h) => h.HabitType != HabitTypes.Quit ? f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth) : Frequencies.NotApplicable)
-                .RuleFor(h => h.RepeatMode, (f, h) => h.HabitType == HabitTypes.Good ? f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval) : RepeatModes.NotApplicable)
+                .RuleFor(h => h.Frequency, (f, h) => h.HabitType != HabitTypes.Quit ? f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth) : Frequencies.NonApplicable)
+                .RuleFor(h => h.RepeatMode, (f, h) => h.HabitType == HabitTypes.Good ? f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval) : RepeatModes.NonApplicable)
                 .RuleFor(h => h.RepeatDaysOfWeek, (f, h) => h.RepeatMode == RepeatModes.Daily ? Enumerable.Range(1, random.Next(2, 7)).Select(x => f.PickRandom(Enum.GetValues<DayOfWeek>())).ToList() : [])
                 .RuleFor(h => h.RepeatDaysOfMonth, (f, h) => h.RepeatMode == RepeatModes.Monthly ? Enumerable.Range(1, random.Next(2, 28)).Select(x => f.Random.Int(1, 28)).ToList() : [])
                 .RuleFor(h => h.RepeatInterval, (f, h) => h.RepeatMode == RepeatModes.Interval ? f.Random.Int(2, 7) : 0)
@@ -88,7 +93,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return habitsResponse;
         }
 
-        public HabitRequest SeedHabitRequest()
+        public static HabitRequest SeedHabitRequest()
         {
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
@@ -107,7 +112,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return habit;
         }
 
-        public HabitRequest SeedGoodHabitRequest()
+        public static HabitRequest SeedGoodHabitRequest()
         {
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
@@ -126,7 +131,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return goodHabit;
         }
 
-        public HabitRequest SeedHabitInDailyRepeatModeRequest()
+        public static HabitRequest SeedHabitInDailyRepeatModeRequest()
         {
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
@@ -145,7 +150,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return dailyHabit;
         }
 
-        public HabitRequest SeedHabitInMonthlyRepeatModeRequest()
+        public static HabitRequest SeedHabitInMonthlyRepeatModeRequest()
         {
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
@@ -164,7 +169,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return monthlyHabit;
         }
 
-        public HabitRequest SeedHabitInIntervalRepeatModeRequest()
+        public static HabitRequest SeedHabitInIntervalRepeatModeRequest()
         {
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
@@ -183,7 +188,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return intervalHabit;
         }
 
-        public HabitRequest SeedLimitHabitRequest()
+        public static HabitRequest SeedLimitHabitRequest()
         {
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
@@ -202,7 +207,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return limitHabit;
         }
 
-        public HabitRequest SeedQuitHabitRequest()
+        public static HabitRequest SeedQuitHabitRequest()
         {
             var habitRequestGenerator = new Faker<HabitRequest>()
                 .RuleFor(h => h.Name, f => f.Name.JobTitle())
@@ -221,7 +226,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return quitHabit;
         }
 
-        public Group SeedGroup()
+        public static Group SeedGroup()
         {
             var habitRequestGenerator = new Faker<Group>()
                 .RuleFor(g => g.Id, f => f.Random.Guid())
@@ -232,13 +237,13 @@ namespace GoodBadHabitsTracker.TestMisc
             return group;
         }
 
-        public JsonPatchDocument<Habit> SeedHabitJsonPatchDocument()
+        public static JsonPatchDocument SeedHabitJsonPatchDocument()
         {
-            var jsonPatchDocumentGenerator = new Faker<JsonPatchDocument<Habit>>()
+            var jsonPatchDocumentGenerator = new Faker<JsonPatchDocument>()
                 .RuleFor(h => h.Operations, (f, h) =>
                 {
 
-                    var operation = new Operation<Habit>()
+                    var operation = new Operation()
                     {
                         path = "/name",
                         op = "replace",
@@ -253,17 +258,17 @@ namespace GoodBadHabitsTracker.TestMisc
             return jsonPatchDocument;
         }
 
-        public JsonPatchDocument<Group> SeedGroupJsonPatchDocument()
+        public static JsonPatchDocument SeedGroupJsonPatchDocument()
         {
-            var jsonPatchDocumentGenerator = new Faker<JsonPatchDocument<Group>>()
+            var jsonPatchDocumentGenerator = new Faker<JsonPatchDocument>()
                 .RuleFor(h => h.Operations, (f, h) =>
                 {
 
-                    var operation = new Operation<Group>()
+                    var operation = new Operation()
                     {
                         path = "/name",
                         op = "replace",
-                        value = f.Name.JobTitle()
+                        value = f.Random.String2(10)
                     };
                     h.Operations.Add(operation);
 
@@ -274,7 +279,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return jsonPatchDocument;
         }
 
-        public string SeedRandomString(int number)
+        public static string SeedRandomString(int number)
         {
             var randomStringGenerator = new Faker<string>()
                 .CustomInstantiator(f => f.Random.String2(number));
@@ -283,7 +288,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return randomString;
         }
 
-        public UserSession SeedUserSession()
+        public static UserSession SeedUserSession()
         {
             var userName = new Faker<string>().CustomInstantiator(f => f.Internet.UserName()).Generate();
             var email = new Faker<string>().CustomInstantiator(f => f.Internet.Email()).Generate();
@@ -291,7 +296,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return new UserSession(Guid.NewGuid(), userName, email, ["User"]);
         }
 
-        public Dictionary<string, string> SeedConfiguration()
+        public static Dictionary<string, string> SeedConfiguration()
         {
             var configurationGenerator = new Faker<Dictionary<string, string>>()
                 .CustomInstantiator(f => new Dictionary<string, string>
@@ -304,7 +309,7 @@ namespace GoodBadHabitsTracker.TestMisc
             return configurationGenerator.Generate();
         }
 
-        public string SeedAccessToken(string email)
+        public static string SeedAccessToken()
         {
             var headerGenerator = new Faker<JwtHeader>()
                 .CustomInstantiator(f => new JwtHeader()
@@ -315,18 +320,55 @@ namespace GoodBadHabitsTracker.TestMisc
             var payloadGenerator = new Faker<JwtPayload>()
                 .CustomInstantiator(f => new JwtPayload()
                 {
-                    { JwtRegisteredClaimNames.Sub, f.Name.FirstName() },
-                    { JwtRegisteredClaimNames.Name, f.Name.LastName() },
-                    { JwtRegisteredClaimNames.Email, email },
+                    { JwtRegisteredClaimNames.Sub, Guid.NewGuid().ToString()},
+                    { JwtRegisteredClaimNames.Name, f.Internet.UserName() },
+                    { JwtRegisteredClaimNames.Email, f.Internet.Email() },
                     { JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString() },
                     { "roles", "User" },
                     { "userFingerprint", f.Random.String2(32) },
                     { JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() },
-                    { "authenticationMethod", "EmailPassword" },
                     { "email_verified", f.Internet.Email() },
                     { "iss", $"{f.Internet.Url}:{f.Internet.Port}" },
                     { "aud", $"{f.Internet.Url}:{f.Internet.Port}" },
-                    { "exp", DateTime.UtcNow },
+                    { "exp", new DateTimeOffset(DateTime.UtcNow.AddMinutes(15)).ToUnixTimeSeconds() },
+                });
+
+            var signatureGenerator = new Faker<string>()
+                .CustomInstantiator(f => f.Random.String2(32));
+
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(new Faker<string>()
+                .CustomInstantiator(f => f.Random.String2(32))));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var header = (JwtHeader)headerGenerator;
+            var payload = (JwtPayload)payloadGenerator;
+
+
+            var token = new JwtSecurityToken(header, payload);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.WriteToken(token);
+            return jwtToken.ToString();
+        }
+        public static string SeedRefreshToken()
+        {
+            var headerGenerator = new Faker<JwtHeader>()
+                .CustomInstantiator(f => new JwtHeader()
+                {
+                    { "alg", "RS256" },
+                    { "typ", "JWT" }
+                });
+            var payloadGenerator = new Faker<JwtPayload>()
+                .CustomInstantiator(f => new JwtPayload()
+                {
+                    { JwtRegisteredClaimNames.Sub, Guid.NewGuid().ToString()},
+                    { JwtRegisteredClaimNames.Name, f.Internet.UserName() },
+                    { JwtRegisteredClaimNames.Email, f.Internet.Email() },
+                    { JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString() },
+                    { "roles", "User" },
+                    { JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() },
+                    { "email_verified", f.Internet.Email() },
+                    { "iss", $"{f.Internet.Url}:{f.Internet.Port}" },
+                    { "aud", $"{f.Internet.Url}:{f.Internet.Port}" },
+                    { "exp", new DateTimeOffset(DateTime.UtcNow.AddDays(30)).ToUnixTimeSeconds() },
                 });
 
             var signatureGenerator = new Faker<string>()
@@ -345,7 +387,54 @@ namespace GoodBadHabitsTracker.TestMisc
             return jwtToken.ToString();
         }
 
-        public LoginRequest SeedLoginRequest()
+        public static string SeedIdToken(string email)
+        {
+            var givenName = new Faker<string>().CustomInstantiator(f => f.Name.FirstName()).Generate();
+            var familyName = new Faker<string>().CustomInstantiator(f => f.Name.LastName()).Generate();
+            var name = givenName + " " + familyName;
+            var headerGenerator = new Faker<JwtHeader>()
+                .CustomInstantiator(f => new JwtHeader()
+                {
+                    { "alg", "RS256" },
+                    { "typ", "JWT" },
+                    { "kid", f.Random.String2(21) }
+                });
+            var payloadGenerator = new Faker<JwtPayload>()
+                .CustomInstantiator(f => new JwtPayload()
+                {
+                    { "given_name", givenName },
+                    { "family_name", familyName },
+                    {"nickname", f.Internet.UserName() },
+                    { JwtRegisteredClaimNames.Name, name },
+                    {"picture", f.Internet.Avatar() },
+                    { "updated_at", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ") },
+                    { JwtRegisteredClaimNames.Email, email },
+                    {"email_verified", true },
+                    { "iss", $"{f.Internet.Url}:{f.Internet.Port}" },
+                    { "aud", $"{f.Internet.Url}:{f.Internet.Port}" },
+                    { JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() },
+                    { "exp", new DateTimeOffset(DateTime.UtcNow.AddMinutes(15)).ToUnixTimeSeconds() },
+                    { JwtRegisteredClaimNames.Sub, Guid.NewGuid().ToString() },
+                    { JwtRegisteredClaimNames.Sid, Guid.NewGuid().ToString() }
+                });
+
+            var signatureGenerator = new Faker<string>()
+                .CustomInstantiator(f => f.Random.String2(32));
+
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(new Faker<string>()
+                .CustomInstantiator(f => f.Random.String2(32))));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var header = (JwtHeader)headerGenerator;
+            var payload = (JwtPayload)payloadGenerator;
+
+
+            var token = new JwtSecurityToken(header, payload);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.WriteToken(token);
+            return jwtToken.ToString();
+        }
+
+        public static LoginRequest SeedLoginRequest()
         {
             var loginRequestGenerator = new Faker<LoginRequest>()
                 .RuleFor(rr => rr.Email, f => f.Internet.Email())
@@ -353,7 +442,7 @@ namespace GoodBadHabitsTracker.TestMisc
 
             return loginRequestGenerator.Generate();
         }
-        public RegisterRequest SeedValidRegisterRequest()
+        public static RegisterRequest SeedValidRegisterRequest()
         {
             var registerRequestGenerator = new Faker<RegisterRequest>()
                 .RuleFor(rr => rr.Email, f => f.Internet.Email())
@@ -362,6 +451,56 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(rr => rr.ConfirmPassword, (f, rr) => rr.Password);
 
             return registerRequestGenerator.Generate();
+        }
+
+        public static ExternalLoginRequest SeedExternalLoginRequest()
+        {
+            var fakeEmail = new Faker<string>().CustomInstantiator(f => f.Internet.Email()).Generate();
+            var externalLoginRequestGenerator = new Faker<ExternalLoginRequest>()
+                .RuleFor(elr => elr.AccessToken, f => SeedAccessToken())
+                .RuleFor(elr => elr.ExpiresIn, f => (int)new DateTimeOffset(DateTime.UtcNow.AddMinutes(15)).ToUnixTimeSeconds())
+                .RuleFor(elr => elr.Scope, f => "openid email")
+                .RuleFor(elr => elr.IdToken, f => SeedIdToken(fakeEmail))
+                .RuleFor(elr => elr.RefreshToken, f => SeedRandomString(32))
+                .RuleFor(elr => elr.TokenType, f => "Bearer")
+                .RuleFor(elr => elr.Provider, f => "Google");
+
+            return externalLoginRequestGenerator.Generate();
+        }
+
+        public static User SeedUser()
+        {
+            var userGenerator = new Faker<User>()
+                .RuleFor(u => u.Id, f => f.Random.Guid())
+                .RuleFor(u => u.Email, f => f.Internet.Email())
+                .RuleFor(u => u.UserName, f => f.Internet.UserName())
+                .RuleFor(u => u.PasswordHash, f => f.Internet.Password())
+                .RuleFor(u => u.Habits, f => new List<Habit>())
+                .RuleFor(u => u.Groups, f => new List<Group>())
+                .RuleFor(u => u.ImageUrl, f => f.Internet.Avatar());
+
+            return userGenerator.Generate();
+        }
+
+        public static ResetPasswordRequest SeedResetPasswordRequest()
+        {
+            var resetPasswordRequestGenerator = new Faker<ResetPasswordRequest>()
+                .RuleFor(rpr => rpr.Password, f => f.Internet.Password())
+                .RuleFor(rpr => rpr.Token, f => SeedRandomString(32))
+                .RuleFor(rpr => rpr.Email, f => f.Internet.Email());
+
+            return resetPasswordRequestGenerator.Generate();
+        }
+        public static GetExternalTokensRequest SeedGetExternalTokensRequest()
+        {
+            var getExternalTokensRequestGenerator = new Faker<GetExternalTokensRequest>()
+                .RuleFor(getr => getr.GrantType, f => "authorization_code")
+                .RuleFor(getr => getr.Code, f => f.Random.String2(32))
+                .RuleFor(getr => getr.RedirectUri, f => f.Internet.Url())
+                .RuleFor(getr => getr.ClientId, f => f.Random.String2(32))
+                .RuleFor(getr => getr.CodeVerifier, f => f.Random.String2(32));
+
+            return getExternalTokensRequestGenerator.Generate();
         }
     }
 }

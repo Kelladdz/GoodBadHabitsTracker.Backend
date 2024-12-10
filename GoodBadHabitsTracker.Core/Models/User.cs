@@ -15,7 +15,7 @@ namespace GoodBadHabitsTracker.Core.Models
         public List<Habit> Habits { get; init; } = new();
         public ICollection<Group> Groups { get; init; } = new List<Group>();
 #pragma warning disable CS8765 
-        public required override string Email { get; set; }
+
 #pragma warning restore CS8765 
         public string? ImageUrl { get; set; }
     }

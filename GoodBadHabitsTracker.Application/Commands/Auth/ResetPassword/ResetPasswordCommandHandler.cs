@@ -1,24 +1,25 @@
-﻿using GoodBadHabitsTracker.Core.Models;
+﻿using GoodBadHabitsTracker.Application.Exceptions;
+using GoodBadHabitsTracker.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.ResetPassword
 {
-    internal class ResetPasswordCommandHandler(
-        UserManager<User> userManager) : IRequestHandler<ResetPasswordCommand, bool>
+    internal sealed class ResetPasswordCommandHandler(
+        UserManager<User> userManager) : IRequestHandler<ResetPasswordCommand, IdentityResult>
     {
-        public async Task<bool> Handle(ResetPasswordCommand command, CancellationToken cancellationToken)
+        public async Task<IdentityResult> Handle(ResetPasswordCommand command, CancellationToken cancellationToken)
         {
-            var email = command.Request.Email;
-            var password = command.Request.Password;
-            var token = command.Request.Token;
-            token = token.Replace("%2B", "+").Replace("%2F", "/");
+                var email = command.Request.Email;
+                var password = command.Request.Password;
+                var token = command.Request.Token;
+                token = token.Replace("%2B", "+").Replace("%2F", "/");
 
-            var user = await userManager.FindByEmailAsync(email);
-            if (user == null) return false;
-            IdentityResult result = await userManager.ResetPasswordAsync(user, token, password);
+                var user = await userManager.FindByEmailAsync(email);
+                if (user == null)
+                    return IdentityResult.Failed(new IdentityError { Code = "UserNotFoundByEmail", Description = "There is no user with this email" });
 
-            return result.Succeeded;
+                return await userManager.ResetPasswordAsync(user, token, password); 
         }
     }
 }

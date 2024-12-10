@@ -2,20 +2,20 @@
 
 namespace GoodBadHabitsTracker.Application.DTOs.Request
 {
-    public record HabitRequest
+    public class HabitRequest
     {
-        public string? Name { get; init; }
-        public HabitTypes? HabitType { get; init; }
-        public int? IconId { get; init; }
-        public DateOnly? StartDate { get; init; }
-        public bool? IsTimeBased { get; init; }
-        public int? Quantity { get; init; }
-        public Frequencies? Frequency { get; init; }
-        public RepeatModes? RepeatMode { get; init; }
-        public int[]? RepeatDaysOfMonth { get; init; }
-        public DayOfWeek[]? RepeatDaysOfWeek { get; init; }
-        public int? RepeatInterval { get; init; }
-        public TimeOnly[]? ReminderTimes { get; init; }
-        public Guid? GroupId { get; init; }
+        public string? Name { get; set; }
+        public HabitTypes? HabitType { get; set; }
+        public int? IconId { get; set; }
+        public DateOnly? StartDate { get; set; }
+        public bool? IsTimeBased { get; set; }
+        public int? Quantity { get; set; }
+        public Frequencies? Frequency { get; set; }
+        public RepeatModes? RepeatMode { get; set; }
+        public int[]? RepeatDaysOfMonth { get; set; }
+        public DayOfWeek[]? RepeatDaysOfWeek { get; set; }
+        public int? RepeatInterval { get; set; }
+        public TimeOnly[]? ReminderTimes { get; set; }
+        public Guid? GroupId { get; set; }
     }
 }

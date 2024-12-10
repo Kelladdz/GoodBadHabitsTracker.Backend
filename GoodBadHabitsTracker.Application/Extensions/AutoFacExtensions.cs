@@ -14,22 +14,23 @@ using GoodBadHabitsTracker.Application.Commands.Auth.ResetPassword;
 using GoodBadHabitsTracker.Application.Commands.Auth.ConfirmEmail;
 using GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin;
 using GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens;
-using GoodBadHabitsTracker.Application.Commands;
-using GoodBadHabitsTracker.Application.Queries;
-
-using Amazon.S3;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using GoodBadHabitsTracker.Infrastructure.Configurations;
-using Amazon;
-using GoodBadHabitsTracker.Application.Queries.Generic.GetAll;
 using GoodBadHabitsTracker.Application.Commands.Auth.DeleteAccount;
-using FluentValidation;
-using GoodBadHabitsTracker.Application.Commands.Habits.Create;
-using GoodBadHabitsTracker.Application.Commands.Groups.Create;
 using GoodBadHabitsTracker.Application.Commands.Habits.DeleteAll;
 using GoodBadHabitsTracker.Application.Commands.Habits.DeleteAllProgress;
-using GoodBadHabitsTracker.Application.Commands.Habits.PostInProgressToday;
+using GoodBadHabitsTracker.Application.Commands.Groups.Create;
+using GoodBadHabitsTracker.Application.Commands.Groups.Update;
+using GoodBadHabitsTracker.Application.Commands.Habits.Delete;
+using GoodBadHabitsTracker.Application.Commands.Habits.Update;
+using GoodBadHabitsTracker.Application.Commands.Habits.Create;
+using GoodBadHabitsTracker.Application.Queries.Habits.ReadAll;
+using GoodBadHabitsTracker.Application.Queries.Habits.ReadById;
+using GoodBadHabitsTracker.Application.Queries.Habits.Search;
+using GoodBadHabitsTracker.Application.Queries.Groups.ReadById;
+using GoodBadHabitsTracker.Application.Queries.Groups.ReadAll;
+using GoodBadHabitsTracker.Application.Commands.Groups.Delete;
+using GoodBadHabitsTracker.Core.Interfaces;
+using GoodBadHabitsTracker.Application.Utils;
+
 
 namespace GoodBadHabitsTracker.Application.Extensions
 {
@@ -41,15 +42,6 @@ namespace GoodBadHabitsTracker.Application.Extensions
                 .Build();
             builder.RegisterMediatR(mediatrConfiguration);
             builder.RegisterGeneric(typeof(ValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-/*            builder.RegisterGeneric(typeof(ReadByIdQueryHandler<>)).AsImplementedInterfaces();
-            builder.RegisterGeneric(typeof(GetAllQueryHandler<>)).AsImplementedInterfaces();
-            builder.RegisterGeneric(typeof(SearchQueryHandler<>)).AsImplementedInterfaces();
-            builder.RegisterGeneric(typeof(InsertCommandHandler<,>)).AsImplementedInterfaces();
-            builder.RegisterGeneric(typeof(UpdateCommandHandler<>)).AsImplementedInterfaces();
-            builder.RegisterGeneric(typeof(DeleteCommandHandler<>)).AsImplementedInterfaces();
-            builder.RegisterGeneric(typeof(SearchQueryValidator<>)).As(typeof(IValidator<>)).InstancePerLifetimeScope();
-            builder.RegisterGeneric(typeof(InsertCommandValidator<,>)).As(typeof(IValidator<>)).InstancePerLifetimeScope();
-            builder.RegisterGeneric(typeof(UpdateCommandValidator<>)).As(typeof(IValidator<>)).InstancePerLifetimeScope();*/
             builder.RegisterType<LoginCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<RegisterCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<ConfirmEmailCommandHandler>().AsImplementedInterfaces();
@@ -59,34 +51,39 @@ namespace GoodBadHabitsTracker.Application.Extensions
             builder.RegisterType<ExternalLoginCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<GetExternalTokensQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<DeleteAccountCommandHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Habits.Create.CreateCommandValidator>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Groups.Create.CreateCommandValidator>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Habits.Update.UpdateCommandValidator>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Groups.Update.UpdateCommandValidator>().AsImplementedInterfaces();
-            builder.RegisterType<Queries.Habits.ReadAll.ReadAllQueryHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Queries.Habits.ReadById.ReadByIdQueryHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Queries.Habits.Search.SearchQueryHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Habits.Create.CreateCommandHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Habits.Update.UpdateCommandHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Habits.Delete.DeleteCommandHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Queries.Groups.ReadAll.ReadAllQueryHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Queries.Groups.ReadById.ReadByIdQueryHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Groups.Create.CreateCommandHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Groups.Update.UpdateCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<CreateHabitCommandValidator>().AsImplementedInterfaces();
+            builder.RegisterType<CreateGroupCommandValidator>().AsImplementedInterfaces();
+            builder.RegisterType<UpdateHabitCommandValidator>().AsImplementedInterfaces();
+            builder.RegisterType<UpdateGroupCommandValidator>().AsImplementedInterfaces();
+            builder.RegisterType<ReadAllHabitsQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<ReadHabitByIdQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<SearchHabitsQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<CreateHabitCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<UpdateHabitCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<DeleteHabitCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<ReadAllGroupsQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<ReadGroupByIdQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<CreateGroupCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<UpdateGroupCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<DeleteAllProgressCommandHandler>().AsImplementedInterfaces();
-            builder.RegisterType<Commands.Groups.Delete.DeleteCommandHandler>().AsImplementedInterfaces();
-            builder.RegisterType<DeleteAllCommandHandler>().AsImplementedInterfaces();
-            builder.RegisterType<PostInProgressTodayCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<DeleteGroupCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<DeleteAllHabitsCommandHandler>().AsImplementedInterfaces();
             return builder;
         }
 
         public static ContainerBuilder BuildAutoMapper(this ContainerBuilder builder)
         {
-            builder.Register<AutoMapper.IConfigurationProvider>(ctx => new MapperConfiguration(cfg => cfg.AddProfile(typeof(HabitsMappingProfile))))
+            builder.Register<IConfigurationProvider>(ctx => new MapperConfiguration(cfg => cfg.AddProfile(typeof(HabitsMappingProfile))))
                 .SingleInstance();
-            builder.Register<IMapper>(ctx => new Mapper(ctx.Resolve<AutoMapper.IConfigurationProvider>(), ctx.Resolve))
+            builder.Register<IMapper>(ctx => new Mapper(ctx.Resolve<IConfigurationProvider>(), ctx.Resolve))
                 .InstancePerDependency();
 
+            return builder;
+        }
+
+        public static ContainerBuilder BuildCustomServices(this ContainerBuilder builder)
+        {
+            builder.RegisterType<UserAccessor>().AsImplementedInterfaces();
             return builder;
         }
     }

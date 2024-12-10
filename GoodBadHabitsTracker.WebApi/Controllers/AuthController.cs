@@ -63,16 +63,23 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         [HttpPost("external-login")]
         public async Task<IActionResult> ExternalLogin(ExternalLoginRequest request, CancellationToken cancellationToken)
         {
-            var response = await mediator.Send(new ExternalLoginCommand(request), cancellationToken);
-            return Ok(response);
+            var result = await mediator.Send(new ExternalLoginCommand(request), cancellationToken);
+            return result.Succeeded
+                ? Ok()
+                : Unauthorized(result.Errors);
         }
 
 
         [HttpPost("confirm-email")]
         public async Task<IActionResult> ConfirmEmail
             ([FromBody] ConfirmEmailRequest request, CancellationToken cancellationToken)
-                => await mediator.Send(new ConfirmEmailCommand(request), cancellationToken)
-            ? NoContent() : BadRequest("Something goes wrong");
+        {
+            var result = await mediator.Send(new ConfirmEmailCommand(request), cancellationToken);
+
+            return result.Succeeded
+                ? NoContent()
+                : Unauthorized(result.Errors);
+        }
 
         [HttpPost("forget-password")]
         public async Task<IActionResult> ForgetPassword
@@ -98,7 +105,12 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
         [HttpPatch("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken)
-            => await mediator.Send(new ResetPasswordCommand(request), cancellationToken) ? NoContent() : BadRequest("Somenthing goes wrong"); 
+        {
+            var result = await mediator.Send(new ResetPasswordCommand(request), cancellationToken);
+            return result.Succeeded
+                ? NoContent()
+                : BadRequest(result.Errors);
+        }
 
         [HttpPost("token/refresh")]
         public async Task<IActionResult> RefreshToken
@@ -128,15 +140,21 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         [HttpPost("token")]
         public async Task<IActionResult> GetExternalTokens([FromBody] GetExternalTokensRequest request, [FromQuery] string provider, CancellationToken cancellationToken)
         {
-            var response = await mediator.Send(new GetExternalTokensQuery(request, provider), cancellationToken);
-            return response is not null ? Ok(response) : BadRequest("Something goes wrong");
+            var result = await mediator.Send(new GetExternalTokensQuery(request, provider), cancellationToken);
+
+            return result.Match<IActionResult>(
+                res => Ok(res),
+                error => BadRequest(error));
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteAccount(CancellationToken cancellationToken)
         {
-            return await mediator.Send(new DeleteAccountCommand(), cancellationToken) 
-                ? NoContent() : BadRequest("Something goes wrong");
+            var result = await mediator.Send(new DeleteAccountCommand(), cancellationToken);
+
+            return result.Succeeded 
+                ? NoContent() 
+                : BadRequest(result.Errors);
         }
     }
 }
