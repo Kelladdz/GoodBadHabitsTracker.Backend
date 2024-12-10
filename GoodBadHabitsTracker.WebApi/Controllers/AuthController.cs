@@ -30,7 +30,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
                 {
                     return BadRequest("Failed to generate confirmation link");
                 }
-                await emailSender.SendConfirmationLinkAsync(response.User, link);
+                emailSender.SendConfirmationLink(response.User, link);
 
                 return CreatedAtAction(nameof(Register), new { id = response!.User.Id }, response);
             }
@@ -93,7 +93,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
                 {
                     return BadRequest("Failed to generate reset password link");
                 }
-                await emailSender.SendPasswordResetLinkAsync(response.User, link);
+                emailSender.SendPasswordResetLink(response.User, link);
                 return Ok(new
                 {
                     token = response.Token,

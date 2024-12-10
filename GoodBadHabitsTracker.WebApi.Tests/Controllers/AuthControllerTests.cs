@@ -1,49 +1,42 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using FluentAssertions;
-using Microsoft.AspNetCore.Identity;
-using GoodBadHabitsTracker.Core.Models;
 using MediatR;
 using GoodBadHabitsTracker.WebApi.Controllers;
-using GoodBadHabitsTracker.TestMisc;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Win32;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-
-using GoodBadHabitsTracker.Application.Exceptions;
-using System.Net;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Request;
-using GoodBadHabitsTracker.Application.DTOs.Auth.Response;
-using System.Net.Http;
-using GoodBadHabitsTracker.Infrastructure.Configurations;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
-using FluentAssertions.Common;
-using System.Security.Authentication;
 using GoodBadHabitsTracker.Application.Commands.Auth.Login;
-using Xunit.Abstractions;
+using GoodBadHabitsTracker.Application.Commands.Auth.ConfirmEmail;
+using GoodBadHabitsTracker.Application.Commands.Auth.DeleteAccount;
+using GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin;
+using GoodBadHabitsTracker.Application.Commands.Auth.ForgetPassword;
+using GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken;
+using GoodBadHabitsTracker.Application.Commands.Auth.Register;
+using GoodBadHabitsTracker.Application.Commands.Auth.ResetPassword;
+using GoodBadHabitsTracker.Application.DTOs.Request;
+using GoodBadHabitsTracker.Application.DTOs.Response;
+using GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens;
+using GoodBadHabitsTracker.Core.Interfaces;
+using GoodBadHabitsTracker.TestMisc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
 {
-    using Register = Application.Commands.Auth.Register;
-    using Login = Application.Commands.Auth.Login;
     public class AuthControllerTests
-   {
-        private readonly DataGenerator _dataGenerator;
+    {
         private readonly Mock<IMediator> _mediatorMock;
+        private readonly Mock<IEmailSender> _emailSenderMock;
         private readonly AuthController _controller;
-        private readonly ITestOutputHelper _outputHelper;
-        public AuthControllerTests(ITestOutputHelper outputHelper)
+
+        public AuthControllerTests()
         {
-            _outputHelper = outputHelper;
-            _dataGenerator = new DataGenerator();
             _mediatorMock = new Mock<IMediator>();
-            _controller = new AuthController(_mediatorMock.Object)
+            _emailSenderMock = new Mock<IEmailSender>();
+            _controller = new AuthController(_mediatorMock.Object, _emailSenderMock.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -51,108 +44,164 @@ namespace GoodBadHabitsTracker.WebApi.Tests.Controllers
                 }
             };
         }
+
         [Fact]
-        public async Task Register_ValidRequest_ReturnsCreatedAtAction()
+        public async Task Register_ShouldReturnCreatedAtAction_WhenSuccessful()
         {
-            //ARRANGE
-            var request = _dataGenerator.SeedValidRegisterRequest();
+            // Arrange
+            var request = new RegisterRequest();
+            var user = DataGenerator.SeedUser();
+            var accessToken = DataGenerator.SeedAccessToken();
+            var response = new RegisterResponse(user, accessToken);
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.RegisterCommand>(), default)).ReturnsAsync(new User { Email = request.Email, UserName = request.UserName });
+            _mediatorMock.Setup(m => m.Send(It.IsAny<RegisterCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
 
-            //ACT
-            var result = await _controller.Register(request, default) as CreatedAtActionResult;
-            var actionName = result.ActionName;
-            var routeValues = result.RouteValues;
-            var value = result.Value;
+            // Act
+            var result = await _controller.Register(request, CancellationToken.None);
 
-            //ASSERT
-            result.StatusCode.Should().Be(StatusCodes.Status201Created);
-            actionName.Should().Be("Register");
-            routeValues["id"].Should().BeAssignableTo<Guid>();
-            value.Should().BeAssignableTo<User>();
+            // Assert
+            result.Should().BeOfType<CreatedAtActionResult>();
         }
 
         [Fact]
-        public async Task Register_InvalidRequest_ReturnsBadRequest()
+        public async Task Login_ShouldReturnOk_WhenSuccessful()
         {
-            //ARRANGE
-            var request = _dataGenerator.SeedValidRegisterRequest();
-            _controller.ModelState.AddModelError("Email", $"Email '{request.Email}' is already taken.");
+            // Arrange
+            var request = new LoginRequest();
+            var accessToken = DataGenerator.SeedAccessToken();  
+            var refreshToken = DataGenerator.SeedRefreshToken();
+            var userFingerprint = DataGenerator.SeedRandomString(32);
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.RegisterCommand>(), default)).ThrowsAsync(new AppException(HttpStatusCode.BadRequest, $"Failed to create user: Email '{request.Email}' is already taken."));
+            var response = new LoginResponse(accessToken, refreshToken, userFingerprint);
+            _mediatorMock.Setup(m => m.Send(It.IsAny<LoginCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
 
-            //ACT
-            Func<Task> action = async () => await _controller.Register(request, default);
+            // Act
+            var result = await _controller.Login(request, CancellationToken.None);
 
-            //ASSERT
-            _controller.ModelState.ErrorCount.Should().BeGreaterThan(0);
-            action.Should().ThrowAsync<AppException>().Where(ex => ex.Code == HttpStatusCode.BadRequest).WithMessage($"Email '{request.Email}' is already taken.");
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
         }
 
         [Fact]
-        public async Task Register_NullRequest_ReturnsBadRequest()
+        public async Task ExternalLogin_ShouldReturnOk_WhenSuccessful()
         {
-            //ARRANGE
-            RegisterRequest request = null;
+            // Arrange
+            var request = new ExternalLoginRequest();
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<Register.RegisterCommand>(), default)).ReturnsAsync((User)null);
+            _mediatorMock.Setup(m => m.Send(It.IsAny<ExternalLoginCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(IdentityResult.Success);
 
-            //ACT
-            Func<Task> action = async () => await _controller.Register(request, default);
+            // Act
+            var result = await _controller.ExternalLogin(request, CancellationToken.None);
 
-            //ASSERT
-            action.Should().ThrowAsync<HttpRequestException>().Where(ex => ex.StatusCode == HttpStatusCode.BadRequest);
+            // Assert
+            result.Should().BeOfType<OkResult>();
         }
+
         [Fact]
-        public async Task Login_CorrectCredentials_ReturnsOkWithAccessTokenRefreshToken()
+        public async Task ConfirmEmail_ShouldReturnNoContent_WhenSuccessful()
         {
-            //ARRANGE
-            var request = _dataGenerator.SeedLoginRequest();
-            var accessToken = _dataGenerator.SeedAccessToken(request.Email);
-            var refreshToken = _dataGenerator.SeedRandomString(32);
-            var userFingerprint = _dataGenerator.SeedRandomString(32);
+            // Arrange
+            var user = DataGenerator.SeedUser();
+            var userId = user.Id;
+            var token = DataGenerator.SeedRandomString(32);
+            var request = new ConfirmEmailRequest(userId, token);
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<LoginCommand>(), default)).ReturnsAsync(new LoginResponse(accessToken, refreshToken, userFingerprint));
+            _mediatorMock.Setup(m => m.Send(It.IsAny<ConfirmEmailCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(IdentityResult.Success);
 
+            // Act
+            var result = await _controller.ConfirmEmail(request, CancellationToken.None);
 
-            //ACT
-            var result = await _controller.Login(request, default) as OkObjectResult;
-
-            //ASSERT
-            result.StatusCode.Should().Be(StatusCodes.Status200OK);
-            result.Value.Should().BeEquivalentTo(new { accessToken, refreshToken });
-            var properties = result.Value.GetType().GetProperties();
-            properties.All(p => p.PropertyType == typeof(string)).Should().BeTrue();
-            _controller.ControllerContext.HttpContext.Response.Headers.SetCookie.Should().BeEquivalentTo($"__Secure-Fgp={userFingerprint}; max-age=900; path=/; secure; samesite=strict; httponly");
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
         }
+
         [Fact]
-        public async Task Login_InvalidCredentials_ReturnsUnauthorized()
+        public async Task ForgetPassword_ShouldReturnOk_WhenSuccessful()
         {
-            //ARRANGE
-            var request = _dataGenerator.SeedLoginRequest();
+            // Arrange
+            var request = new ForgetPasswordRequest("email@example.com");
+            var user = DataGenerator.SeedUser();
+            var token = DataGenerator.SeedRandomString(32);
+            var response = new ForgetPasswordResponse(user, token);
+            _mediatorMock.Setup(m => m.Send(It.IsAny<ForgetPasswordCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<LoginCommand>(), default)).ThrowsAsync(new AppException(HttpStatusCode.Unauthorized, "Invalid email or password"));
+            // Act
+            var result = await _controller.ForgetPassword(request, CancellationToken.None);
 
-            //ACT
-            Func<Task> action = async () => await _controller.Login(request, default);
-
-            //ASSERT
-            action.Should().ThrowAsync<AppException>().Where(ex => ex.Code == HttpStatusCode.Unauthorized).WithMessage("Invalid email or password");
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
         }
+
         [Fact]
-        public async Task Login_NullRequest_ReturnsBadRequest()
+        public async Task ResetPassword_ShouldReturnNoContent_WhenSuccessful()
         {
-            //ARRANGE
-            LoginRequest request = null;
+            // Arrange
+            var request = new ResetPasswordRequest();
 
-            _mediatorMock.Setup(x => x.Send(It.IsAny<LoginCommand>(), default)).ReturnsAsync((LoginResponse)null);
+            _mediatorMock.Setup(m => m.Send(It.IsAny<ResetPasswordCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(IdentityResult.Success);
 
-            //ACT
-            Func<Task> action = async () => await _controller.Login(request, default);
+            // Act
+            var result = await _controller.ResetPassword(request, CancellationToken.None);
 
-            //ASSERT
-            action.Should().ThrowAsync<HttpRequestException>().Where(ex => ex.StatusCode == HttpStatusCode.BadRequest);
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
+        }
+
+        [Fact]
+        public async Task RefreshToken_ShouldReturnOk_WhenSuccessful()
+        {
+            // Arrange
+            var request = new RefreshTokenRequest();
+            var accessToken = DataGenerator.SeedAccessToken();
+            var refreshToken = DataGenerator.SeedRefreshToken();
+            var userFingerprint = DataGenerator.SeedRandomString(32);
+            var response = new LoginResponse(accessToken, refreshToken, userFingerprint);
+
+            _mediatorMock.Setup(m => m.Send(It.IsAny<RefreshTokenCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+
+            // Act
+            var result = await _controller.RefreshToken(request, CancellationToken.None);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+        }
+
+        [Fact]
+        public async Task GetExternalTokens_ShouldReturnOk_WhenSuccessful()
+        {
+            // Arrange
+            var request = new GetExternalTokensRequest();
+            var provider = "provider";
+            var response = new GetExternalTokensResponse();
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetExternalTokensQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+
+            // Act
+            var result = await _controller.GetExternalTokens(request, provider, CancellationToken.None);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+        }
+
+        [Fact]
+        public async Task DeleteAccount_ShouldReturnNoContent_WhenSuccessful()
+        {
+            // Arrange
+            _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteAccountCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            // Act
+            var result = await _controller.DeleteAccount(CancellationToken.None);
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
         }
     }
 }
-*/

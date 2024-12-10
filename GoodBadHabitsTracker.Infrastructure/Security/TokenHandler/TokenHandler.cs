@@ -25,7 +25,8 @@ namespace GoodBadHabitsTracker.Infrastructure.Security.TokenHandler
                 SigningCredentials = signingCredentials,
                 Expires = expiry,
                 NotBefore = _jwtSettings.NotBefore,
-                Subject = claimsIdentity
+                Subject = claimsIdentity,
+                
             };
 
             var handler = new JwtSecurityTokenHandler();

@@ -16,7 +16,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = "GBHTPolicy")]
     public class GroupsController(IMediator mediator) : ControllerBase
     {
         [OutputCache]
@@ -34,8 +34,11 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            var response = await mediator.Send(new ReadAllGroupsQuery(), cancellationToken);
-            return Ok(response);
+            var result = await mediator.Send(new ReadAllGroupsQuery(), cancellationToken);
+            
+            return result.Match<IActionResult>(
+                res => Ok(res),
+                error => NotFound(error));
         }
 
         [HttpPost]

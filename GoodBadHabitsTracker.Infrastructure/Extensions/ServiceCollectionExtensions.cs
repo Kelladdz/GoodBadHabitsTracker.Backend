@@ -64,7 +64,15 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             
 
             services.AddJwt(configuration);
-            services.AddAuthorization();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("GBHTPolicy", policy =>
+                {
+                    policy.RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes("PasswordLogin")
+                    .AddAuthenticationSchemes("Auth0Login");
+                });
+            });
         }
     }
 }

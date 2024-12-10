@@ -22,7 +22,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = "GBHTPolicy")]
     public class HabitsController(IMediator mediator, IEmailSender emailSender) : ControllerBase
     {
         [OutputCache]
@@ -69,7 +69,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             return result.Match<IActionResult>(
                 res =>
                 {
-                    emailSender.SendMessageAfterNewHabitCreateAsync(res.User, res.Habit);
+                    emailSender.SendMessageAfterNewHabitCreate(res.User, res.Habit);
                     return CreatedAtAction(nameof(GetById), new { id = res.Habit.Id! }, res);
                 },
                 error => BadRequest(error));

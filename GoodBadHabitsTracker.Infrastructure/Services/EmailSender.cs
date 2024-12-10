@@ -16,7 +16,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
 {
     public class EmailSender(IOptions<MailSettings> mailSettings, IWebHostEnvironment environment) : IEmailSender
     {
-        public Task SendConfirmationLinkAsync(User user, string link)
+        public void SendConfirmationLink(User user, string link)
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
@@ -28,11 +28,10 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
                 emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\welcome.html").Replace("{userName}", user.UserName).Replace("{link}", link);
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
-                SendEmail(emailMessage);
+                SendEmailAsync(emailMessage);
             }
-            return Task.CompletedTask;
         }
-        public Task SendPasswordResetLinkAsync(User user, string link)
+        public void SendPasswordResetLink(User user, string link)
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
@@ -44,12 +43,11 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
                 emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\resetPassword.html").Replace("{userName}", user.UserName).Replace("{link}", link);
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
-                SendEmail(emailMessage);
+                SendEmailAsync(emailMessage);
             }
-            return Task.CompletedTask;
         }
 
-        public Task SendMessageAfterNewHabitCreateAsync(User user, Habit habit)
+        public void SendMessageAfterNewHabitCreate(User user, Habit habit)
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
@@ -59,9 +57,8 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
                 emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\messageAfterGoodHabitCreate.html").Replace("{userName}", user.UserName);
                 emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
-                SendEmail(emailMessage);
+                SendEmailAsync(emailMessage);
             }
-            return Task.CompletedTask;
         }
         private void GetMessageDetails(User user, MimeMessage emailMessage)
         {
@@ -72,7 +69,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
             emailMessage.To.Add(emailTo);
         }
 
-        private void SendEmail(MimeMessage emailMessage)
+        private void SendEmailAsync(MimeMessage emailMessage)
         {
             var mailClient = new SmtpClient { CheckCertificateRevocation = false };
 
@@ -80,6 +77,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Services
             mailClient.Authenticate(mailSettings.Value.Email, mailSettings.Value.Password);
             mailClient.Send(emailMessage);
             mailClient.Disconnect(true);
+
         }
     }
 }

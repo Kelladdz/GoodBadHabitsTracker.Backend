@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.SignalR.Protocol;
+using LanguageExt.SomeHelp;
 
 namespace GoodBadHabitsTracker.Infrastructure.Repositories
 {
@@ -37,7 +38,6 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
             var habits = await dbContext.Habits
                 .Where(h => h.UserId == userId)
                 .AsNoTracking()
-                .AsSingleQuery()
                 .ToListAsync(cancellationToken);
 
             if (habits is null)
@@ -282,16 +282,61 @@ namespace GoodBadHabitsTracker.Infrastructure.Repositories
                 {
                     var habitId = habit.Id;
                     var currentDay = DateOnly.FromDateTime(DateTime.Today);
-                    while (currentDay > habit.StartDate)
+                    switch (habit.Frequency)
                     {
-                        if (currentDay == DateOnly.FromDateTime(DateTime.Today) && !habit.DayResults.Any(dayResult => dayResult.Date == currentDay) && IsHabitMatched(currentDay, habit))
-                            dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.InProgress, currentDay, habitId);
-                        else if (!habit.DayResults.Any(dayResult => dayResult.Date == currentDay) && IsHabitMatched(currentDay, habit))
-                            dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.Failed, currentDay, habitId);
-                        else if (!habit.DayResults.Any(dayResult => dayResult.Date == currentDay) && !IsHabitMatched(currentDay, habit))
-                            dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.None, currentDay, habitId);
-                        currentDay = currentDay.AddDays(-1);
-                    }
+                        case Frequencies.PerDay:
+                            while (currentDay >= habit.StartDate)
+                            {
+                                if (currentDay == DateOnly.FromDateTime(DateTime.Today) && !habit.DayResults.Any(dayResult => dayResult.Date == currentDay) && IsHabitMatched(currentDay, habit))
+                                    dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.InProgress, currentDay, habitId);
+                                else if (currentDay != DateOnly.FromDateTime(DateTime.Today) && (!habit.DayResults.Any(dayResult => dayResult.Date == currentDay) || habit.DayResults.Any(dayResult => dayResult.Date == currentDay && dayResult.Status == Statuses.InProgress)) && IsHabitMatched(currentDay, habit))
+                                    dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.Failed, currentDay, habitId);
+                                else if (!IsHabitMatched(currentDay, habit))
+                                    dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.None, currentDay, habitId);
+                                currentDay = currentDay.AddDays(-1);
+                            }
+                            break;  
+                        case Frequencies.PerWeek:
+                            var startDateDayOfWeek = habit.StartDate.DayOfWeek;
+                            while (currentDay >= habit.StartDate)
+                            {
+                                if ((currentDay.DayOfWeek == startDateDayOfWeek && (habit.DayResults.Any(dayResult => dayResult.Date == currentDay && dayResult.Status == Statuses.InProgress) || !habit.DayResults.Any(dayResult => dayResult.Date == currentDay)) && IsHabitMatched(currentDay, habit)))     
+                                {
+                                   for (int i = (int)currentDay.DayOfWeek; i >= 0; i--)
+                                   {
+                                        if (habit.RepeatDaysOfWeek.Contains((DayOfWeek)i))
+                                            dataTable.Rows.Add(Guid.NewGuid(), habit.DayResults.First(dr => dr.Date == currentDay.AddDays(-i)).Progress, Statuses.Failed, currentDay.AddDays(-i), habitId);
+                                   }
+                                }
+                                else if ((currentDay.DayOfWeek != startDateDayOfWeek) && IsHabitMatched(currentDay, habit))
+                                    dataTable.Rows.Add(Guid.NewGuid(), habit.DayResults.First(dr => dr.Date == currentDay).Progress, Statuses.InProgress, currentDay, habitId);
+                                else if (!IsHabitMatched(currentDay, habit))
+                                    dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.None, currentDay, habitId);
+                                currentDay = currentDay.AddDays(-1);
+                            }
+                            break;
+                        case Frequencies.PerMonth:
+                            var startDateDay = habit.StartDate.Day;
+                            while (currentDay >= habit.StartDate)
+                            {
+                                if ((currentDay.Day == startDateDay && (habit.DayResults.Any(dayResult => dayResult.Date == currentDay && dayResult.Status == Statuses.InProgress) || !habit.DayResults.Any(dayResult => dayResult.Date == currentDay)) && IsHabitMatched(currentDay, habit)))
+                                {
+                                    for (int i = currentDay.Day; i >= 0; i--)
+                                    {
+                                        if (habit.RepeatDaysOfMonth.Contains(i))
+                                            dataTable.Rows.Add(Guid.NewGuid(), habit.DayResults.First(dr => dr.Date == currentDay.AddDays(-i)).Progress, Statuses.Failed, currentDay.AddDays(-i), habitId);
+                                    }
+                                }
+                                else if ((currentDay.Day != startDateDay) && IsHabitMatched(currentDay, habit))
+                                    dataTable.Rows.Add(Guid.NewGuid(), habit.DayResults.First(dr => dr.Date == currentDay).Progress, Statuses.InProgress, currentDay, habitId);
+                                else if (!IsHabitMatched(currentDay, habit))
+                                    dataTable.Rows.Add(Guid.NewGuid(), 0, Statuses.None, currentDay, habitId);
+                                currentDay = currentDay.AddDays(-1);
+                            }
+                            break;
+                    };
+
+                    
                 }
                 bulk.DestinationTableName = destinationTableName;
                 await bulk.WriteToServerAsync(dataTable);
