@@ -14,8 +14,7 @@ namespace GoodBadHabitsTracker.Application.Utils
         public async Task<User?> GetCurrentUser()
         {
             var accessToken = httpContextAccessor.HttpContext!.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
-            var sub = tokenHandler.GetClaimsFromToken(accessToken).FirstOrDefault(claim => claim.Type == "sub")!.Value
-                ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid access token");
+            var sub = tokenHandler.GetClaimsFromToken(accessToken).FirstOrDefault(claim => claim.Type == "sub")!.Value;
 
             User? user;
             if (Guid.TryParse(sub, out Guid _))

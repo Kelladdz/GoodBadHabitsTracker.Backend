@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Infrastructure.Security.IdTokenHandler
 {
-    public sealed class IdTokenHandler : IIdTokenHandler
+    internal sealed class IdTokenHandler : IIdTokenHandler
     {
         public ClaimsPrincipal GetClaimsPrincipalFromIdToken(string idToken)
         {
