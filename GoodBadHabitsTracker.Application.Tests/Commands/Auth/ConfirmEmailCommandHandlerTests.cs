@@ -5,7 +5,6 @@ using GoodBadHabitsTracker.Application.DTOs.Request;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using MediatR;
-using GoodBadHabitsTracker.Infrastructure.Security.IdTokenHandler;
 using Azure.Core;
 using FluentAssertions;
 using GoodBadHabitsTracker.Application.DTOs.Response;

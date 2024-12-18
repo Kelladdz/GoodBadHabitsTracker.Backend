@@ -9,7 +9,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Login
 {
     internal sealed class LoginCommandHandler
         (UserManager<User> userManager,
-        ITokenHandler tokenHandler) : IRequestHandler<LoginCommand, LoginResponse>
+        IJwtTokenHandler tokenHandler) : IRequestHandler<LoginCommand, LoginResponse>
     {
         public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
         {

@@ -1,20 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
-using GoodBadHabitsTracker.Infrastructure.Configurations;
-using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Net.Http.Headers;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
 {
@@ -22,12 +14,14 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
     {
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+           
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = "PasswordLogin";
+                options.DefaultChallengeScheme = "PasswordLogin";
+            })
                 .AddJwtBearer("PasswordLogin", options =>
                 {
                     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Key").Value!));
-                    var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
                     var issuer = configuration["JwtSettings:Issuer"];
                     var audiences = new List<string>();
                     foreach (var audience in configuration.GetSection("JwtSettings:Audience").GetChildren())
@@ -37,7 +31,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
 
                     var tokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuerSigningKey = true,
+                        ValidateIssuerSigningKey = false,
                         IssuerSigningKey = securityKey,
                         ValidateIssuer = true,
                         ValidIssuer = issuer,
@@ -46,7 +40,6 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                         ValidateLifetime = true,
                     };
 
-                    options.Authority = configuration["JwtSettings:Authority"];
                     options.RequireHttpsMetadata = false; //ONLY IN DEVELOPMENT
                     options.TokenValidationParameters = tokenValidationParameters;
                     options.SaveToken = true;
@@ -57,20 +50,23 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                         if (jwtToken is null)
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            context.Response.Body.Write(Encoding.UTF8.GetBytes("Null token"));
                             return Task.CompletedTask;
                         }
 
-                        var userFingerprintHash = jwtToken.Claims.FirstOrDefault(c => c.Type == "userFingerprint")?.Value;
+                        var userFingerprintHash = jwtToken.Claims.FirstOrDefault(c => c.Type == CustomClaimNames.USER_FINGERPRINT)?.Value;
                         if (userFingerprintHash is null)
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            context.Response.Body.Write(Encoding.UTF8.GetBytes("Null userFingerprintHash"));
                             return Task.CompletedTask;
                         }
 
                         var jwtSettings = Options.Create(new JwtSettings());
-                        if (userFingerprintHash != new Security.TokenHandler.TokenHandler(jwtSettings).GenerateUserFingerprintHash(context.Request.Cookies["__Secure-Fgp"].Replace("__Secure-Fgp=", "", StringComparison.InvariantCultureIgnoreCase)))
+                        if (userFingerprintHash != new Security.JwtTokenHandler.JwtTokenHandler(jwtSettings).GenerateUserFingerprintHash(context.Request.Cookies[CookieNames.USER_FINGERPRINT_COOKIE_NAME]!.Replace($"{CookieNames.USER_FINGERPRINT_COOKIE_NAME }= ", "", StringComparison.InvariantCultureIgnoreCase)))
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            context.Response.Body.Write(Encoding.UTF8.GetBytes($"userFingerprintHash != {CookieNames.USER_FINGERPRINT_COOKIE_NAME}"));
                             return Task.CompletedTask;
                         }
                         return Task.CompletedTask;
@@ -79,6 +75,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     new JwtBearerEvents().OnAuthenticationFailed = (context) =>
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.Body.Write(Encoding.UTF8.GetBytes($"Authentication failed"));
                         return Task.CompletedTask;
                     };
 
@@ -87,7 +84,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddJwtBearer("Auth0Login", options =>
                 {
                     options.UseSecurityTokenValidators = true;
-                    options.MetadataAddress = configuration["JwtSettings:Configuration"];
+                    options.MetadataAddress = configuration["JwtSettings:Configuration"]!;
                     options.Authority = configuration["JwtSettings:Auth0Issuer"];
                     var audiences = new List<string>();
                     foreach (var audience in configuration.GetSection("JwtSettings:Auth0Audience").GetChildren())
@@ -98,7 +95,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                     {
                         ValidIssuer = configuration["JwtSettings:Auth0Issuer"],
                         ValidAudiences = audiences,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Auth0Key"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Auth0Key"]!)),
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateIssuerSigningKey = true,

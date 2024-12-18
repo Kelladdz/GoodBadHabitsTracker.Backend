@@ -86,11 +86,11 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Create
                     }
 
                     else if
-                    ((context.InstanceToValidate.Request.RepeatMode != RepeatModes.Daily && value is not null))
+                    ((context.InstanceToValidate.Request.RepeatMode != RepeatModes.Daily && (value is not null && value.Count() != 0)))
                         context.AddFailure("If habit isn't in daily repeat mode, then RepeatDaysOfWeek should be null");
 
                     else if
-                    ((context.InstanceToValidate.Request.RepeatMode == RepeatModes.Daily && value is null))
+                    ((context.InstanceToValidate.Request.RepeatMode == RepeatModes.Daily && (value is null && value.Count() == 0)))
                         context.AddFailure("If habit is in daily repeat mode, then RepeatDaysOfWeek cannot be null");
                 });
 
@@ -106,18 +106,18 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Create
                         }
                     }
                     else if
-                    ((context.InstanceToValidate.Request.RepeatMode != RepeatModes.Monthly && value is not null))
+                    ((context.InstanceToValidate.Request.RepeatMode != RepeatModes.Monthly && (value is not null && value.Count() != 0)))
                         context.AddFailure("If habit isn't in monthly repeat mode, then RepeatDaysOfMonth should be null");
 
                     else if
-                    ((context.InstanceToValidate.Request.RepeatMode == RepeatModes.Monthly && value is null))
+                    ((context.InstanceToValidate.Request.RepeatMode == RepeatModes.Monthly && (value is null && value.Count() == 0)))
                         context.AddFailure("If habit is in monthly repeat mode, then RepeatDaysOfMonth cannot be null");
                 });
 
             RuleFor(x => (x.Request.RepeatInterval))
                 .Custom((value, context) =>
                 {
-                    if ((context.InstanceToValidate.Request.RepeatMode == RepeatModes.Interval && (value < 1 || value > 8)))
+                    if ((context.InstanceToValidate.Request.RepeatMode == RepeatModes.Interval && (value < 2 && value > 7)))
                         context.AddFailure("Interval should be greater than 1 and less than 8");
 
                     else if

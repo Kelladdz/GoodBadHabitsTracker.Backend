@@ -1,75 +1,81 @@
 ﻿using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
-using GoodBadHabitsTracker.Infrastructure.Configurations;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Net.Smtp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+using GoodBadHabitsTracker.Infrastructure.Settings;
+using GoodBadHabitsTracker.Infrastructure.Persistance;
+
 
 namespace GoodBadHabitsTracker.Infrastructure.Services
 {
-    public class EmailSender(IOptions<MailSettings> mailSettings, IWebHostEnvironment environment) : IEmailSender
+    public class EmailSender(IOptions<MailSettings> mailSettings, IWebHostEnvironment environment, IHabitsDbContext dbContext) : IEmailSender
     {
-        public void SendConfirmationLink(User user, string link)
+        public async Task SendConfirmationLinkAsync(User user, string link)
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
-                GetMessageDetails(user, emailMessage);
+                var subject = EmailSubjects.WELCOME;
+                var emailTemplate = await GetMessageDetailsAsync(user, emailMessage, subject);
 
-                emailMessage.Subject = "Welcome To GoodBadHabitsTracker!";
+                var userName = user.UserName;
+                var body = emailTemplate?.Body.Replace("{userName}", userName).Replace("{link}", link);
 
-                BodyBuilder emailBodyBuilder = new BodyBuilder();
-                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\welcome.html").Replace("{userName}", user.UserName).Replace("{link}", link);
-                emailMessage.Body = emailBodyBuilder.ToMessageBody();
-
-                SendEmailAsync(emailMessage);
+                BuildEmailMessageBody(emailMessage, body!);
+                SendEmail(emailMessage);
             }
         }
-        public void SendPasswordResetLink(User user, string link)
+        public async Task SendPasswordResetLinkAsync(User user, string link)
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
-                GetMessageDetails(user, emailMessage);
+                var subject = EmailSubjects.PASSWORD_RESET;
+                var emailTemplate = await GetMessageDetailsAsync(user, emailMessage, subject);
 
-                emailMessage.Subject = "Password Reset Request";
+                var userName = user.UserName;
+                var body = emailTemplate?.Body.Replace("{userName}", userName).Replace("{link}", link);
 
-                BodyBuilder emailBodyBuilder = new BodyBuilder();
-                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\resetPassword.html").Replace("{userName}", user.UserName).Replace("{link}", link);
-                emailMessage.Body = emailBodyBuilder.ToMessageBody();
-
-                SendEmailAsync(emailMessage);
+                BuildEmailMessageBody(emailMessage, body!);
+                SendEmail(emailMessage);
             }
         }
 
-        public void SendMessageAfterNewHabitCreate(User user, Habit habit)
+        public async Task SendMessageAfterNewHabitCreateAsync(User user, Habit habit)
         {
             using (MimeMessage emailMessage = new MimeMessage())
             {
-                GetMessageDetails(user, emailMessage);
+                var subject = EmailSubjects.CONGRATULATIONS;
+                var emailTemplate = await GetMessageDetailsAsync(user, emailMessage, subject);
 
-                BodyBuilder emailBodyBuilder = new BodyBuilder();
-                emailBodyBuilder.HtmlBody = File.ReadAllText(environment.WebRootPath + "\\EmailBodies\\messageAfterGoodHabitCreate.html").Replace("{userName}", user.UserName);
-                emailMessage.Body = emailBodyBuilder.ToMessageBody();
+                var userName = user.UserName;
+                var body = emailTemplate?.Body.Replace("{userName}", userName);
 
-                SendEmailAsync(emailMessage);
+                BuildEmailMessageBody(emailMessage, body!);
+                SendEmail(emailMessage);
             }
         }
-        private void GetMessageDetails(User user, MimeMessage emailMessage)
+        private async Task<EmailTemplate?> GetMessageDetailsAsync(User user, MimeMessage emailMessage, string subject)
         {
             MailboxAddress emailFrom = new MailboxAddress(mailSettings.Value.DisplayName, mailSettings.Value.Email);
             emailMessage.From.Add(emailFrom);
 
             MailboxAddress emailTo = new MailboxAddress(user.UserName, user.Email);
             emailMessage.To.Add(emailTo);
+
+            emailMessage.Subject = subject;
+
+            return await dbContext.ReadEmailTemplate(subject);
         }
 
-        private void SendEmailAsync(MimeMessage emailMessage)
+        private void BuildEmailMessageBody (MimeMessage emailMessage, string body)
+        {
+            BodyBuilder emailBodyBuilder = new BodyBuilder();
+            emailBodyBuilder.HtmlBody = body;
+            emailMessage.Body = emailBodyBuilder.ToMessageBody();
+        }
+
+        private void SendEmail(MimeMessage emailMessage)
         {
             var mailClient = new SmtpClient { CheckCertificateRevocation = false };
 

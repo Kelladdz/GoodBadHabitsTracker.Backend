@@ -23,7 +23,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
     public class RefreshTokenCommandHandlerTests
     {
         private readonly Mock<UserManager<User>> _userManagerMock;
-        private readonly Mock<ITokenHandler> _tokenHandlerMock;
+        private readonly Mock<IJwtTokenHandler> _tokenHandlerMock;
         private readonly Mock<IHttpContextAccessor> _httpContextAccessorMock;
         private readonly RefreshTokenCommandHandler _handler;
 
@@ -31,7 +31,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         {
             _userManagerMock = new Mock<UserManager<User>>(
                 Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
-            _tokenHandlerMock = new Mock<ITokenHandler>();
+            _tokenHandlerMock = new Mock<IJwtTokenHandler>();
             _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
             _handler = new RefreshTokenCommandHandler(_userManagerMock.Object, _tokenHandlerMock.Object, _httpContextAccessorMock.Object);
         }

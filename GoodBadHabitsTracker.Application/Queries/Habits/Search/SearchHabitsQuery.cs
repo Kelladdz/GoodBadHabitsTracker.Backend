@@ -4,5 +4,5 @@ using LanguageExt.Common;
 
 namespace GoodBadHabitsTracker.Application.Queries.Habits.Search
 {
-    public sealed record SearchHabitsQuery(string? Term, DateOnly Date) : IQuery<Result<IEnumerable<HabitResponse>>>;
+    public sealed record SearchHabitsQuery(string Term, DateOnly Date) : IQuery<Result<IEnumerable<HabitResponse>>>;
 }

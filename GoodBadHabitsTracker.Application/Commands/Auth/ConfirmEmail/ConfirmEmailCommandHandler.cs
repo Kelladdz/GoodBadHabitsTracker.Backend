@@ -19,7 +19,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ConfirmEmail
         {
                 var userId = command.Request.UserId.ToString();
                 var token = command.Request.Token;
-                token = token.Replace("%2B", "+").Replace("%2F", "/");
 
                 var user = await userManager.FindByIdAsync(userId);
                 if (user is null)

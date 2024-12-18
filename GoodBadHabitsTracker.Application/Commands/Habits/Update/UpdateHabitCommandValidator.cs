@@ -87,9 +87,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
                                                         context.AddFailure("Invalid StartDate");
                                                     }
                                                     break;
-                                                case "IsTimeBased":
-                                                    context.AddFailure("IsTimeBased is not allowed to be updated");
-                                                    break;
+                                                
                                                 case "Quantity":
                                                     if (!Int32.TryParse(value.ToString(), out _))
                                                     {
@@ -97,39 +95,39 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
                                                     }
                                                     break;
                                                 case "Frequency":
-                                                    if (!Enum.IsDefined(typeof(Frequencies), value))
+                                                    if ((Int64)value < 0 || (Int64)value > 3)
                                                     {
                                                         context.AddFailure("Invalid Frequency");
                                                     }
                                                     break;
                                                 case "RepeatMode":
-                                                    if (!Enum.IsDefined(typeof(RepeatModes), value))
+                                                    if ((Int64)value < 0 || (Int64)value > 3)
                                                     {
                                                         context.AddFailure("Invalid RepeatMode");
                                                     }
                                                     break;
                                                 case "RepeatDaysOfMonth":
-                                                    if (!Int32.TryParse(value.ToString(), out int day)
-                                                        || day < 1 || day > 31)
+                                                    if ((!Int32.TryParse(value.ToString(), out int day)
+                                                        || day < 1 || day > 31))
                                                     {
                                                         context.AddFailure("Invalid day of month");
                                                     }
                                                     break;
                                                 case "RepeatDaysOfWeek":
-                                                    if (!Enum.IsDefined(typeof(DayOfWeek), value))
+                                                    if (value != null && (Int64)value < 0 && (Int64)value > 6)
                                                     {
                                                         context.AddFailure("Invalid day of week");
                                                     }
                                                     break;
                                                 case "RepeatInterval":
-                                                    if (!Int32.TryParse(value.ToString(), out int interval)
-                                                        || interval < 1 || interval > 8)
+                                                    if (value != null && (!Int32.TryParse(value.ToString(), out int interval)
+                                                        || interval < 1 || interval > 8))
                                                     {
                                                         context.AddFailure("Invalid interval value");
                                                     }
                                                     break;
                                                 case "ReminderTimes":
-                                                    if (!TimeOnly.TryParse(value.ToString(), out TimeOnly time))
+                                                    if (value != null && !TimeOnly.TryParse(value.ToString(), out TimeOnly time))
                                                     {
                                                         context.AddFailure("Invalid time");
                                                     }
@@ -142,16 +140,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
                                                     if (string.IsNullOrWhiteSpace(body))
                                                         context.AddFailure("Comment cannot be empty");
                                                     break;
-                                                case "DayResults":
-                                                    var dayResultsJObject = JObject.Parse(value.ToString()!);
-                                                    var status = (Statuses)Enum.Parse(typeof(Statuses), dayResultsJObject["Status"]!.ToString());
-                                                    var progress = (int?)dayResultsJObject["Progress"];
-
-                                                    if (progress < 0)
-                                                    {
-                                                        context.AddFailure("Progress should be greater than or equal to 0");
-                                                    }
-                                                    break;
+                                                
                                                 default:
                                                     break;
                                             }

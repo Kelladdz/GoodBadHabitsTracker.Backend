@@ -6,14 +6,12 @@ using System.Security.Claims;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
 using AutoMapper;
-using GoodBadHabitsTracker.Application.Exceptions;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
 {
     internal sealed class ExternalLoginCommandHandler(
         IMapper mapper,
-        IIdTokenHandler idTokenHandler,
-        ITokenHandler tokenHandler,
+        IJwtTokenHandler tokenHandler,
         SignInManager<User> signInManager,
         UserManager<User> userManager,
         RoleManager<UserRole> roleManager) : IRequestHandler<ExternalLoginCommand, IdentityResult>
@@ -39,7 +37,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
                 if (refreshToken is null && request.Provider == "Google")
                     return IdentityResult.Failed(new IdentityError { Code = "NullRefreshToken", Description = "Google must return refresh token" });
 
-                var claimsPrincipal = idTokenHandler.GetClaimsPrincipalFromIdToken(idToken);
+                var claimsPrincipal = tokenHandler.GetClaimsPrincipalFromIdToken(idToken);
                 if (claimsPrincipal is null)
                     return IdentityResult.Failed(new IdentityError { Code = "NullClaimsPrincipal", Description = "Claims principal cannot be null" });
 

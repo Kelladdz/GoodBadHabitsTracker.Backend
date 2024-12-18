@@ -20,12 +20,11 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ForgetPassword
             var email = command.Request.Email;
 
             var user = await userManager.FindByEmailAsync(email)
-                ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, "User with this email does not exist");
+                ?? throw new ValidationException([new ValidationError("Email", "User with this email not found")]);
 
             var token = await userManager.GeneratePasswordResetTokenAsync(user)
                 ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to generate password reset token");
 
-            token = token.Replace("+", "%2B").Replace("/", "%2F");
             return new ForgetPasswordResponse(user, token);
         }
     }

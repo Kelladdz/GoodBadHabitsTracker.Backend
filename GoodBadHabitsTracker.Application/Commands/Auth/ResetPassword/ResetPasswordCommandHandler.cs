@@ -13,7 +13,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ResetPassword
                 var email = command.Request.Email;
                 var password = command.Request.Password;
                 var token = command.Request.Token;
-                token = token.Replace("%2B", "+").Replace("%2F", "/");
 
                 var user = await userManager.FindByEmailAsync(email);
                 if (user == null)

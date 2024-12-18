@@ -2,6 +2,8 @@
 {
     public enum HabitTypes
     {
-        Good, Limit, Quit
+        Good = 0, 
+        Limit = 1, 
+        Quit = 2
     }
 }

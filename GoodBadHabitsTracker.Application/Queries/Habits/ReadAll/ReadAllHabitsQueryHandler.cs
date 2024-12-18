@@ -4,10 +4,13 @@ using MediatR;
 using GoodBadHabitsTracker.Application.DTOs.Response;
 using LanguageExt.Common;
 using System.Net;
+using GoodBadHabitsTracker.Infrastructure.Persistance;
 
 namespace GoodBadHabitsTracker.Application.Queries.Habits.ReadAll
 {
-    internal sealed class ReadAllHabitsQueryHandler(IHabitsRepository habitsRepository, IUserAccessor userAccessor) : IRequestHandler<ReadAllHabitsQuery, Result<IEnumerable<HabitResponse>>>
+    internal sealed class ReadAllHabitsQueryHandler(
+        IHabitsDbContext dbContext,
+        IUserAccessor userAccessor) : IRequestHandler<ReadAllHabitsQuery, Result<IEnumerable<HabitResponse>>>
     {
         public async Task<Result<IEnumerable<HabitResponse>>> Handle(ReadAllHabitsQuery query, CancellationToken cancellationToken)
         {
@@ -16,17 +19,33 @@ namespace GoodBadHabitsTracker.Application.Queries.Habits.ReadAll
                 return new Result<IEnumerable<HabitResponse>>(new AppException(HttpStatusCode.Unauthorized, "User not found"));
 
             var userId = user.Id;
-            var habits = await habitsRepository.ReadAllAsync(userId, cancellationToken);
-            if (habits is null)
-                return new Result<IEnumerable<HabitResponse>>([]);
 
-            var response = new List<HabitResponse>();
-            foreach (var habit in habits)
+            dbContext.BeginTransaction();
+
+            try
             {
-                response.Add(new HabitResponse(habit));
-            }
+                var allHabits = await dbContext.ReadAllHabitsAsync(userId);
 
-            return new Result<IEnumerable<HabitResponse>>(response);
+                if (!allHabits.Any())
+                {
+                    await dbContext.CommitAsync();
+                    return new Result<IEnumerable<HabitResponse>>([]);
+                }
+
+                var response = new List<HabitResponse>();
+                foreach (var habit in allHabits)
+                {
+                    response.Add(new HabitResponse(habit));
+                }
+
+                await dbContext.CommitAsync();
+                return new Result<IEnumerable<HabitResponse>>(response);
+            }
+            catch (Exception ex)
+            {
+                await dbContext.RollbackAsync();
+                return new Result<IEnumerable<HabitResponse>>(new AppException(HttpStatusCode.BadRequest, ex.Message));
+            }
         }
     }
 }

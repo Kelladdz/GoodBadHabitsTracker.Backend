@@ -21,7 +21,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
 
             var createUserResult = await userManager.CreateAsync(user, command.Request.Password);
             if (!createUserResult.Succeeded) 
-                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to create user: " + string.Join(", ", createUserResult.Errors.Select(e => e.Description)));
+                throw new ValidationException(createUserResult.Errors.Select(e =>new ValidationError(e.Description.Split(' ')[0], e.Description)));
 
             var isRoleExists = await roleManager.RoleExistsAsync("User");
             if (!isRoleExists)
@@ -38,7 +38,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.Register
                 throw new AppException(System.Net.HttpStatusCode.BadRequest, "Failed to add user to role: " + string.Join(", ", addToRoleResult.Errors.Select(e => e.Description)));
 
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            token = token.Replace("+", "%2B").Replace("/", "%2F");
             return new RegisterResponse(user, token);
         }
     }

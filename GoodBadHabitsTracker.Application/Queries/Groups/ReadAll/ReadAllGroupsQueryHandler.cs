@@ -4,10 +4,13 @@ using GoodBadHabitsTracker.Application.Exceptions;
 using MediatR;
 using LanguageExt.Common;
 using System.Net;
+using GoodBadHabitsTracker.Infrastructure.Persistance;
 
 namespace GoodBadHabitsTracker.Application.Queries.Groups.ReadAll
 {
-    internal sealed class ReadAllGroupsQueryHandler(IGroupsRepository groupsRepository, IUserAccessor userAccessor) : IRequestHandler<ReadAllGroupsQuery, Result<IEnumerable<GroupResponse>>>
+    internal sealed class ReadAllGroupsQueryHandler(
+        IHabitsDbContext dbContext,
+        IUserAccessor userAccessor) : IRequestHandler<ReadAllGroupsQuery, Result<IEnumerable<GroupResponse>>>
     {
         public async Task<Result<IEnumerable<GroupResponse>>> Handle(ReadAllGroupsQuery query, CancellationToken cancellationToken)
         {
@@ -16,17 +19,33 @@ namespace GoodBadHabitsTracker.Application.Queries.Groups.ReadAll
                 return new Result<IEnumerable<GroupResponse>>(new AppException(HttpStatusCode.Unauthorized, "User not found"));
 
             var userId = user.Id;
-            var groups = await groupsRepository.ReadAllAsync(userId, cancellationToken);
-            if (groups is null)
-                return new Result<IEnumerable<GroupResponse>>([]);
 
-            var response = new List<GroupResponse>();
-            foreach (var group in groups)
+            dbContext.BeginTransaction();
+
+            try
             {
-                response.Add(new GroupResponse(group));
-            }
+                var allGroups = await dbContext.ReadAllGroupsAsync(userId);
 
-            return new Result<IEnumerable<GroupResponse>>(response);
+                if (!allGroups.Any())
+                {
+                    await dbContext.CommitAsync();
+                    return new Result<IEnumerable<GroupResponse>>([]);
+                }
+
+                var response = new List<GroupResponse>();
+                foreach (var group in allGroups)
+                {
+                    response.Add(new GroupResponse(group));
+                }
+
+                await dbContext.CommitAsync();
+                return new Result<IEnumerable<GroupResponse>>(response);
+            }
+            catch (Exception ex)
+            {
+                await dbContext.RollbackAsync();
+                return new Result<IEnumerable<GroupResponse>>(new AppException(HttpStatusCode.BadRequest, ex.Message));
+            }
         }
     }
 }

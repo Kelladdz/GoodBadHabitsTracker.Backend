@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using GoodBadHabitsTracker.Core.Models;
-using GoodBadHabitsTracker.Application.DTOs.Response;
 using GoodBadHabitsTracker.Application.DTOs.Request;
 using GoodBadHabitsTracker.Core.Enums;
-using AutoMapper.Extensions.EnumMapping;
 
 namespace GoodBadHabitsTracker.Application.Mappings
 {
@@ -40,25 +38,20 @@ namespace GoodBadHabitsTracker.Application.Mappings
                 })
                 .ForMember(x => x.RepeatDaysOfMonth, opt =>
                 {
-                    opt.MapFrom(x => x.RepeatDaysOfMonth);
-                    opt.Condition(src => src.HabitType == HabitTypes.Good && src.RepeatMode == RepeatModes.Monthly);
+                    opt.MapFrom((src, dest) => src.RepeatMode == RepeatModes.Monthly ? src.RepeatDaysOfMonth : []);
                 })
                 .ForMember(x => x.RepeatDaysOfWeek, opt =>
                 {
-                    opt.MapFrom(x => x.RepeatDaysOfWeek);
-                    opt.Condition(src => src.HabitType == HabitTypes.Good && src.RepeatMode == RepeatModes.Daily);
+                    opt.MapFrom((src, dest) => src.RepeatMode == RepeatModes.Daily ? src.RepeatDaysOfWeek : []);
                 })
                 .ForMember(x => x.RepeatInterval, opt =>
                 {
-                    opt.MapFrom(x => x.RepeatInterval);
-                    opt.Condition(src => src.HabitType == HabitTypes.Good && src.RepeatMode == RepeatModes.Interval);
+                    opt.MapFrom((src, dest) => src.RepeatMode == RepeatModes.Interval ? src.RepeatInterval : 0);
                 })
                 .ForMember(x => x.ReminderTimes, opt => opt.MapFrom(x => x.ReminderTimes))
                 .ForMember(x => x.GroupId, opt => opt.MapFrom(x => x.GroupId));
 
-
-
-            CreateMap<ExternalLoginRequest, GetExternalTokensResponse>();
+            CreateMap<CreateCommentRequest, Comment>();
         }
     }
 }

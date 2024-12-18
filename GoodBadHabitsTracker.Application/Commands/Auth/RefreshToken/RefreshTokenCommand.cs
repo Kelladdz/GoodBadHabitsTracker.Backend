@@ -9,5 +9,5 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken
 {
-    public sealed record RefreshTokenCommand(RefreshTokenRequest Request, CancellationToken CancellationToken) : ICommand<LoginResponse>;
+    public sealed record RefreshTokenCommand(string RefreshToken) : ICommand<LoginResponse>;
 }

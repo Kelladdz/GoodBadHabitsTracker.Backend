@@ -29,7 +29,10 @@ using GoodBadHabitsTracker.Application.Queries.Groups.ReadById;
 using GoodBadHabitsTracker.Application.Queries.Groups.ReadAll;
 using GoodBadHabitsTracker.Application.Commands.Groups.Delete;
 using GoodBadHabitsTracker.Core.Interfaces;
-using GoodBadHabitsTracker.Application.Utils;
+using GoodBadHabitsTracker.Application.Services;
+using Microsoft.Extensions.Logging;
+using GoodBadHabitsTracker.Application.Commands.DayResults.Update;
+using GoodBadHabitsTracker.Application.Commands.Comments.Create;
 
 
 namespace GoodBadHabitsTracker.Application.Extensions
@@ -68,6 +71,12 @@ namespace GoodBadHabitsTracker.Application.Extensions
             builder.RegisterType<DeleteAllProgressCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<DeleteGroupCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<DeleteAllHabitsCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<SearchHabitsQueryValidator>().AsImplementedInterfaces();
+            builder.RegisterType<AppliedGroupValidator>().AsImplementedInterfaces();
+            builder.RegisterType<AppliedHabitValidator>().AsImplementedInterfaces();
+            builder.RegisterType<UpdateDayResultCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<CreateCommentCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<CreateCommentCommandValidator>().AsImplementedInterfaces();
             return builder;
         }
 
@@ -84,6 +93,9 @@ namespace GoodBadHabitsTracker.Application.Extensions
         public static ContainerBuilder BuildCustomServices(this ContainerBuilder builder)
         {
             builder.RegisterType<UserAccessor>().AsImplementedInterfaces();
+            builder.RegisterType<FillPastDaysService>().AsImplementedInterfaces();
+            builder.RegisterType<Logger<UpdateDayResultCommandHandler>>().AsImplementedInterfaces();
+            builder.RegisterType<Logger<CreateCommentCommandHandler>>().AsImplementedInterfaces();
             return builder;
         }
     }

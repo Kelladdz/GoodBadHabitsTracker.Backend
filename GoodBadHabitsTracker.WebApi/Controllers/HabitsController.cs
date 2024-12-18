@@ -10,20 +10,17 @@ using GoodBadHabitsTracker.Application.Queries.Habits.ReadById;
 using GoodBadHabitsTracker.Application.Commands.Habits.Update;
 using GoodBadHabitsTracker.Application.Commands.Habits.Delete;
 using GoodBadHabitsTracker.Application.DTOs.Request;
-using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Application.Commands.Habits.DeleteAll;
 using GoodBadHabitsTracker.Application.Commands.Habits.DeleteAllProgress;
-using GoodBadHabitsTracker.Application.DTOs.Response;
 using LanguageExt.Common;
-using FluentResults;
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Policy = "GBHTPolicy")]
-    public class HabitsController(IMediator mediator, IEmailSender emailSender) : ControllerBase
+    public class HabitsController(IMediator mediator, IEmailSender emailSender, ILogger<HabitsController> logger) : ControllerBase
     {
         [OutputCache]
         [HttpGet("{id:guid}")]
@@ -69,8 +66,13 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             return result.Match<IActionResult>(
                 res =>
                 {
-                    emailSender.SendMessageAfterNewHabitCreate(res.User, res.Habit);
-                    return CreatedAtAction(nameof(GetById), new { id = res.Habit.Id! }, res);
+                    var user = res.User;
+                    var habit = res.Habit;
+                    var habitId = habit.Id;
+
+                    emailSender.SendMessageAfterNewHabitCreateAsync(user, habit);
+
+                    return CreatedAtAction(nameof(GetById), new { id = habitId }, habit);
                 },
                 error => BadRequest(error));
         }
@@ -81,11 +83,20 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             [FromBody] JsonPatchDocument request,
             CancellationToken cancellationToken)
         {
+            logger.LogDebug("Update habit with id: {id}...", id);
             var result = await mediator.Send(new UpdateHabitCommand(id, request), cancellationToken);
 
             return result.Match<IActionResult>(
-                _ => NoContent(),
-                error => BadRequest(error));
+                _ =>
+                {
+                    logger.LogDebug("Habit updated.");
+                    return NoContent();
+                },
+                error =>
+                {
+                    logger.LogDebug("Habit wasn't updated. {error}", error);
+                    return BadRequest(error);
+                });
         }
         [HttpPatch("reset")]
         public async Task<IActionResult> DeleteAllProgress(CancellationToken cancellationToken)

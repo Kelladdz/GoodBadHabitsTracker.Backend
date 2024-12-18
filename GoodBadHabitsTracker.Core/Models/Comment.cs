@@ -1,15 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-
-namespace GoodBadHabitsTracker.Core.Models
+﻿namespace GoodBadHabitsTracker.Core.Models
 {
-    [Owned]
     public class Comment
     {
-        [JsonIgnore]
         public Guid Id { get; private init; } = Guid.NewGuid();
         public required string Body { get; set; } 
-        public DateOnly Date { get; private init; } = DateOnly.FromDateTime(DateTime.Now);
-        public Guid HabitId { get; set; }
+        public required DateOnly Date { get; init; } 
+        public required Guid HabitId { get; init; }
+        public required Habit Habit { get; init; }
     }
 }

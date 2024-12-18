@@ -2,11 +2,14 @@
 using GoodBadHabitsTracker.Core.Interfaces;
 using MediatR;
 using LanguageExt.Common;
+using GoodBadHabitsTracker.Infrastructure.Persistance;
+using GoodBadHabitsTracker.Core.Models;
+using System.Net;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habits.DeleteAll
 {
     internal sealed class DeleteAllHabitsCommandHandler(
-        IHabitsRepository habitsRepository,
+        IHabitsDbContext dbContext,
         IUserAccessor userAccessor) : IRequestHandler<DeleteAllHabitsCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(DeleteAllHabitsCommand command, CancellationToken cancellationToken)
@@ -17,11 +20,24 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.DeleteAll
             
             var userId = user.Id;
 
-            var allHabits = await habitsRepository.ReadAllAsync(userId, cancellationToken);
+            dbContext.BeginTransaction();
 
-            await habitsRepository.DeleteAllAsync(allHabits, cancellationToken);
+            try
+            {
+                var allHabits = await dbContext.ReadAllHabitsAsync(userId);
+                if (!allHabits!.Any())
+                    return new Result<bool>(true);
 
-            return new Result<bool>(true);
+                dbContext.DeleteRange(allHabits!);
+
+                await dbContext.CommitAsync();
+                return new Result<bool>(true);
+            }
+            catch (Exception ex)
+            {
+                await dbContext.RollbackAsync();
+                return new Result<bool>(new AppException(HttpStatusCode.BadRequest, ex.Message));
+            }
         }
     }
 }

@@ -2,134 +2,229 @@
 using GoodBadHabitsTracker.Core.Enums;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
-using GoodBadHabitsTracker.Infrastructure.Repositories;
+using GoodBadHabitsTracker.Infrastructure.Persistance;
 using LanguageExt.Common;
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.JsonPatch.Operations;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using System.Globalization;
 using System.Net;
+using GoodBadHabitsTracker.Infrastructure.Utils;
+using FluentValidation;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+
 
 namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
 {
-    internal sealed class UpdateHabitCommandHandler(IHabitsRepository habitsRepository) : IRequestHandler<UpdateHabitCommand, Result<bool>>
+    internal sealed class UpdateHabitCommandHandler(
+        IHabitsDbContext dbContext,
+        IUserAccessor userAccessor,
+        IValidator<Habit> validator,
+        ILogger logger) : IRequestHandler<UpdateHabitCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(UpdateHabitCommand command, CancellationToken cancellationToken)
         {
+            var user = await userAccessor.GetCurrentUser();
+            if (user is null)
+            {
+                logger.LogDebug("User Not Found");
+                return new Result<bool>(new AppException(HttpStatusCode.Unauthorized, "User Not Found"));
+            }
+                
+
+            logger.LogDebug("User with id {userId} was found", user.Id);
+            logger.LogDebug("Name: {name}", user.UserName);
+            logger.LogDebug("Email: {email}", user.Email);
+            logger.LogDebug("Id: {id}", user.Id);
+
+            var userId = user.Id;
             var habitId = command.Id;
             var document = command.Request;
 
-            var habitToUpdate = await habitsRepository.FindAsync(habitId, cancellationToken);
-            if (habitToUpdate == null)
-                return new Result<bool>(new AppException(HttpStatusCode.NotFound, "Habit Not Found"));
+            dbContext.BeginTransaction();
 
-            var validationResult = DocumentAndEntityValidation(document, habitToUpdate);
-
-            if (validationResult.IsFaulted)
-                return validationResult;
-
-            await habitsRepository.UpdateAsync(document, habitToUpdate, cancellationToken);
-            return new Result<bool>(true);
-        }
-
-        private static Result<bool> DocumentAndEntityValidation(JsonPatchDocument document, Habit habitToUpdate)
-        {
-            var dayResultsDates = habitToUpdate.DayResults.Select(dayResult => dayResult.Date.ToString("o", CultureInfo.InvariantCulture)).ToList();
-
-            if (document.Operations.Any(o => o.OperationType == OperationType.Add
-                && o.path == "/dayResults/-"
-                && dayResultsDates.Contains((string)JObject.Parse(o.value.ToString()!)["Date"]!)))
-                    return new Result<bool>(new AppException(HttpStatusCode.BadRequest, "Two day results cannot have one date, use replace operation instead"));
-
-            if (habitToUpdate.HabitType != HabitTypes.Quit)
+            try
             {
-                var quantity = habitToUpdate.Quantity;
+                logger.LogDebug("Looking for habit with id: {habitId}", habitId);
+                var habitToUpdate = await dbContext.ReadHabitByIdAsync(habitId, userId);
+                if (habitToUpdate is null)
+                {
+                    logger.LogDebug("Habit Not Found");
+                    await dbContext.CommitAsync();
+                    return new Result<bool>(new AppException(HttpStatusCode.NotFound, "Habit Not Found"));
+                }
+                logger.LogDebug("Habit with id {habitId} was found", habitId);
 
-                if (document.Operations.Any(o => o.OperationType == OperationType.Add
-                    && o.path == "/dayResults/-"
-                    && (int)JObject.Parse(o.value.ToString()!)["Progress"]! < quantity
-                    && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["Status"]!.ToString()) == Statuses.Completed))
-                        return new Result<bool>(new AppException(HttpStatusCode.BadRequest, "Progress can't be less than quantity if status is completed"));
+                var habitProperties = habitToUpdate.GetType().GetProperties();
+                foreach (var property in habitProperties)
+                {
+                    logger.LogDebug("{name}: {value}", property.Name, property.GetValue(habitToUpdate));
+                }
 
-                if (document.Operations.Any(o => o.OperationType == OperationType.Add
-                    && o.path == "/dayResults/-"
-                    && (int)JObject.Parse(o.value.ToString()!)["Progress"]! >= quantity
-                    && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["Status"]!.ToString()) != Statuses.Completed))
-                        return new Result<bool>(new AppException(HttpStatusCode.BadRequest, "Progress can't be more than quantity if status is not completed"));
+                var docValidationResult = await DocumentAndEntityValidation(dbContext, document, habitToUpdate, logger);
+                return await docValidationResult.Match(
+                    Succ: async _ =>
+                    {
+                        logger.LogDebug("Document and entity are valid!");
+                        if (document.Operations.Any(Conditions.IsRepeatModeToDailyChangeOperation))
+                        {
+                            if (habitToUpdate.RepeatDaysOfMonth.Count != 0)
+                            {
+                                logger.LogDebug("Clearing repeat days of month...");
+                                habitToUpdate.RepeatDaysOfMonth.Clear();
+                                logger.LogDebug("Cleared!");
+                            }
 
-                if (document.Operations.Any(o => o.OperationType == OperationType.Add
-                    && o.path == "/dayResults/-"
-                    && (int)JObject.Parse(o.value.ToString()!)["Progress"]! >= quantity
-                    && (Statuses)Enum.Parse(typeof(Statuses), JObject.Parse(o.value.ToString()!)["Status"]!.ToString()) != Statuses.Completed))
-                        return new Result<bool>(new AppException(HttpStatusCode.BadRequest, "Progress can't be more than quantity if status is not completed"));
+                            if (habitToUpdate.RepeatInterval != 0)
+                            {
+                                logger.LogDebug("Changing repeat interval to 0...");
+                                habitToUpdate.RepeatInterval = 0;
+                                logger.LogDebug("Changed!");
+                            }
+                                
+                        }
+
+                        if (document.Operations.Any(Conditions.IsRepeatModeToMonthlyChangeOperation))
+                        {
+                            if (habitToUpdate.RepeatDaysOfWeek.Count != 0)
+                            {
+                                logger.LogDebug("Clearing repeat days of week...");
+                                habitToUpdate.RepeatDaysOfWeek.Clear();
+                                logger.LogDebug("Cleared!");
+                            }
+
+                            if (habitToUpdate.RepeatInterval != 0)
+                            {
+                                logger.LogDebug("Changing repeat interval to 0...");
+                                habitToUpdate.RepeatInterval = 0;
+                                logger.LogDebug("Changed!");
+                            }
+                        }
+
+                        if (document.Operations.Any(Conditions.IsRepeatModeToIntervalChangeOperation))
+                        {
+                            if (habitToUpdate.RepeatDaysOfWeek.Count != 0)
+                            {
+                                logger.LogDebug("Clearing repeat days of week...");
+                                habitToUpdate.RepeatDaysOfWeek.Clear();
+                                logger.LogDebug("Cleared!");
+                            }
+
+                            if (habitToUpdate.RepeatDaysOfMonth.Count != 0)
+                            {
+                                logger.LogDebug("Clearing repeat days of month...");
+                                habitToUpdate.RepeatDaysOfMonth.Clear();
+                                logger.LogDebug("Cleared!");
+                            }
+                        }
+
+                        logger.LogDebug("Applying patch document to habit...");
+                        document.ApplyTo(habitToUpdate);
+
+                        logger.LogDebug("Applied!");
+                        logger.LogDebug("Validating habit...");
+                        var validationResult = validator.Validate(habitToUpdate);
+                        if (validationResult.IsValid)
+                        {
+                            logger.LogDebug("Habit is valid!");
+                            logger.LogDebug("Saving changes and commiting...");
+
+                            await dbContext.CommitAsync();
+                            logger.LogDebug("Commited!");
+                            return new Result<bool>(true);
+                        }
+                        else
+                        {
+                            logger.LogError("Habit is invalid!");
+                            await dbContext.RollbackAsync();
+                            return new Result<bool>(new Exceptions.ValidationException(validationResult.Errors.Select(err => new ValidationError(err.PropertyName, err.ErrorMessage)).ToList()));
+                        }
+                    },
+                    Fail: async ex =>
+                    {
+                        await dbContext.RollbackAsync();
+                        return new Result<bool>((Exceptions.ValidationException)ex);
+                    });
             }
+            catch (Exception ex)
+            {
+                await dbContext.RollbackAsync();
+                return new Result<bool>(new AppException(HttpStatusCode.BadRequest, ex.Message));
+            }
+        }
+                    
+
+        private static async Task<Result<bool>> DocumentAndEntityValidation(IHabitsDbContext dbContext, JsonPatchDocument document, Habit habitToUpdate, ILogger logger)
+        {
+            logger.LogDebug("Validating document and entity...");
+
+            var errors = new List<ValidationError>();
+                    
             if (habitToUpdate.HabitType == HabitTypes.Good)
             {
                 var repeatDaysOfMonth = habitToUpdate.RepeatDaysOfMonth;
                 var repeatDaysOfWeek = habitToUpdate.RepeatDaysOfWeek;
                 var repeatInterval = habitToUpdate.RepeatInterval;
 
-                if (document.Operations
-                .Any(o => o.OperationType == OperationType.Replace && o.path == "/repeatMode" && (int)o.value == (int)RepeatModes.Daily)
-                    && !document.Operations
-                .Any(o => o.OperationType == OperationType.Add && o.path == "/repeatDaysOfWeek/-"))
-                    return new Result<bool>(new AppException(HttpStatusCode.BadRequest, "RepeatDaysOfWeek should be added if RepeatMode is Daily"));
+                var isRepeatModeToDailyChangeOperation = document.Operations.Any(Conditions.IsRepeatModeToDailyChangeOperation);
+                logger.LogDebug("Repeat mode is changed to Daily: {isRepeatModeToDailyChangeOperation}", isRepeatModeToDailyChangeOperation);
 
-                if (document.Operations
-                    .Any(o => o.OperationType == OperationType.Replace
-                        && o.path == "/repeatMode"
-                        && (int)o.value == (int)RepeatModes.Monthly)
-                && !document.Operations
-                    .Any(o => o.OperationType == OperationType.Add
-                        && o.path == "/repeatDaysOfMonth/-"))
-                    return new Result<bool>(new AppException(HttpStatusCode.BadRequest, "RepeatDaysOfMonth should be added if RepeatMode is Monthly"));
+                var isRepeatDayOfWeekAddOperation = document.Operations.Any(Conditions.IsRepeatDayOfWeekAddOperation);
+                logger.LogDebug("Repeat days of week are added: {isRepeatDayOfWeekAddOperation}", isRepeatDayOfWeekAddOperation);
 
-                if (document.Operations
-                    .Any(o => o.OperationType == OperationType.Replace
-                        && o.path == "/repeatMode"
-                        && (int)o.value == (int)RepeatModes.Interval)
-                && !document.Operations
-                    .Any(o => o.OperationType == OperationType.Replace
-                        && o.path == "/repeatInterval"
-                        && ((int)o.value > 0 && (int)o.value < 7)))
-                    return new Result<bool>(new AppException(HttpStatusCode.BadRequest, "RepeatDaysOfMonth should be added if RepeatMode is Monthly"));
-
-                if (document.Operations.Any(o => o.OperationType == OperationType.Replace
-                     && o.path == "/repeatMode"
-                     && (int)o.value == (int)RepeatModes.Daily))
+                if (isRepeatModeToDailyChangeOperation && !isRepeatDayOfWeekAddOperation)
                 {
-                    if (repeatDaysOfMonth.Count != 0)
-                        habitToUpdate.RepeatDaysOfMonth.Clear();
-
-                    if (repeatInterval != 0)
-                        habitToUpdate.RepeatInterval = 0;
+                    logger.LogError("RepeatDaysOfWeek should be added if RepeatMode is Daily");
+                    errors.Add(new ValidationError(typeof(Habit).GetProperty("RepeatDaysOfWeek")!.Name, "RepeatDaysOfWeek should be added if RepeatMode is Daily"));
+                }
+                    
+                if ((habitToUpdate.RepeatMode != RepeatModes.Daily || !isRepeatModeToDailyChangeOperation) && isRepeatDayOfWeekAddOperation)
+                {
+                    logger.LogError("RepeatDaysOfWeek shouldn't be added if RepeatMode isn't Daily");
+                    errors.Add(new ValidationError(typeof(Habit).GetProperty("RepeatDaysOfWeek")!.Name, "RepeatDaysOfWeek shouldn't be added if RepeatMode isn't Daily"));
                 }
 
-                if (document.Operations.Any(o => o.OperationType == OperationType.Replace
-                     && o.path == "/repeatMode"
-                     && (int)o.value == (int)RepeatModes.Monthly))
-                {
-                    if (repeatDaysOfWeek!.Count != 0)
-                        habitToUpdate.RepeatDaysOfWeek.Clear();
+                var isRepeatModeToMonthlyChangeOperation = document.Operations.Any(Conditions.IsRepeatModeToMonthlyChangeOperation);
+                logger.LogDebug("Repeat mode is changed to Monthly: {isRepeatModeToMonthlyChangeOperation}", isRepeatModeToMonthlyChangeOperation);
 
-                    if (repeatInterval != 0)
-                        habitToUpdate.RepeatInterval = 0;
+                var isRepeatDayOfMonthAddOperation = document.Operations.Any(Conditions.IsRepeatDayOfMonthAddOperation);
+                logger.LogDebug("Repeat days of month are added: {isRepeatDayOfMonthAddOperation}", isRepeatDayOfMonthAddOperation);
+
+                if (isRepeatModeToMonthlyChangeOperation && !isRepeatDayOfMonthAddOperation)
+                {
+                    logger.LogError("RepeatDaysOfMonth should be added if RepeatMode is Monthly");
+                    errors.Add(new ValidationError(typeof(Habit).GetProperty("RepeatDaysOfMonth")!.Name, "RepeatDaysOfMonth should be added if RepeatMode is Monthly"));
                 }
 
-                if (document.Operations.Any(o => o.OperationType == OperationType.Replace
-                     && o.path == "/repeatMode"
-                     && (int)o.value == (int)RepeatModes.Interval))
+                if ((habitToUpdate.RepeatMode != RepeatModes.Monthly || !isRepeatModeToMonthlyChangeOperation) && isRepeatDayOfMonthAddOperation)
                 {
-                    if (repeatDaysOfWeek.Count != 0)
-                        habitToUpdate.RepeatDaysOfWeek.Clear();
-
-                    if (repeatDaysOfMonth.Count != 0)
-                        habitToUpdate.RepeatDaysOfMonth.Clear();
+                    logger.LogError("RepeatDaysOfMonth shouldn't be added if RepeatMode isn't Monthly");
+                    errors.Add(new ValidationError(typeof(Habit).GetProperty("RepeatDaysOfMonth")!.Name, "RepeatDaysOfMonth shouldn't be added if RepeatMode isn't Monthly"));
                 }
+
+                var isRepeatModeToIntervalChangeOperation = document.Operations.Any(Conditions.IsRepeatModeToIntervalChangeOperation);
+                logger.LogDebug("Repeat mode is changed to Interval: {isRepeatModeToIntervalChangeOperation}", isRepeatModeToIntervalChangeOperation);
+
+                var isCorrectRepeatIntervalChangeOperation = document.Operations.Any(Conditions.IsCorrectRepeatIntervalChangeOperation);
+                logger.LogDebug("Repeat interval is changed: {isRepeatIntervalChangeOperation}", isCorrectRepeatIntervalChangeOperation);
+
+                if (isRepeatModeToIntervalChangeOperation && !isCorrectRepeatIntervalChangeOperation)
+                {
+                    logger.LogError("RepeatInterval should be between 2 and 7 if RepeatMode is Interval");
+                    errors.Add(new ValidationError(typeof(Habit).GetProperty("RepeatInterval")!.Name, "RepeatInterval should be between 2 and 7 if RepeatMode is Interval"));
+                }
+
+                if ((habitToUpdate.RepeatMode != RepeatModes.Interval || !isRepeatModeToIntervalChangeOperation) && isCorrectRepeatIntervalChangeOperation)
+                {
+                    logger.LogError("RepeatInterval shouldn't be added if RepeatMode isn't Interval");
+                    errors.Add(new ValidationError(typeof(Habit).GetProperty("RepeatInterval")!.Name, "RepeatInterval shouldn't be added if RepeatMode isn't Interval"));
+                }
+
+                
             }
-            return new Result<bool>(true);
+            return errors.Count > 0
+                     ? new Result<bool>(new Exceptions.ValidationException(errors))
+                     : new Result<bool>(true);
         }
     }
 }

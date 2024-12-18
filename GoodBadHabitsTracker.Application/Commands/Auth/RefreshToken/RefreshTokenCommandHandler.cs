@@ -19,27 +19,27 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken
 {
     internal sealed class RefreshTokenCommandHandler
         (UserManager<User> userManager,
-        ITokenHandler tokenHandler,
+        IJwtTokenHandler tokenHandler,
         IHttpContextAccessor httpContextAccessor) : IRequestHandler<RefreshTokenCommand, LoginResponse>
     {
         public async Task<LoginResponse> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
         {
             var accessToken = httpContextAccessor.HttpContext!.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
-            var refreshToken = command.Request.RefreshToken;
+            var refreshToken = command.RefreshToken;
 
             var accessTokenPrincipal = tokenHandler.ValidateAndGetPrincipalFromToken(accessToken)
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid access token");
             var refreshTokenPrincipal = tokenHandler.ValidateAndGetPrincipalFromToken(refreshToken)
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid refresh token");
 
-            var accessTokenPrincipalUserId = accessTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value
+            var accessTokenPrincipalUserId = accessTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid access token");
             var user = await userManager.FindByIdAsync(accessTokenPrincipalUserId)
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "User not found");
 
-            var refreshTokenPrincipalUserId = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value
+            var refreshTokenPrincipalUserId = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value
                 ?? throw new AppException(System.Net.HttpStatusCode.Unauthorized, "Invalid refresh token");
-            var refreshTokenExpiry = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == "exp")?.Value;
+            var refreshTokenExpiry = refreshTokenPrincipal.Claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Exp)?.Value;
 
             if (accessTokenPrincipalUserId is null || refreshTokenPrincipal is null 
                 || accessTokenPrincipalUserId != refreshTokenPrincipalUserId) 

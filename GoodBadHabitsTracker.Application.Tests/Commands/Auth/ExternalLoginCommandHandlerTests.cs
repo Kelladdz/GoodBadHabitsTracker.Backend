@@ -24,7 +24,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
     {
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<IIdTokenHandler> _idTokenHandlerMock;
-        private readonly Mock<ITokenHandler> _tokenHandlerMock;
+        private readonly Mock<IJwtTokenHandler> _tokenHandlerMock;
         private readonly Mock<SignInManager<User>> _signInManagerMock;
         private readonly Mock<UserManager<User>> _userManagerMock;
         private readonly Mock<RoleManager<UserRole>> _roleManagerMock;
@@ -34,7 +34,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         {
             _mapperMock = new Mock<IMapper>();
             _idTokenHandlerMock = new Mock<IIdTokenHandler>();
-            _tokenHandlerMock = new Mock<ITokenHandler>();
+            _tokenHandlerMock = new Mock<IJwtTokenHandler>();
 
             var userStoreMock = new Mock<IUserStore<User>>();
             _userManagerMock = new Mock<UserManager<User>>(userStoreMock.Object, null, null, null, null, null, null, null, null);

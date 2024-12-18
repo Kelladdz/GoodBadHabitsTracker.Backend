@@ -14,14 +14,14 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
     {
         private readonly Mock<IUserStore<User>> _userStoreMock;
         private readonly Mock<UserManager<User>> _userManagerMock;
-        private readonly Mock<ITokenHandler> _tokenHandlerMock;
+        private readonly Mock<IJwtTokenHandler> _tokenHandlerMock;
         private readonly LoginCommandHandler _handler;
 
         public LoginCommandHandlerTests()
         {
             _userStoreMock = new Mock<IUserStore<User>>();
             _userManagerMock = new Mock<UserManager<User>>(_userStoreMock.Object, null, null, null, null, null, null, null, null);
-            _tokenHandlerMock = new Mock<ITokenHandler>();
+            _tokenHandlerMock = new Mock<IJwtTokenHandler>();
             _handler = new LoginCommandHandler(_userManagerMock.Object, _tokenHandlerMock.Object);
         }
 

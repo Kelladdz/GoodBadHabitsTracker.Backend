@@ -11,56 +11,75 @@ using GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin;
 using GoodBadHabitsTracker.Application.Queries.Auth.GetExternalTokens;
 using GoodBadHabitsTracker.Application.DTOs.Request;
 using GoodBadHabitsTracker.Application.Commands.Auth.DeleteAccount;
+using GoodBadHabitsTracker.Infrastructure.Settings;
+using Microsoft.AspNetCore.Authorization;
+using System.Web;
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Policy = "GBHTPolicy")]
     public class AuthController(IMediator mediator, IEmailSender emailSender) : ControllerBase
     {
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register
             ([FromBody] RegisterRequest request, CancellationToken cancellationToken)
         {
             var response = await mediator.Send(new RegisterCommand(request), cancellationToken);
+            
+            var token = response!.Token;
+            var user = response!.User;
+            var userId = response!.User.Id;
+
+            var encodedToken = HttpUtility.UrlEncode(token);
+            var encodedUserId = HttpUtility.UrlEncode(userId.ToString());
+
             if (response is not null)
             {
-                var link = $"https://localhost:8080/auth/confirm-email/callback?token={response.Token}&userId={response.User.Id}";
+                var link = $"{DevelopmentPaths.CONFIRM_EMAIL_CALLBACK}?token={encodedToken}&userId={encodedUserId}";
                 if (link is null)
                 {
                     return BadRequest("Failed to generate confirmation link");
                 }
-                emailSender.SendConfirmationLink(response.User, link);
+                await emailSender.SendConfirmationLinkAsync(user, link);
 
-                return CreatedAtAction(nameof(Register), new { id = response!.User.Id }, response);
+                return CreatedAtAction(nameof(Register), new { id = userId }, response);
             }
             else return BadRequest("Something goes wrong");
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login
             ([FromBody] LoginRequest request, CancellationToken cancellationToken)
         {
             var response = await mediator.Send(new LoginCommand(request), cancellationToken);
 
-            Response.Cookies.Append("__Secure-Fgp", response.UserFingerprint, new CookieOptions
-            {
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = true,
-                Secure = true,
-                MaxAge = TimeSpan.FromMinutes(15),
-            });
-            Response.Cookies.Append("__Secure-Rt", response.RefreshToken, new CookieOptions
-            {
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = true,
-                Secure = true,
-                MaxAge = TimeSpan.FromDays(30),
-            });
-            return Ok(new { accessToken = response.AccessToken.ToString(), refreshToken = response.RefreshToken });
+            var userFingerprint = response.UserFingerprint;
+            var accessToken = response.AccessToken; 
+            var refreshToken = response.RefreshToken;
+
+            AppendCookies(userFingerprint, refreshToken);
+            
+            return Ok(new { accessToken });
+        }
+
+        [HttpPost("logout")]
+        [AllowAnonymous]
+        public IActionResult Logout()
+        {
+            var refreshTokenCookie = Request.Cookies[CookieNames.REFRESH_TOKEN_COOKIE_NAME];
+
+            var userFingerprintCookie = Request.Cookies[CookieNames.USER_FINGERPRINT_COOKIE_NAME];
+
+            DeleteCookies(userFingerprintCookie, refreshTokenCookie);
+            return NoContent();
         }
 
         [HttpPost("external-login")]
+        [AllowAnonymous]
         public async Task<IActionResult> ExternalLogin(ExternalLoginRequest request, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(new ExternalLoginCommand(request), cancellationToken);
@@ -71,6 +90,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
 
         [HttpPost("confirm-email")]
+        [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail
             ([FromBody] ConfirmEmailRequest request, CancellationToken cancellationToken)
         {
@@ -82,28 +102,34 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         }
 
         [HttpPost("forget-password")]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgetPassword
             ([FromBody] ForgetPasswordRequest request, CancellationToken cancellationToken)
         {
             var response = await mediator.Send(new ForgetPasswordCommand(request), cancellationToken);
+
+            var email = response.User.Email;
+            var token = response.Token;
+            var user = response.User;
+
+            var encodedToken = HttpUtility.UrlEncode(token);
+            var encodedEmail = HttpUtility.UrlEncode(email);
+
             if (response is not null)
             {
-                var link = $"https://localhost:8080/auth/reset-password/callback?token={response.Token}&email={response.User.Email}";
+                var link = $"{DevelopmentPaths.RESET_PASSWORD_CALLBACK}?token={encodedToken}&email={encodedEmail}";
                 if (link is null)
                 {
                     return BadRequest("Failed to generate reset password link");
                 }
-                emailSender.SendPasswordResetLink(response.User, link);
-                return Ok(new
-                {
-                    token = response.Token,
-                    email = response.User.Email,
-                });
+                await emailSender.SendPasswordResetLinkAsync(user, link);
+                return Ok(new { token, email });
             }
             else return BadRequest("Something goes wrong");
         }
 
         [HttpPatch("reset-password")]
+        [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(new ResetPasswordCommand(request), cancellationToken);
@@ -113,31 +139,25 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         }
 
         [HttpPost("token/refresh")]
+        [AllowAnonymous]
         public async Task<IActionResult> RefreshToken
-            ([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
+            (CancellationToken cancellationToken)
         {
-            var response = await mediator.Send(new RefreshTokenCommand(request, cancellationToken));
+            var refreshToken = Request.Cookies[CookieNames.REFRESH_TOKEN_COOKIE_NAME];
+            var response = await mediator.Send(new RefreshTokenCommand(refreshToken), cancellationToken);
 
-            Response.Cookies.Delete("__Secure-Rt");
-            Response.Cookies.Append("__Secure-Fgp", response.UserFingerprint, new CookieOptions
-            {
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = true,
-                Secure = true,
-                MaxAge = TimeSpan.FromMinutes(15),
-            });
-            Response.Cookies.Append("__Secure-Rt", response.RefreshToken, new CookieOptions
-            {
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = true,
-                Secure = true,
-                MaxAge = TimeSpan.FromDays(30),
-            });
+            var userFingerprint = response.UserFingerprint;
+            var accessToken = response.AccessToken;
+            var newRefreshToken = response.RefreshToken;
 
-            return Ok(new { accessToken = response.AccessToken.ToString() });
+            Response.Cookies.Delete(CookieNames.REFRESH_TOKEN_COOKIE_NAME);
+            AppendCookies(userFingerprint, newRefreshToken);
+
+            return Ok(new { accessToken });
         }
 
         [HttpPost("token")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetExternalTokens([FromBody] GetExternalTokensRequest request, [FromQuery] string provider, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(new GetExternalTokensQuery(request, provider), cancellationToken);
@@ -155,6 +175,43 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             return result.Succeeded 
                 ? NoContent() 
                 : BadRequest(result.Errors);
+        }
+
+        private void AppendCookies(string userFingerprint, string refreshToken)
+        {
+            
+            Response.Cookies.Append(CookieNames.USER_FINGERPRINT_COOKIE_NAME, userFingerprint, new CookieOptions
+            {
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = true,
+                Secure = true,
+                MaxAge = TimeSpan.FromMinutes(15),
+            });
+            Response.Cookies.Append(CookieNames.REFRESH_TOKEN_COOKIE_NAME, refreshToken, new CookieOptions
+            {
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = false,
+                Secure = true,
+                MaxAge = TimeSpan.FromDays(30),
+            });
+        }
+        private void DeleteCookies(string? userFingerprint, string? refreshToken)
+        {
+            if (userFingerprint is null || refreshToken is null) return;
+            Response.Cookies.Append(CookieNames.USER_FINGERPRINT_COOKIE_NAME, userFingerprint, new CookieOptions
+            {
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTime.Now.AddDays(-1),
+            });
+            Response.Cookies.Append(CookieNames.REFRESH_TOKEN_COOKIE_NAME, refreshToken, new CookieOptions
+            {
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = false,
+                Secure = true,
+                Expires = DateTime.Now.AddDays(-1),
+            });
         }
     }
 }

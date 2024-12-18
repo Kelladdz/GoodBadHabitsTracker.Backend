@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿/*using Microsoft.AspNetCore.JsonPatch;
 using GoodBadHabitsTracker.Core.Models;
 namespace GoodBadHabitsTracker.Core.Interfaces
 {
@@ -18,3 +18,4 @@ namespace GoodBadHabitsTracker.Core.Interfaces
         Task DeleteAllAsync(IEnumerable<Habit> allHabits, CancellationToken cancellationToken);
     }
 }
+*/

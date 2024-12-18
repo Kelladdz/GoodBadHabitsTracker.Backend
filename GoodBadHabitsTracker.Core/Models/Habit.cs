@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Text.Json.Serialization;
-using GoodBadHabitsTracker.Core.Enums;
+﻿using GoodBadHabitsTracker.Core.Enums;
 
 namespace GoodBadHabitsTracker.Core.Models
 {
@@ -19,14 +17,10 @@ namespace GoodBadHabitsTracker.Core.Models
         public int RepeatInterval { get; set; }
         public required DateOnly StartDate { get; set; }
         public List<TimeOnly> ReminderTimes { get; init; } = [];
-        [JsonIgnore]
         public User User { get; set; } = default!;
-        [JsonIgnore]
         public Guid UserId { get; set; } = default!;
-        [JsonIgnore]
         public Group Group { get; set; } = default!;
-        [JsonIgnore]
-        public Guid GroupId { get; set; } = default!;
+        public Guid? GroupId { get; set; }
         public ICollection<Comment> Comments { get; init; } = new List<Comment>();
         public ICollection<DayResult> DayResults { get; init; } = new List<DayResult>();
     }

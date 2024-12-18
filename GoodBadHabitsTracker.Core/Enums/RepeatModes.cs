@@ -2,6 +2,9 @@
 {
     public enum RepeatModes
     {
-        NonApplicable, Daily, Monthly, Interval
+        NonApplicable = 0, 
+        Daily = 1, 
+        Monthly = 2, 
+        Interval = 3
     }
 }

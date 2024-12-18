@@ -5,13 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
-using GoodBadHabitsTracker.Infrastructure.Repositories;
 using GoodBadHabitsTracker.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
-using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
 using Quartz;
 using GoodBadHabitsTracker.Infrastructure.BackgroundJobs;
-using GoodBadHabitsTracker.Infrastructure.Security.IdTokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Security.JwtTokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Settings;
+using System.IdentityModel.Tokens.Jwt;
 
 
 namespace GoodBadHabitsTracker.Infrastructure.Extensions
@@ -40,16 +40,15 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             services.AddScoped<SignInManager<User>>();
             services.AddScoped<UserManager<User>>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IHabitsRepository, HabitsRepository>();
-            services.AddScoped<IGroupsRepository, GroupsRepository>();
-            services.AddScoped<ITokenHandler, TokenHandler>();
-            services.AddScoped<IIdTokenHandler, IdTokenHandler>();
+            
+            services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
+            services.AddScoped<IHabitsDbContext, HabitsDbContext>();
 
             services.AddQuartz(options =>
             {
-                var jobKey = JobKey.Create("UpdatePastDayResult");
+                var jobKey = JobKey.Create(QuartzJobKeys.FILL_PAST_DAYS_JOB_KEY);
 
-                options.AddJob<UpdatePastDayResult>(jobKey)
+                options.AddJob<FillPastDaysJob>(jobKey)
                 .AddTrigger(trigger => trigger
                         .ForJob(jobKey)
                         .StartNow()
@@ -64,15 +63,14 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             
 
             services.AddJwt(configuration);
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("GBHTPolicy", policy =>
+            services.AddAuthorizationBuilder()
+                .AddPolicy(Policies.AUTHORIZATION_POLICY_NAME, policy =>
                 {
                     policy.RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes("PasswordLogin")
-                    .AddAuthenticationSchemes("Auth0Login");
+                    .AddAuthenticationSchemes(AuthenticationSchemas.EMAIL_PASSWORD_AUTHENTICATION_SCHEMA)
+                    .AddAuthenticationSchemes(AuthenticationSchemas.AUTH0_AUTHENTICATION_SCHEMA)
+                    .Build();
                 });
-            });
         }
     }
 }

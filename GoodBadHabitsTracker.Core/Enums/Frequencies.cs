@@ -2,6 +2,9 @@
 {
     public enum Frequencies
     {
-        NonApplicable, PerDay, PerWeek, PerMonth
+        NonApplicable = 0, 
+        PerDay = 1, 
+        PerWeek = 2, 
+        PerMonth = 3 
     }
 }

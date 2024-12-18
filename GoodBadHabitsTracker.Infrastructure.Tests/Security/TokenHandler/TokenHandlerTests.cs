@@ -1,21 +1,11 @@
-﻿using GoodBadHabitsTracker.Core.Interfaces;
-using GoodBadHabitsTracker.TestMisc;
+﻿using GoodBadHabitsTracker.TestMisc;
 using Microsoft.Extensions.Options;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
-using GoodBadHabitsTracker.Infrastructure.Configurations;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
-using GoodBadHabitsTracker.Core.Models;
+using GoodBadHabitsTracker.Infrastructure.Settings;
 
 namespace GoodBadHabitsTracker.Infrastructure.Tests.Security.AccessTokenHandler
 {
