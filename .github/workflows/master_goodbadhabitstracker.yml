@@ -5,10 +5,11 @@ name: Build
 name: Build and deploy ASP.Net Core app to Azure Web App - goodbadhabitstracker
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
-  workflow_dispatch:
+  
 
 jobs:
   build:
