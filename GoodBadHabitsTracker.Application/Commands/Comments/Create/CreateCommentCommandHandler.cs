@@ -29,14 +29,21 @@ namespace GoodBadHabitsTracker.Application.Commands.Comments.Create
             logger.LogDebug("Id: {id}", user.Id);
 
             var request = command.Request;
+            var body = request.Body;
+            var date= request.Date;
+            var habitId = command.HabitId;
 
+            var comment = new Comment
+            {
+                Body = body,
+                Date = date,
+                HabitId = habitId,
+            };
 
             dbContext.BeginTransaction();
 
             try
             {
-                var comment = mapper.Map<Comment>(request);
-
                 await dbContext.InsertCommentAsync(comment);
                 
                 await dbContext.CommitAsync();

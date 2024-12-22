@@ -30,6 +30,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
         Task InsertGroupAsync(Group group);
         void DeleteGroup(Group group);
         Task<DayResult?> ReadDayResultByDateAsync(Guid habitId, string date);
+        Task<Comment?> ReadCommentByIdAsync(Guid Id);
         Task InsertCommentAsync(Comment comment);
         Task<EmailTemplate?> ReadEmailTemplate(string templateName);
     }

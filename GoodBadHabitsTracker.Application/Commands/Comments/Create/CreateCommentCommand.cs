@@ -5,5 +5,5 @@ using LanguageExt.Common;
 
 namespace GoodBadHabitsTracker.Application.Commands.Comments.Create
 {
-    public record CreateCommentCommand(CreateCommentRequest Request) : ICommand<Result<CommentResponse>>;
+    public record CreateCommentCommand(Guid HabitId, CreateCommentRequest Request) : ICommand<Result<CommentResponse>>;
 }

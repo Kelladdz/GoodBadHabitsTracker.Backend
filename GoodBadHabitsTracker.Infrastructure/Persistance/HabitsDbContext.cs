@@ -18,7 +18,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
         public DbSet<Group> Groups { get; set; }
         public DbSet<DayResult> DayResults { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<EmailTemplate> EmailTemplates { get; set; } 
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
 
         private IDbContextTransaction _transaction;
         public void SetEntryToChanged(object obj)
@@ -48,7 +48,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
                 await _transaction.DisposeAsync();
             }
         }
-         
+
         public async Task RollbackAsync()
         {
             await _transaction.RollbackAsync();
@@ -74,6 +74,8 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
             var habits = await Habits
                 .Where(h => h.UserId == userId)
                 .Include(h => h.DayResults)
+                .Include(h => h.Comments)
+                .AsSplitQuery()
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -117,11 +119,14 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
 
             return allGroups.Count == 0 ? [] : allGroups;
         }
+
         public async Task InsertGroupAsync(Group group) => await Groups.AddAsync(group);
         public void DeleteGroup(Group group) => Groups.Remove(group);
         public async Task<DayResult?> ReadDayResultByDateAsync(Guid habitId, string date)
             => await DayResults
                 .FirstOrDefaultAsync(dayResult => dayResult.HabitId == habitId && dayResult.Date == DateOnly.Parse(date));
+
+        public async Task<Comment?> ReadCommentByIdAsync(Guid id) => await Comments.FindAsync(id);
         public async Task InsertCommentAsync(Comment comment) => await Comments.AddAsync(comment);
         public async Task<EmailTemplate?> ReadEmailTemplate(string templateName)
             => await EmailTemplates

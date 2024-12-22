@@ -6,6 +6,6 @@
         public required string Body { get; set; } 
         public required DateOnly Date { get; init; } 
         public required Guid HabitId { get; init; }
-        public required Habit Habit { get; init; }
+        public Habit Habit { get; set; }
     }
 }
