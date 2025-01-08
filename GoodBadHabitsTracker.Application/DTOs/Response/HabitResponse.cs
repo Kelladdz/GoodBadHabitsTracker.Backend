@@ -2,5 +2,5 @@
 
 namespace GoodBadHabitsTracker.Application.DTOs.Response
 {
-    public record HabitResponse(Habit Habit);
+    public record HabitResponse(Habit Habit, Stats Stats);
 }

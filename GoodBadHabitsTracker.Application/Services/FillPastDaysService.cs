@@ -53,10 +53,10 @@ namespace GoodBadHabitsTracker.Application.Services
                 {
                     logger.LogDebug("Habit: {name}", habit.Name);
                     var currentDay = habit.StartDate;
-                    var tommorrow = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
+                    var dayAfterTommorrow = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(2));
                     var habitId = habit.Id;
 
-                    while (currentDay <= tommorrow)
+                    while (currentDay <= dayAfterTommorrow)
                     {
                         logger.LogDebug("{currentDay}", currentDay);
 
@@ -80,7 +80,7 @@ namespace GoodBadHabitsTracker.Application.Services
                         }
                         else logger.LogDebug("Conditions aren't met!");
                         currentDay = currentDay.AddDays(1);
-                    }                
+                    }
                 }
 
                 logger.LogDebug("Writing rows in database...");

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoodBadHabitsTracker.Infrastructure.Persistance
+namespace GoodBadHabitsTracker.Core.Interfaces
 {
     public interface IHabitsDbContext
     {
@@ -19,7 +19,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
         string GetConnectionString();
         Task CommitAsync();
         Task RollbackAsync();
-        Task<Habit?> ReadHabitByIdAsync(Guid habitId, Guid userId);
+        Task<Habit?> ReadHabitByIdAsync(Guid habitId);
         Task<IEnumerable<Habit>> ReadAllHabitsAsync(Guid userId);
         Task<IEnumerable<Habit>> SearchHabitsAsync(string term, DateOnly date, Guid userId);
         Task InsertHabitAsync(Habit habit);
@@ -30,6 +30,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
         Task InsertGroupAsync(Group group);
         void DeleteGroup(Group group);
         Task<DayResult?> ReadDayResultByDateAsync(Guid habitId, string date);
+        Task DeleteAllDayResultsAsync(Guid userId);
         Task<Comment?> ReadCommentByIdAsync(Guid Id);
         Task InsertCommentAsync(Comment comment);
         Task<EmailTemplate?> ReadEmailTemplate(string templateName);

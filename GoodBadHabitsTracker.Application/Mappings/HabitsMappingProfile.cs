@@ -19,21 +19,21 @@ namespace GoodBadHabitsTracker.Application.Mappings
                     opt.MapFrom(x => x.IsTimeBased);
                     opt.Condition(src => src.HabitType != HabitTypes.Quit);
                 })
-                .ForMember(x => x.Quantity, opt =>
-                {
-                    opt.MapFrom((src, dest) => (bool)src.IsTimeBased! ? src.Quantity * 60 : src.Quantity);
-                    opt.Condition(src => src.HabitType != HabitTypes.Quit);
-                })
                 .ForMember(x => x.Frequency, opt =>
                 {
                     opt.MapFrom(x => x.Frequency);
                     opt.Condition(src => src.HabitType != HabitTypes.Quit);
                 })
+                .ForMember(x => x.Quantity, opt =>
+                {
+                    opt.MapFrom((src, dest) => (bool)src.IsTimeBased! ? src.Quantity * 60 : src.Quantity);
+                    opt.Condition(src => src.HabitType != HabitTypes.Quit);
+                })
                 .ForMember(x => x.RepeatMode, opt =>
                 {
                     opt.MapFrom(src =>
-                        src.HabitType != HabitTypes.Good 
-                            ? RepeatModes.NonApplicable 
+                        src.HabitType != HabitTypes.Good
+                            ? RepeatModes.NonApplicable
                             : src.RepeatMode);
                 })
                 .ForMember(x => x.RepeatDaysOfMonth, opt =>

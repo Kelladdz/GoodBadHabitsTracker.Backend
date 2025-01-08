@@ -2,7 +2,6 @@
 using MediatR;
 using LanguageExt.Common;
 using GoodBadHabitsTracker.Application.Exceptions;
-using GoodBadHabitsTracker.Infrastructure.Persistance;
 using System.Net;
 
 namespace GoodBadHabitsTracker.Application.Commands.Habits.Delete
@@ -24,13 +23,13 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Delete
 
             try
             {
-                var habitToDelete = await dbContext.ReadHabitByIdAsync(habitId, userId);
+                var habitToDelete = await dbContext.ReadHabitByIdAsync(habitId);
                 if (habitToDelete == null)
                 {
                     await dbContext.CommitAsync();
                     return new Result<bool>(new AppException(HttpStatusCode.NotFound, "Habit Not Found"));
                 }
-                    
+
                 dbContext.DeleteHabit(habitToDelete);
 
                 await dbContext.CommitAsync();
@@ -40,7 +39,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Delete
             {
                 await dbContext.RollbackAsync();
                 return new Result<bool>(new AppException(HttpStatusCode.BadRequest, ex.Message));
-            }  
+            }
         }
     }
 }

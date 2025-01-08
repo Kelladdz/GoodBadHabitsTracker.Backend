@@ -4,6 +4,7 @@ using GoodBadHabitsTracker.Application.Exceptions;
 using GoodBadHabitsTracker.Application.DTOs.Response;
 using LanguageExt.Common;
 using System.Net;
+using GoodBadHabitsTracker.Application.Services;
 using GoodBadHabitsTracker.Infrastructure.Persistance;
 
 namespace GoodBadHabitsTracker.Application.Queries.Habits.Search
@@ -27,7 +28,8 @@ namespace GoodBadHabitsTracker.Application.Queries.Habits.Search
             var response = new List<HabitResponse>();
             foreach (var habit in habits)
             {
-                response.Add(new HabitResponse(habit));
+                var stats = HabitStatistics.GetStats(habit);
+                response.Add(new HabitResponse(habit, stats));
             }
 
             return new Result<IEnumerable<HabitResponse>>(response);

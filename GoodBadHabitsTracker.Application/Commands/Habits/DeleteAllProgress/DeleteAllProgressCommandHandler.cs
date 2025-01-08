@@ -29,6 +29,9 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.DeleteAllProgress
 
             try
             {
+
+                await dbContext.DeleteAllDayResultsAsync(userId);
+
                 var allHabits = await dbContext.ReadAllHabitsAsync(userId);
                 if (!allHabits.Any())
                 {
@@ -36,11 +39,6 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.DeleteAllProgress
                     return new Result<bool>(true);
                 }
                 var currentDay = DateOnly.FromDateTime(DateTime.Today);
-                foreach (var habit in allHabits!)
-                {
-                    habit.DayResults.Clear();
-                    habit.StartDate = currentDay;
-                }
 
                 var destinationTableName = "dbo.DayResults";
 

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Net;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using GoodBadHabitsTracker.Application.DTOs.Request;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Application.Commands.Habits.DeleteAll;
 using GoodBadHabitsTracker.Application.Commands.Habits.DeleteAllProgress;
+using GoodBadHabitsTracker.Application.Exceptions;
 using LanguageExt.Common;
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
@@ -30,7 +32,21 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
             return result.Match<IActionResult>(
                 res => Ok(res),
-                _ => NotFound());
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
 
         [OutputCache]
@@ -41,21 +57,49 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
             return result.Match<IActionResult>(
                 res => Ok(res),
-                _ => NotFound());
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
 
         [OutputCache]
         [HttpGet("search")]
         public async Task<IActionResult> Search(
-            [FromQuery] string? term, 
-            [FromQuery] DateOnly date, 
+            [FromQuery] string? term,
+            [FromQuery] DateOnly date,
             CancellationToken cancellationToken)
         {
             var result = await mediator.Send(new SearchHabitsQuery(term, date), cancellationToken);
 
             return result.Match<IActionResult>(
                 res => Ok(res),
-                _ => NotFound());
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
 
         [HttpPost]
@@ -74,12 +118,26 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
                     return CreatedAtAction(nameof(GetById), new { id = habitId }, habit);
                 },
-                error => BadRequest(error));
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
 
         [HttpPatch("{id:guid}")]
         public async Task<IActionResult> Patch(
-            [FromRoute] Guid id, 
+            [FromRoute] Guid id,
             [FromBody] JsonPatchDocument request,
             CancellationToken cancellationToken)
         {
@@ -105,7 +163,21 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
             return result.Match<IActionResult>(
                 _ => NoContent(),
-                error => BadRequest(error));
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
@@ -114,7 +186,21 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
             return result.Match<IActionResult>(
                 _ => NoContent(),
-                error => BadRequest(error));
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteAll(CancellationToken cancellationToken)
@@ -123,7 +209,21 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
             return result.Match<IActionResult>(
                 _ => NoContent(),
-                error => BadRequest(error));
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
     }
 }

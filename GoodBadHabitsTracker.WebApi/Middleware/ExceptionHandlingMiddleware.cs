@@ -49,7 +49,7 @@ namespace GoodBadHabitsTracker.WebApi.Middleware
                     (int)appException.Code,
                     "ApplicationFailure",
                     "Application error",
-                    "Something goes wrong",
+                    appException.Errors!.ToString()!,
                     appException.Errors),
                 ValidationException validationException => new ExceptionDetails(
                     StatusCodes.Status400BadRequest,

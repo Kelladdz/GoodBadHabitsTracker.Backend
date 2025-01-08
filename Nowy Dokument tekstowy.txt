@@ -1,0 +1,29 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 7154
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY ["./GoodBadHabitsTracker.Infrastructure/GoodBadHabitsTracker.Infrastructure.csproj", "src/GoodBadHabitsTracker.Infrastructure/"]
+COPY ["./GoodBadHabitsTracker.Core/GoodBadHabitsTracker.Core.csproj", "src/GoodBadHabitsTracker.Core/"]
+COPY ["./GoodBadHabitsTracker.Application/GoodBadHabitsTracker.Application.csproj", "src/GoodBadHabitsTracker.Application/"]
+COPY ["./GoodBadHabitsTracker.WebApi/GoodBadHabitsTracker.WebApi.csproj", "src/GoodBadHabitsTracker.WebApi/"]
+
+RUN dotnet restore "src/GoodBadHabitsTracker.WebApi/GoodBadHabitsTracker.WebApi.csproj"
+
+COPY . .
+
+WORKDIR "/src/GoodBadHabitsTracker.WebApi"
+
+RUN dotnet build -c Release -o /app/build
+
+FROM build AS publish 
+RUN dotnet publish -c Release -o /app/publish
+
+FROM base  AS runtime
+WORKDIR /app
+
+COPY --from=publish /app/publish .
+RUN ls -l
+ENTRYPOINT ["dotnet", "GoodBadHabitsTracker.WebApi.dll"]

@@ -1,5 +1,7 @@
-﻿using GoodBadHabitsTracker.Application.Commands.DayResults.Update;
+﻿using System.Net;
+using GoodBadHabitsTracker.Application.Commands.DayResults.Update;
 using GoodBadHabitsTracker.Application.DTOs.Request;
+using GoodBadHabitsTracker.Application.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +20,21 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
             return result.Match<IActionResult>(
                 _ => NoContent(),
-                error => BadRequest(error));
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
     }
 }

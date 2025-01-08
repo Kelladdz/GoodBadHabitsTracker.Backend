@@ -14,7 +14,7 @@ namespace GoodBadHabitsTracker.Application.Queries.Habits.Search
         {
             var today = DateTime.Today;
             var twoDaysFromNow = DateOnly.FromDateTime(today.AddDays(2));
-            return date < twoDaysFromNow;
+            return date <= twoDaysFromNow;
         }
     }
 }

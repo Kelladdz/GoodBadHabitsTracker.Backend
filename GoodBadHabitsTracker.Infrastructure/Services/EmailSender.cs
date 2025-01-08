@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Net.Smtp;
 using GoodBadHabitsTracker.Infrastructure.Settings;
-using GoodBadHabitsTracker.Infrastructure.Persistance;
 
 
 namespace GoodBadHabitsTracker.Infrastructure.Services

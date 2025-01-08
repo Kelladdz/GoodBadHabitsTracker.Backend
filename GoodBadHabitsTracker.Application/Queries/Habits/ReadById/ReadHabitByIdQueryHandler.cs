@@ -5,6 +5,7 @@ using GoodBadHabitsTracker.Infrastructure.Persistance;
 using LanguageExt.Common;
 using MediatR;
 using System.Net;
+using GoodBadHabitsTracker.Application.Services;
 
 namespace GoodBadHabitsTracker.Application.Queries.Habits.ReadById
 {
@@ -25,7 +26,7 @@ namespace GoodBadHabitsTracker.Application.Queries.Habits.ReadById
 
             try
             {
-                var habit = await dbContext.ReadHabitByIdAsync(userId, groupId);
+                var habit = await dbContext.ReadHabitByIdAsync(groupId);
                 if (habit is null)
                 {
                     await dbContext.CommitAsync();
@@ -33,7 +34,8 @@ namespace GoodBadHabitsTracker.Application.Queries.Habits.ReadById
                 }
 
                 await dbContext.CommitAsync();
-                return new Result<HabitResponse>(new HabitResponse(habit));
+                var stats = HabitStatistics.GetStats(habit);
+                return new Result<HabitResponse>(new HabitResponse(habit, stats));
             }
             catch (Exception ex)
             {

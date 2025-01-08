@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using GoodBadHabitsTracker.Application.Commands.Auth.Register;
 using GoodBadHabitsTracker.Application.Commands.Auth.Login;
@@ -14,6 +15,7 @@ using GoodBadHabitsTracker.Application.Commands.Auth.DeleteAccount;
 using GoodBadHabitsTracker.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authorization;
 using System.Web;
+using GoodBadHabitsTracker.Application.Exceptions;
 
 namespace GoodBadHabitsTracker.WebApi.Controllers
 {
@@ -28,7 +30,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             ([FromBody] RegisterRequest request, CancellationToken cancellationToken)
         {
             var response = await mediator.Send(new RegisterCommand(request), cancellationToken);
-            
+
             var token = response!.Token;
             var user = response!.User;
             var userId = response!.User.Id;
@@ -58,11 +60,11 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
             var response = await mediator.Send(new LoginCommand(request), cancellationToken);
 
             var userFingerprint = response.UserFingerprint;
-            var accessToken = response.AccessToken; 
+            var accessToken = response.AccessToken;
             var refreshToken = response.RefreshToken;
 
             AppendCookies(userFingerprint, refreshToken);
-            
+
             return Ok(new { accessToken });
         }
 
@@ -70,11 +72,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         [AllowAnonymous]
         public IActionResult Logout()
         {
-            var refreshTokenCookie = Request.Cookies[CookieNames.REFRESH_TOKEN_COOKIE_NAME];
-
-            var userFingerprintCookie = Request.Cookies[CookieNames.USER_FINGERPRINT_COOKIE_NAME];
-
-            DeleteCookies(userFingerprintCookie, refreshTokenCookie);
+            DeleteCookies();
             return NoContent();
         }
 
@@ -82,10 +80,15 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLogin(ExternalLoginRequest request, CancellationToken cancellationToken)
         {
-            var result = await mediator.Send(new ExternalLoginCommand(request), cancellationToken);
-            return result.Succeeded
-                ? Ok()
-                : Unauthorized(result.Errors);
+            var response = await mediator.Send(new ExternalLoginCommand(request), cancellationToken);
+
+            var userFingerprint = response.UserFingerprint;
+            var accessToken = response.AccessToken;
+            var refreshToken = response.RefreshToken;
+
+            AppendCookies(userFingerprint, refreshToken);
+
+            return Ok(new { accessToken });
         }
 
 
@@ -164,7 +167,21 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
             return result.Match<IActionResult>(
                 res => Ok(res),
-                error => BadRequest(error));
+                error =>
+                {
+                    var code = (error as AppException)!.Code;
+                    switch (code)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                            return Unauthorized(error);
+                        case HttpStatusCode.BadRequest:
+                            return BadRequest(error);
+                        case HttpStatusCode.NotFound:
+                            return NotFound(error);
+                        default:
+                            return Problem();
+                    }
+                });
         }
 
         [HttpDelete]
@@ -172,20 +189,25 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
         {
             var result = await mediator.Send(new DeleteAccountCommand(), cancellationToken);
 
-            return result.Succeeded 
-                ? NoContent() 
-                : BadRequest(result.Errors);
+            if (result.Succeeded)
+            {
+                DeleteCookies();
+                return NoContent();
+            }
+            else return BadRequest(result.Errors);
+
         }
 
         private void AppendCookies(string userFingerprint, string refreshToken)
         {
-            
+
             Response.Cookies.Append(CookieNames.USER_FINGERPRINT_COOKIE_NAME, userFingerprint, new CookieOptions
             {
                 SameSite = SameSiteMode.Strict,
                 HttpOnly = true,
                 Secure = true,
                 MaxAge = TimeSpan.FromMinutes(15),
+                Path = "/",
             });
             Response.Cookies.Append(CookieNames.REFRESH_TOKEN_COOKIE_NAME, refreshToken, new CookieOptions
             {
@@ -193,25 +215,37 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
                 HttpOnly = false,
                 Secure = true,
                 MaxAge = TimeSpan.FromDays(30),
+                Path = "/",
             });
         }
-        private void DeleteCookies(string? userFingerprint, string? refreshToken)
+        private void DeleteCookies()
         {
-            if (userFingerprint is null || refreshToken is null) return;
-            Response.Cookies.Append(CookieNames.USER_FINGERPRINT_COOKIE_NAME, userFingerprint, new CookieOptions
+            if (Request.Cookies.TryGetValue(CookieNames.USER_FINGERPRINT_COOKIE_NAME, out var _ ))
             {
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = true,
-                Secure = true,
-                Expires = DateTime.Now.AddDays(-1),
-            });
-            Response.Cookies.Append(CookieNames.REFRESH_TOKEN_COOKIE_NAME, refreshToken, new CookieOptions
+                Response.Cookies.Delete(CookieNames.USER_FINGERPRINT_COOKIE_NAME, new CookieOptions
+                {
+                    SameSite = SameSiteMode.Strict,
+                    HttpOnly = true,
+                    Secure = true,
+                    MaxAge = TimeSpan.FromMinutes(15),
+                    Path = "/",
+                    Expires = DateTime.UtcNow.AddDays(-2)
+                });
+            }
+            if (Request.Cookies.TryGetValue(CookieNames.REFRESH_TOKEN_COOKIE_NAME, out var _))
             {
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = false,
-                Secure = true,
-                Expires = DateTime.Now.AddDays(-1),
-            });
+                Response.Cookies.Delete(CookieNames.REFRESH_TOKEN_COOKIE_NAME, new CookieOptions
+                {
+                    SameSite = SameSiteMode.Strict,
+                    HttpOnly = false,
+                    Secure = true,
+                    MaxAge = TimeSpan.FromDays(30),
+                    Path = "/",
+                    Expires = DateTime.UtcNow.AddDays(-2)
+                });
+            }
+
+            return;
         }
     }
 }

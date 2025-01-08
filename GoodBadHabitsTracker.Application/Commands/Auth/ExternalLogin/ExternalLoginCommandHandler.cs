@@ -6,6 +6,9 @@ using System.Security.Claims;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
 using AutoMapper;
+using GoodBadHabitsTracker.Application.DTOs.Response;
+using GoodBadHabitsTracker.Application.Exceptions;
+using LanguageExt.Common;
 
 namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
 {
@@ -14,36 +17,31 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
         IJwtTokenHandler tokenHandler,
         SignInManager<User> signInManager,
         UserManager<User> userManager,
-        RoleManager<UserRole> roleManager) : IRequestHandler<ExternalLoginCommand, IdentityResult>
+        RoleManager<UserRole> roleManager) : IRequestHandler<ExternalLoginCommand, LoginResponse>
     {
-        public async Task<IdentityResult> Handle(ExternalLoginCommand command, CancellationToken cancellationToken)
+        public async Task<LoginResponse> Handle(ExternalLoginCommand command, CancellationToken cancellationToken)
         {
-                var request = command.Request;
-                if (request is null)
-                    return IdentityResult.Failed(new IdentityError { Code = "NullRequest", Description = "Request cannot be null" });
+                var request = command.Request
+                    ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, "Request cannot be null");
 
-                if (request.Provider is null || (request.Provider != "Google" && request.Provider != "Facebook")) 
-                    return IdentityResult.Failed(new IdentityError { Code = "InvalidProvider", Description = "Provider is not correct" });
+                if (request.Provider is null || (request.Provider != "Google" && request.Provider != "Facebook"))
+                    throw new AppException(System.Net.HttpStatusCode.BadRequest, "Provider is not correct");
 
-                var idToken = request.IdToken;
-                if (idToken is null)
-                    return IdentityResult.Failed(new IdentityError { Code = "NullIdToken", Description = "IdToken cannot be null" });
+                var idToken = request.IdToken
+                    ?? throw new AppException(System.Net.HttpStatusCode.BadRequest,"IdToken cannot be null" );
 
-                var accessToken = request.AccessToken;
-                if (accessToken is null)
-                    return IdentityResult.Failed(new IdentityError { Code = "NullAccessToken", Description = "Access token cannot be null" });
+                var accessToken = request.AccessToken
+                    ?? throw new AppException(System.Net.HttpStatusCode.BadRequest,"Access token cannot be null" );
 
                 var refreshToken = request.RefreshToken;
                 if (refreshToken is null && request.Provider == "Google")
-                    return IdentityResult.Failed(new IdentityError { Code = "NullRefreshToken", Description = "Google must return refresh token" });
+                    throw new AppException(System.Net.HttpStatusCode.BadRequest, "Google must return refresh token" );
 
-                var claimsPrincipal = tokenHandler.GetClaimsPrincipalFromIdToken(idToken);
-                if (claimsPrincipal is null)
-                    return IdentityResult.Failed(new IdentityError { Code = "NullClaimsPrincipal", Description = "Claims principal cannot be null" });
+                var claimsPrincipal = tokenHandler.GetClaimsPrincipalFromIdToken(idToken)
+                    ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, "Claims principal cannot be null" );
 
-                var providerKey = claimsPrincipal.FindFirst(claim => claim.Type == "sub")?.Value;
-                if (providerKey is null)
-                    return IdentityResult.Failed(new IdentityError { Code = "NullProviderKey", Description = "Provider key cannot be null" });
+                var providerKey = claimsPrincipal.FindFirst(claim => claim.Type == "sub")?.Value
+                    ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, "Provider key cannot be null" );
 
 
                 var userInfo = new ExternalLoginInfo(claimsPrincipal, request.Provider, providerKey, request.Provider)
@@ -58,15 +56,14 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
                     }
                 };
 
-                if (refreshToken is not null) 
+                if (refreshToken is not null)
                     userInfo.AuthenticationTokens.Append(new AuthenticationToken() { Name = "refresh_token", Value = refreshToken });
 
                 var loginResult = await signInManager.ExternalLoginSignInAsync(request.Provider, providerKey, isPersistent: false, bypassTwoFactor: true);
                 if (loginResult.Succeeded)
                 {
-                    var user = await userManager.FindByLoginAsync(request.Provider, providerKey);
-                    if (user is null)
-                        return IdentityResult.Failed(new IdentityError { Code = "UserLoginNotFound", Description = $"User not found" }); ;
+                    var user = await userManager.FindByLoginAsync(request.Provider, providerKey)
+                        ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, $"User not found" ); ;
 
                     var getUserRole = await userManager.GetRolesAsync(user);
                     var isRoleExists = await roleManager.RoleExistsAsync("User");
@@ -76,16 +73,20 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
 
                         var createRoleResult = await roleManager.CreateAsync(role);
                         if (!createRoleResult.Succeeded)
-                            return createRoleResult;
+                            throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Create role failed" );
                     }
                     if (getUserRole.Count == 0)
                     {
                         var addRoleResult = await userManager.AddToRoleAsync(user, "User");
                         if (!addRoleResult.Succeeded)
-                            return addRoleResult;
+                            throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Add role failed" );
                     }
 
-                    return await signInManager.UpdateExternalAuthenticationTokensAsync(userInfo);
+                    var updateExternalAuthenticationTokenResult = await signInManager.UpdateExternalAuthenticationTokensAsync(userInfo);
+                    return updateExternalAuthenticationTokenResult.Succeeded
+                        ? new LoginResponse(accessToken, refreshToken, "_usr_fgp")
+                        : throw new AppException(System.Net.HttpStatusCode.BadRequest, $"User not found" );
+
                 }
                 else
                 {
@@ -104,33 +105,36 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
                             };
 
                             var createResult = await userManager.CreateAsync(user);
-                            if (!createResult.Succeeded) 
-                                return createResult;
+                            if (!createResult.Succeeded)
+                                throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Create user failed" );
 
                             var addClaimResult = await userManager.AddClaimAsync(user, new Claim("loginProvider", request.Provider));
-                            if (!addClaimResult.Succeeded) 
-                                return addClaimResult;
+                            if (!addClaimResult.Succeeded)
+                                throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Add claim failed" );
                         }
 
                         var addLoginResult = await userManager.AddLoginAsync(user, userInfo);
-                        if (!addLoginResult.Succeeded) 
-                            return addLoginResult;
+                        if (!addLoginResult.Succeeded)
+                            throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Add login failed" );
 
                         var getUserRole = await userManager.GetRolesAsync(user);
                         if (getUserRole.Count == 0)
                         {
                             var addRoleResult = await userManager.AddToRoleAsync(user, "User");
-                            if (!addRoleResult.Succeeded) 
-                                return addRoleResult;
+                            if (!addRoleResult.Succeeded)
+                                throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Add role failed" );
                         }
 
                         loginResult = await signInManager.ExternalLoginSignInAsync(request.Provider, providerKey, isPersistent: false, bypassTwoFactor: true);
                         if (!loginResult.Succeeded)
-                            return IdentityResult.Failed(new IdentityError { Code = "ExternalLoginFailed", Description = "External Login failed" });
+                            throw new AppException(System.Net.HttpStatusCode.BadRequest, "External Login failed" );
 
-                        return await signInManager.UpdateExternalAuthenticationTokensAsync(userInfo);
+                        var updateExternalAuthenticationTokenResult = await signInManager.UpdateExternalAuthenticationTokensAsync(userInfo);
+                        return updateExternalAuthenticationTokenResult.Succeeded
+                            ? new LoginResponse(accessToken, refreshToken, "_usr_fgp")
+                            : throw new AppException(System.Net.HttpStatusCode.BadRequest, $"User not found" );
                     }
-                    return IdentityResult.Failed(new IdentityError { Code = "NullEmail", Description = "Email cannot be null" });
+                    throw new AppException(System.Net.HttpStatusCode.BadRequest, "Email cannot be null" );
                 }
         }
     }

@@ -30,7 +30,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
                 logger.LogDebug("User Not Found");
                 return new Result<bool>(new AppException(HttpStatusCode.Unauthorized, "User Not Found"));
             }
-                
+
 
             logger.LogDebug("User with id {userId} was found", user.Id);
             logger.LogDebug("Name: {name}", user.UserName);
@@ -46,7 +46,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
             try
             {
                 logger.LogDebug("Looking for habit with id: {habitId}", habitId);
-                var habitToUpdate = await dbContext.ReadHabitByIdAsync(habitId, userId);
+                var habitToUpdate = await dbContext.ReadHabitByIdAsync(habitId);
                 if (habitToUpdate is null)
                 {
                     logger.LogDebug("Habit Not Found");
@@ -81,7 +81,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
                                 habitToUpdate.RepeatInterval = 0;
                                 logger.LogDebug("Changed!");
                             }
-                                
+
                         }
 
                         if (document.Operations.Any(Conditions.IsRepeatModeToMonthlyChangeOperation))
@@ -152,14 +152,14 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
                 return new Result<bool>(new AppException(HttpStatusCode.BadRequest, ex.Message));
             }
         }
-                    
+
 
         private static async Task<Result<bool>> DocumentAndEntityValidation(IHabitsDbContext dbContext, JsonPatchDocument document, Habit habitToUpdate, ILogger logger)
         {
             logger.LogDebug("Validating document and entity...");
 
             var errors = new List<ValidationError>();
-                    
+
             if (habitToUpdate.HabitType == HabitTypes.Good)
             {
                 var repeatDaysOfMonth = habitToUpdate.RepeatDaysOfMonth;
@@ -177,7 +177,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
                     logger.LogError("RepeatDaysOfWeek should be added if RepeatMode is Daily");
                     errors.Add(new ValidationError(typeof(Habit).GetProperty("RepeatDaysOfWeek")!.Name, "RepeatDaysOfWeek should be added if RepeatMode is Daily"));
                 }
-                    
+
                 if ((habitToUpdate.RepeatMode != RepeatModes.Daily || !isRepeatModeToDailyChangeOperation) && isRepeatDayOfWeekAddOperation)
                 {
                     logger.LogError("RepeatDaysOfWeek shouldn't be added if RepeatMode isn't Daily");
@@ -220,7 +220,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Update
                     errors.Add(new ValidationError(typeof(Habit).GetProperty("RepeatInterval")!.Name, "RepeatInterval shouldn't be added if RepeatMode isn't Interval"));
                 }
 
-                
+
             }
             return errors.Count > 0
                      ? new Result<bool>(new Exceptions.ValidationException(errors))

@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Threading;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Infrastructure.Utils;
 
 namespace GoodBadHabitsTracker.Infrastructure.Persistance
@@ -55,12 +54,12 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
             await _transaction.DisposeAsync();
         }
 
-        public async Task<Habit?> ReadHabitByIdAsync(Guid habitId, Guid userId)
+        public async Task<Habit?> ReadHabitByIdAsync(Guid habitId)
             => await Habits
                 .Include(habit => habit.Comments)
                 .Include(habit => habit.DayResults)
                 .AsSplitQuery()
-                .FirstOrDefaultAsync(habit => habit.Id == habitId && habit.UserId == userId);
+                .FirstOrDefaultAsync(habit => habit.Id == habitId);
         public async Task<IEnumerable<Habit>> ReadAllHabitsAsync(Guid userId)
         {
             var allHabits = await Habits
@@ -114,7 +113,8 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
         public async Task<IEnumerable<Group>> ReadAllGroupsAsync(Guid userId)
         {
             var allGroups = await Groups
-                .Where(habit => habit.UserId == userId)
+                .Where(group => group.UserId == userId)
+                .OrderBy(g => g.Name)
                 .ToListAsync();
 
             return allGroups.Count == 0 ? [] : allGroups;
@@ -126,6 +126,18 @@ namespace GoodBadHabitsTracker.Infrastructure.Persistance
             => await DayResults
                 .FirstOrDefaultAsync(dayResult => dayResult.HabitId == habitId && dayResult.Date == DateOnly.Parse(date));
 
+        public async Task DeleteAllDayResultsAsync(Guid userId)
+        {
+            var allHabits = await Habits
+                .Include(habit => habit.DayResults)
+                .Where(habit => habit.UserId == userId)
+                .ToListAsync();
+
+
+
+            var dayResults = allHabits.SelectMany(habit => habit.DayResults);
+            DayResults.RemoveRange(dayResults);
+        }
         public async Task<Comment?> ReadCommentByIdAsync(Guid id) => await Comments.FindAsync(id);
         public async Task InsertCommentAsync(Comment comment) => await Comments.AddAsync(comment);
         public async Task<EmailTemplate?> ReadEmailTemplate(string templateName)

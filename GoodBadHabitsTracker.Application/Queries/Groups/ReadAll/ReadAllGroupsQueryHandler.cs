@@ -4,7 +4,6 @@ using GoodBadHabitsTracker.Application.Exceptions;
 using MediatR;
 using LanguageExt.Common;
 using System.Net;
-using GoodBadHabitsTracker.Infrastructure.Persistance;
 
 namespace GoodBadHabitsTracker.Application.Queries.Groups.ReadAll
 {

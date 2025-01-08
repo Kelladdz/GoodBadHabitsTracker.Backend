@@ -61,14 +61,14 @@ namespace GoodBadHabitsTracker.Application.Commands.Habits.Create
                 .IsInEnum().WithMessage("Invalid Frequency");
 
             RuleFor(x => x.Request.RepeatMode)
-                .Null()
+                .Must(x => x == RepeatModes.NonApplicable)
                     .When(x => x.Request.HabitType != HabitTypes.Good)
-                    .WithMessage("For breaking or limiting a habit, RepeatMode should be null");
+                    .WithMessage("For breaking or limiting a habit, RepeatMode shouldn't be applicable");
 
             RuleFor(x => x.Request.RepeatMode)
-                .NotNull()
+                .Must(x => x != RepeatModes.NonApplicable)
                     .When(x => x.Request.HabitType == HabitTypes.Good)
-                    .WithMessage("For good habit, RepeatMode cannot be null");
+                    .WithMessage("For good habit, RepeatMode must be applicable");
 
             RuleFor(x => x.Request.RepeatMode)
                 .IsInEnum().WithMessage("Invalid RepeatMode");
