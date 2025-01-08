@@ -40,7 +40,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             services.AddScoped<SignInManager<User>>();
             services.AddScoped<UserManager<User>>();
             services.AddScoped<IEmailSender, EmailSender>();
-            
+
             services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
             services.AddScoped<IHabitsDbContext, HabitsDbContext>();
 
@@ -52,7 +52,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
                 .AddTrigger(trigger => trigger
                         .ForJob(jobKey)
                         .StartNow()
-                       /* .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(2, 30))*/);
+                       .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(2, 30)));
 
             });
 
@@ -60,7 +60,7 @@ namespace GoodBadHabitsTracker.Infrastructure.Extensions
             {
                 options.WaitForJobsToComplete = true;
             });
-            
+
 
             services.AddJwt(configuration);
             services.AddAuthorizationBuilder()
