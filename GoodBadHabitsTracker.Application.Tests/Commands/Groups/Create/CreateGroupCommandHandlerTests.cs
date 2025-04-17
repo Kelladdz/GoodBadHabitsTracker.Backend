@@ -15,15 +15,15 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Groups.Create;
 
 public class CreateGroupCommandHandlerTests
 {
-    private readonly Mock<IGroupsRepository> _groupsRepositoryMock;
+    private readonly Mock<IHabitsDbContext> _dbContextMock;
     private readonly Mock<IUserAccessor> _userAccessorMock;
     private readonly CreateGroupCommandHandler _handler;
 
     public CreateGroupCommandHandlerTests()
     {
-        _groupsRepositoryMock = new Mock<IGroupsRepository>();
+        _dbContextMock = new Mock<IHabitsDbContext>();
         _userAccessorMock = new Mock<IUserAccessor>();
-        _handler = new CreateGroupCommandHandler(_groupsRepositoryMock.Object, _userAccessorMock.Object);
+        _handler = new CreateGroupCommandHandler(_dbContextMock.Object, _userAccessorMock.Object);
     }
 
     [Fact]
@@ -42,16 +42,17 @@ public class CreateGroupCommandHandlerTests
         var expectedResult = new Result<GroupResponse>(new GroupResponse(groupToInsert));
 
         _userAccessorMock.Setup(x => x.GetCurrentUser()).ReturnsAsync(new User { Id = userId });
-        _groupsRepositoryMock.Setup(x => x.InsertAsync(groupToInsert, default)).Returns(Task.CompletedTask);
+        _dbContextMock.Setup(x => x.InsertGroupAsync(groupToInsert)).Returns(Task.CompletedTask);
 
         //ACT
         var result = await _handler.Handle(command, default);
 
         //ASSERT
         result.IsSuccess.Should().BeTrue();
+        result.Should().BeEquivalentTo(expectedResult);
 
         _userAccessorMock.Verify(x => x.GetCurrentUser(), Times.Once);
-        _groupsRepositoryMock.Verify(x => x.InsertAsync(It.IsAny<Group>(), default), Times.Once);
+        _dbContextMock.Verify(x => x.InsertGroupAsync(It.IsAny<Group>()), Times.Once);
 
     }
     [Fact]

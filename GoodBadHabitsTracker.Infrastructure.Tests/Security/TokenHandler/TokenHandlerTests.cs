@@ -4,7 +4,7 @@ using Moq;
 using System.IdentityModel.Tokens.Jwt;
 using FluentAssertions;
 using System.Security.Claims;
-using GoodBadHabitsTracker.Infrastructure.Security.TokenHandler;
+using GoodBadHabitsTracker.Infrastructure.Security.JwtTokenHandler;
 using GoodBadHabitsTracker.Infrastructure.Settings;
 
 namespace GoodBadHabitsTracker.Infrastructure.Tests.Security.AccessTokenHandler
@@ -143,4 +143,3 @@ namespace GoodBadHabitsTracker.Infrastructure.Tests.Security.AccessTokenHandler
     }
 
 }
-

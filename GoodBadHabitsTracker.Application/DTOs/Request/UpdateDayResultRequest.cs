@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace GoodBadHabitsTracker.Application.DTOs.Request
 {
-    public record UpdateDayResultRequest( int? Progress, Statuses Status);
+    public record UpdateDayResultRequest(int? Progress, Statuses Status);
 }

@@ -1,19 +1,13 @@
-﻿using GoodBadHabitsTracker.Infrastructure.Persistance;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 using LanguageExt.Common;
 using GoodBadHabitsTracker.Application.Exceptions;
-using GoodBadHabitsTracker.Application.Services;
 using System.Net;
 using GoodBadHabitsTracker.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Application.DTOs.Request;
 using GoodBadHabitsTracker.Core.Enums;
+
 namespace GoodBadHabitsTracker.Application.Commands.DayResults.Update
 {
     internal sealed class UpdateDayResultCommandHandler(IHabitsDbContext dbContext, IUserAccessor userAccessor, ILogger logger) : IRequestHandler<UpdateDayResultCommand, Result<bool>>
@@ -75,7 +69,7 @@ namespace GoodBadHabitsTracker.Application.Commands.DayResults.Update
                         return new Result<bool>((ValidationException)ex);
                     });
 
-                
+
             }
             catch (Exception ex)
             {

@@ -1,0 +1,1192 @@
+2025-01-14 10:01:17.393 +01:00 [DBG] Initializing Razor view compiler with no compiled views.
+2025-01-14 10:01:17.420 +01:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2025-01-14 10:01:17.437 +01:00 [INF] User profile is available. Using 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-14 10:01:17.480 +01:00 [DBG] Hosting starting
+2025-01-14 10:01:17.505 +01:00 [DBG] TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+2025-01-14 10:01:17.510 +01:00 [INF] Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+2025-01-14 10:01:17.511 +01:00 [INF] Quartz Scheduler created
+2025-01-14 10:01:17.511 +01:00 [INF] JobFactory set to: Quartz.Simpl.MicrosoftDependencyInjectionJobFactory
+2025-01-14 10:01:17.512 +01:00 [INF] RAMJobStore initialized.
+2025-01-14 10:01:17.513 +01:00 [INF] Quartz Scheduler 3.13.1.0 - 'QuartzScheduler' with instanceId 'NON_CLUSTERED' initialized
+2025-01-14 10:01:17.514 +01:00 [INF] Using thread pool 'Quartz.Simpl.DefaultThreadPool', size: 10
+2025-01-14 10:01:17.514 +01:00 [INF] Using job store 'Quartz.Simpl.RAMJobStore', supports persistence: False, clustered: False
+2025-01-14 10:01:17.521 +01:00 [INF] Adding 1 jobs, 1 triggers.
+2025-01-14 10:01:17.523 +01:00 [INF] Adding job: DEFAULT.FillPastDaysJob
+2025-01-14 10:01:17.524 +01:00 [DBG] Scheduling job: DEFAULT.FillPastDaysJob with trigger: DEFAULT.aba5c78e-f9b1-41c9-8cd6-ad046bde2173
+2025-01-14 10:01:17.532 +01:00 [DBG] Rescheduling job: DEFAULT.FillPastDaysJob with updated trigger: DEFAULT.aba5c78e-f9b1-41c9-8cd6-ad046bde2173
+2025-01-14 10:01:17.537 +01:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-d3fee60e-e7e4-485b-8db6-37af50a0aecc.xml'.
+2025-01-14 10:01:17.540 +01:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-e7aa74ae-f476-4764-abd9-badb7430c27e.xml'.
+2025-01-14 10:01:17.541 +01:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-eb6f3840-36fe-478f-ada1-2b77b6e1e7b2.xml'.
+2025-01-14 10:01:17.545 +01:00 [DBG] Found key {d3fee60e-e7e4-485b-8db6-37af50a0aecc}.
+2025-01-14 10:01:17.547 +01:00 [DBG] Found key {e7aa74ae-f476-4764-abd9-badb7430c27e}.
+2025-01-14 10:01:17.548 +01:00 [DBG] Found key {eb6f3840-36fe-478f-ada1-2b77b6e1e7b2}.
+2025-01-14 10:01:17.552 +01:00 [DBG] Considering key {e7aa74ae-f476-4764-abd9-badb7430c27e} with expiration date 2025-04-03 18:16:46Z as default key.
+2025-01-14 10:01:17.553 +01:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-01-14 10:01:17.554 +01:00 [DBG] Decrypting secret element using Windows DPAPI.
+2025-01-14 10:01:17.555 +01:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-01-14 10:01:17.557 +01:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2025-01-14 10:01:17.559 +01:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2025-01-14 10:01:17.561 +01:00 [DBG] Using key {e7aa74ae-f476-4764-abd9-badb7430c27e} as the default key.
+2025-01-14 10:01:17.561 +01:00 [DBG] Key ring with default key {e7aa74ae-f476-4764-abd9-badb7430c27e} was loaded during application startup.
+2025-01-14 10:01:17.633 +01:00 [INF] Now listening on: https://localhost:7154
+2025-01-14 10:01:17.634 +01:00 [DBG] Loaded hosting startup assembly GoodBadHabitsTracker.WebApi
+2025-01-14 10:01:17.635 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-14 10:01:17.636 +01:00 [INF] Hosting environment: Development
+2025-01-14 10:01:17.636 +01:00 [INF] Content root path: F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.WebApi
+2025-01-14 10:01:17.637 +01:00 [INF] Scheduler QuartzScheduler_$_NON_CLUSTERED started.
+2025-01-14 10:01:17.637 +01:00 [DBG] Hosting started
+2025-01-14 10:01:17.638 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:01:17.936 +01:00 [DBG] Connection id "0HN9KF80UNG4G" received FIN.
+2025-01-14 10:01:17.938 +01:00 [DBG] Connection id "0HN9KF80UNG4G" accepted.
+2025-01-14 10:01:17.940 +01:00 [DBG] Connection id "0HN9KF80UNG4G" started.
+2025-01-14 10:01:17.950 +01:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2025-01-14 10:01:17.957 +01:00 [DBG] Connection id "0HN9KF80UNG4G" stopped.
+2025-01-14 10:01:17.958 +01:00 [DBG] Connection id "0HN9KF80UNG4G" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-01-14 10:01:18.058 +01:00 [DBG] Connection id "0HN9KF80UNG4H" accepted.
+2025-01-14 10:01:18.060 +01:00 [DBG] Connection id "0HN9KF80UNG4H" started.
+2025-01-14 10:01:18.090 +01:00 [DBG] Connection 0HN9KF80UNG4H established using the following protocol: "Tls13"
+2025-01-14 10:01:18.120 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/index.html - null null
+2025-01-14 10:01:18.122 +01:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2025-01-14 10:01:18.171 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/index.html - 200 null text/html;charset=utf-8 51.0706ms
+2025-01-14 10:01:18.817 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - null null
+2025-01-14 10:01:18.834 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/favicon-32x32.png - null null
+2025-01-14 10:01:18.841 +01:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-01-14 10:01:18.843 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/favicon-32x32.png - 200 628 image/png 8.5842ms
+2025-01-14 10:01:18.896 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 78.5468ms
+2025-01-14 10:01:43.341 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:01:51.532 +01:00 [DBG] Connection id "0HN9KF80UNG4I" accepted.
+2025-01-14 10:01:51.533 +01:00 [DBG] Connection id "0HN9KF80UNG4I" started.
+2025-01-14 10:01:51.539 +01:00 [DBG] Connection 0HN9KF80UNG4I established using the following protocol: "Tls13"
+2025-01-14 10:01:51.540 +01:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - null null
+2025-01-14 10:01:51.543 +01:00 [DBG] OPTIONS requests are not supported
+2025-01-14 10:01:51.545 +01:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2025-01-14 10:01:51.563 +01:00 [DBG] 1 candidate(s) found for the request path '/api/auth/token'
+2025-01-14 10:01:51.565 +01:00 [DBG] Request matched endpoint '405 HTTP Method Not Supported'
+2025-01-14 10:01:51.567 +01:00 [DBG] The request has an origin header: 'https://localhost:8080'.
+2025-01-14 10:01:51.568 +01:00 [INF] CORS policy execution successful.
+2025-01-14 10:01:51.569 +01:00 [DBG] The request is a preflight request.
+2025-01-14 10:01:51.572 +01:00 [INF] HTTP OPTIONS /api/auth/token responded 204 in 26.3249 ms
+2025-01-14 10:01:51.574 +01:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - 204 null null 33.2383ms
+2025-01-14 10:01:51.575 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7154/api/auth/token?provider=Google - application/json 291
+2025-01-14 10:01:51.578 +01:00 [DBG] POST requests are not supported
+2025-01-14 10:01:51.579 +01:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2025-01-14 10:01:51.582 +01:00 [DBG] 1 candidate(s) found for the request path '/api/auth/token'
+2025-01-14 10:01:51.585 +01:00 [DBG] Endpoint 'GoodBadHabitsTracker.WebApi.Controllers.AuthController.GetExternalTokens (GoodBadHabitsTracker.WebApi)' with route pattern 'api/Auth/token' is valid for the request path '/api/auth/token'
+2025-01-14 10:01:51.586 +01:00 [DBG] Request matched endpoint 'GoodBadHabitsTracker.WebApi.Controllers.AuthController.GetExternalTokens (GoodBadHabitsTracker.WebApi)'
+2025-01-14 10:01:51.588 +01:00 [DBG] The request has an origin header: 'https://localhost:8080'.
+2025-01-14 10:01:51.588 +01:00 [INF] CORS policy execution successful.
+2025-01-14 10:01:51.618 +01:00 [DBG] AuthenticationScheme: PasswordLogin was not authenticated.
+2025-01-14 10:01:51.621 +01:00 [DBG] AuthenticationScheme: PasswordLogin was not authenticated.
+2025-01-14 10:01:51.623 +01:00 [DBG] AuthenticationScheme: Auth0Login was not authenticated.
+2025-01-14 10:01:51.624 +01:00 [INF] Executing endpoint 'GoodBadHabitsTracker.WebApi.Controllers.AuthController.GetExternalTokens (GoodBadHabitsTracker.WebApi)'
+2025-01-14 10:01:51.636 +01:00 [INF] Route matched with {action = "GetExternalTokens", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetExternalTokens(GoodBadHabitsTracker.Application.DTOs.Request.GetExternalTokensRequest, System.String, System.Threading.CancellationToken) on controller GoodBadHabitsTracker.WebApi.Controllers.AuthController (GoodBadHabitsTracker.WebApi).
+2025-01-14 10:01:51.638 +01:00 [DBG] Execution plan of authorization filters (in the following order): ["None"]
+2025-01-14 10:01:51.639 +01:00 [DBG] Execution plan of resource filters (in the following order): ["Microsoft.AspNetCore.Mvc.ViewFeatures.Filters.SaveTempDataFilter"]
+2025-01-14 10:01:51.640 +01:00 [DBG] Execution plan of action filters (in the following order): ["Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000)","Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000)"]
+2025-01-14 10:01:51.641 +01:00 [DBG] Execution plan of exception filters (in the following order): ["None"]
+2025-01-14 10:01:51.643 +01:00 [DBG] Execution plan of result filters (in the following order): ["Microsoft.AspNetCore.Mvc.ViewFeatures.Filters.SaveTempDataFilter","Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000)"]
+2025-01-14 10:01:51.646 +01:00 [DBG] Executing controller factory for controller GoodBadHabitsTracker.WebApi.Controllers.AuthController (GoodBadHabitsTracker.WebApi)
+2025-01-14 10:01:51.731 +01:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2025-01-14 10:01:51.749 +01:00 [DBG] Executed controller factory for controller GoodBadHabitsTracker.WebApi.Controllers.AuthController (GoodBadHabitsTracker.WebApi)
+2025-01-14 10:01:51.759 +01:00 [DBG] Attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.GetExternalTokensRequest' ...
+2025-01-14 10:01:51.761 +01:00 [DBG] Attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.GetExternalTokensRequest' using the name '' in request data ...
+2025-01-14 10:01:51.762 +01:00 [DBG] Rejected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonPatchInputFormatter' for content type 'application/json'.
+2025-01-14 10:01:51.763 +01:00 [DBG] Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonInputFormatter' for content type 'application/json'.
+2025-01-14 10:01:51.767 +01:00 [DBG] Connection id "0HN9KF80UNG4H", Request id "0HN9KF80UNG4H:00000007": started reading request body.
+2025-01-14 10:01:51.768 +01:00 [DBG] Connection id "0HN9KF80UNG4H", Request id "0HN9KF80UNG4H:00000007": done reading request body.
+2025-01-14 10:01:51.805 +01:00 [DBG] Done attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.GetExternalTokensRequest'.
+2025-01-14 10:01:51.805 +01:00 [DBG] Done attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.GetExternalTokensRequest'.
+2025-01-14 10:01:51.806 +01:00 [DBG] Attempting to validate the bound parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.GetExternalTokensRequest' ...
+2025-01-14 10:01:51.812 +01:00 [DBG] Done attempting to validate the bound parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.GetExternalTokensRequest'.
+2025-01-14 10:01:51.815 +01:00 [DBG] Attempting to bind parameter 'provider' of type 'System.String' ...
+2025-01-14 10:01:51.817 +01:00 [DBG] Attempting to bind parameter 'provider' of type 'System.String' using the name 'provider' in request data ...
+2025-01-14 10:01:51.819 +01:00 [DBG] Done attempting to bind parameter 'provider' of type 'System.String'.
+2025-01-14 10:01:51.821 +01:00 [DBG] Done attempting to bind parameter 'provider' of type 'System.String'.
+2025-01-14 10:01:51.822 +01:00 [DBG] Attempting to validate the bound parameter 'provider' of type 'System.String' ...
+2025-01-14 10:01:51.824 +01:00 [DBG] Done attempting to validate the bound parameter 'provider' of type 'System.String'.
+2025-01-14 10:01:51.826 +01:00 [DBG] Attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2025-01-14 10:01:51.827 +01:00 [DBG] Done attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2025-01-14 10:01:51.828 +01:00 [DBG] Attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2025-01-14 10:01:51.830 +01:00 [DBG] Done attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2025-01-14 10:01:51.849 +01:00 [INF] Start processing HTTP request POST https://dev-d3sgzf7qkeuvnndt.eu.auth0.com/oauth/token
+2025-01-14 10:01:51.851 +01:00 [INF] Sending HTTP request POST https://dev-d3sgzf7qkeuvnndt.eu.auth0.com/oauth/token
+2025-01-14 10:01:52.079 +01:00 [INF] Received HTTP response headers after 226.3377ms - 200
+2025-01-14 10:01:52.080 +01:00 [INF] End processing HTTP request after 231.2741ms - 200
+2025-01-14 10:01:52.084 +01:00 [DBG] List of registered output formatters, in the following order: ["Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonOutputFormatter"]
+2025-01-14 10:01:52.085 +01:00 [DBG] No information found on request to perform content negotiation.
+2025-01-14 10:01:52.086 +01:00 [DBG] Attempting to select an output formatter without using a content type as no explicit content types were specified for the response.
+2025-01-14 10:01:52.086 +01:00 [DBG] Attempting to select the first formatter in the output formatters list which can write the result.
+2025-01-14 10:01:52.087 +01:00 [DBG] Selected output formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonOutputFormatter' and content type 'application/json' to write the response.
+2025-01-14 10:01:52.088 +01:00 [INF] Executing OkObjectResult, writing value of type 'GoodBadHabitsTracker.Application.DTOs.Response.GetExternalTokensResponse'.
+2025-01-14 10:01:52.105 +01:00 [DBG] The response will be compressed with 'gzip'.
+2025-01-14 10:01:52.110 +01:00 [INF] Executed action GoodBadHabitsTracker.WebApi.Controllers.AuthController.GetExternalTokens (GoodBadHabitsTracker.WebApi) in 463.2065ms
+2025-01-14 10:01:52.111 +01:00 [INF] Executed endpoint 'GoodBadHabitsTracker.WebApi.Controllers.AuthController.GetExternalTokens (GoodBadHabitsTracker.WebApi)'
+2025-01-14 10:01:52.113 +01:00 [INF] HTTP POST /api/auth/token responded 200 in 534.0488 ms
+2025-01-14 10:01:52.114 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7154/api/auth/token?provider=Google - 200 null application/json; charset=utf-8 539.6114ms
+2025-01-14 10:01:52.122 +01:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7154/api/auth/external-login - null null
+2025-01-14 10:01:52.125 +01:00 [DBG] OPTIONS requests are not supported
+2025-01-14 10:01:52.126 +01:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2025-01-14 10:01:52.127 +01:00 [DBG] 1 candidate(s) found for the request path '/api/auth/external-login'
+2025-01-14 10:01:52.128 +01:00 [DBG] Request matched endpoint '405 HTTP Method Not Supported'
+2025-01-14 10:01:52.128 +01:00 [DBG] The request has an origin header: 'https://localhost:8080'.
+2025-01-14 10:01:52.129 +01:00 [INF] CORS policy execution successful.
+2025-01-14 10:01:52.130 +01:00 [DBG] The request is a preflight request.
+2025-01-14 10:01:52.131 +01:00 [INF] HTTP OPTIONS /api/auth/external-login responded 204 in 5.2602 ms
+2025-01-14 10:01:52.133 +01:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7154/api/auth/external-login - 204 null null 10.6981ms
+2025-01-14 10:01:52.134 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7154/api/auth/external-login - application/json 2167
+2025-01-14 10:01:52.136 +01:00 [DBG] POST requests are not supported
+2025-01-14 10:01:52.137 +01:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2025-01-14 10:01:52.138 +01:00 [DBG] 1 candidate(s) found for the request path '/api/auth/external-login'
+2025-01-14 10:01:52.138 +01:00 [DBG] Endpoint 'GoodBadHabitsTracker.WebApi.Controllers.AuthController.ExternalLogin (GoodBadHabitsTracker.WebApi)' with route pattern 'api/Auth/external-login' is valid for the request path '/api/auth/external-login'
+2025-01-14 10:01:52.139 +01:00 [DBG] Request matched endpoint 'GoodBadHabitsTracker.WebApi.Controllers.AuthController.ExternalLogin (GoodBadHabitsTracker.WebApi)'
+2025-01-14 10:01:52.140 +01:00 [DBG] The request has an origin header: 'https://localhost:8080'.
+2025-01-14 10:01:52.141 +01:00 [INF] CORS policy execution successful.
+2025-01-14 10:01:52.143 +01:00 [DBG] AuthenticationScheme: PasswordLogin was not authenticated.
+2025-01-14 10:01:52.144 +01:00 [DBG] AuthenticationScheme: PasswordLogin was not authenticated.
+2025-01-14 10:01:52.145 +01:00 [DBG] AuthenticationScheme: Auth0Login was not authenticated.
+2025-01-14 10:01:52.146 +01:00 [INF] Executing endpoint 'GoodBadHabitsTracker.WebApi.Controllers.AuthController.ExternalLogin (GoodBadHabitsTracker.WebApi)'
+2025-01-14 10:01:52.149 +01:00 [INF] Route matched with {action = "ExternalLogin", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ExternalLogin(GoodBadHabitsTracker.Application.DTOs.Request.ExternalLoginRequest, System.Threading.CancellationToken) on controller GoodBadHabitsTracker.WebApi.Controllers.AuthController (GoodBadHabitsTracker.WebApi).
+2025-01-14 10:01:52.151 +01:00 [DBG] Execution plan of authorization filters (in the following order): ["None"]
+2025-01-14 10:01:52.151 +01:00 [DBG] Execution plan of resource filters (in the following order): ["Microsoft.AspNetCore.Mvc.ViewFeatures.Filters.SaveTempDataFilter"]
+2025-01-14 10:01:52.152 +01:00 [DBG] Execution plan of action filters (in the following order): ["Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000)","Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000)"]
+2025-01-14 10:01:52.153 +01:00 [DBG] Execution plan of exception filters (in the following order): ["None"]
+2025-01-14 10:01:52.154 +01:00 [DBG] Execution plan of result filters (in the following order): ["Microsoft.AspNetCore.Mvc.ViewFeatures.Filters.SaveTempDataFilter","Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000)"]
+2025-01-14 10:01:52.155 +01:00 [DBG] Executing controller factory for controller GoodBadHabitsTracker.WebApi.Controllers.AuthController (GoodBadHabitsTracker.WebApi)
+2025-01-14 10:01:52.160 +01:00 [DBG] Executed controller factory for controller GoodBadHabitsTracker.WebApi.Controllers.AuthController (GoodBadHabitsTracker.WebApi)
+2025-01-14 10:01:52.161 +01:00 [DBG] Attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.ExternalLoginRequest' ...
+2025-01-14 10:01:52.163 +01:00 [DBG] Attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.ExternalLoginRequest' using the name '' in request data ...
+2025-01-14 10:01:52.164 +01:00 [DBG] Rejected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonPatchInputFormatter' for content type 'application/json'.
+2025-01-14 10:01:52.165 +01:00 [DBG] Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonInputFormatter' for content type 'application/json'.
+2025-01-14 10:01:52.166 +01:00 [DBG] Connection id "0HN9KF80UNG4H", Request id "0HN9KF80UNG4H:00000009": started reading request body.
+2025-01-14 10:01:52.166 +01:00 [DBG] Connection id "0HN9KF80UNG4H", Request id "0HN9KF80UNG4H:00000009": done reading request body.
+2025-01-14 10:01:52.172 +01:00 [DBG] Done attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.ExternalLoginRequest'.
+2025-01-14 10:01:52.173 +01:00 [DBG] Done attempting to bind parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.ExternalLoginRequest'.
+2025-01-14 10:01:52.174 +01:00 [DBG] Attempting to validate the bound parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.ExternalLoginRequest' ...
+2025-01-14 10:01:52.175 +01:00 [DBG] Done attempting to validate the bound parameter 'request' of type 'GoodBadHabitsTracker.Application.DTOs.Request.ExternalLoginRequest'.
+2025-01-14 10:01:52.176 +01:00 [DBG] Attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2025-01-14 10:01:52.177 +01:00 [DBG] Done attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2025-01-14 10:01:52.177 +01:00 [DBG] Attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2025-01-14 10:01:52.178 +01:00 [DBG] Done attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2025-01-14 10:01:52.489 +01:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserRole<Guid>' as the properties are already covered by the index {'UserId', 'RoleId'}.
+2025-01-14 10:01:52.490 +01:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserToken<Guid>' as the properties are already covered by the index {'UserId', 'LoginProvider', 'Name'}.
+2025-01-14 10:01:52.625 +01:00 [DBG] Entity Framework Core 8.0.7 initialized 'HabitsDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.7' with options: None
+2025-01-14 10:01:52.664 +01:00 [DBG] Compiling query expression: 
+'DbSet<IdentityUserLogin<Guid>>()
+    .SingleOrDefault(userLogin => userLogin.LoginProvider == __loginProvider_0 && userLogin.ProviderKey == __providerKey_1)'
+2025-01-14 10:01:52.756 +01:00 [DBG] Generated query execution expression: 
+'queryContext => ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<IdentityUserLogin<Guid>>(
+    asyncEnumerable: new SingleQueryingEnumerable<IdentityUserLogin<Guid>>(
+        (RelationalQueryContext)queryContext, 
+        RelationalCommandCache.QueryExpression(
+            Projection Mapping:
+                EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: IdentityUserLogin<Guid>.LoginProvider (string) Required PK AfterSave:Throw, 0], [Property: IdentityUserLogin<Guid>.ProviderKey (string) Required PK AfterSave:Throw, 1], [Property: IdentityUserLogin<Guid>.ProviderDisplayName (string), 2], [Property: IdentityUserLogin<Guid>.UserId (Guid) Required FK Index, 3] }
+            SELECT TOP(2) a.LoginProvider, a.ProviderKey, a.ProviderDisplayName, a.UserId
+            FROM AspNetUserLogins AS a
+            WHERE (a.LoginProvider == @__loginProvider_0) && (a.ProviderKey == @__providerKey_1)), 
+        null, 
+        Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, IdentityUserLogin<Guid>>, 
+        GoodBadHabitsTracker.Infrastructure.Persistance.HabitsDbContext, 
+        False, 
+        False, 
+        True
+    ), 
+    cancellationToken: queryContext.CancellationToken)'
+2025-01-14 10:01:52.775 +01:00 [DBG] Creating DbConnection.
+2025-01-14 10:01:52.786 +01:00 [DBG] Created DbConnection. (11ms).
+2025-01-14 10:01:52.788 +01:00 [DBG] Opening connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.872 +01:00 [DBG] Opened connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.875 +01:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2025-01-14 10:01:53.881 +01:00 [DBG] Created DbCommand for 'ExecuteReader' (4ms).
+2025-01-14 10:01:53.888 +01:00 [DBG] Initialized DbCommand for 'ExecuteReader' (13ms).
+2025-01-14 10:01:53.893 +01:00 [DBG] Executing DbCommand [Parameters=[@__loginProvider_0='?' (Size = 450), @__providerKey_1='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[LoginProvider], [a].[ProviderKey], [a].[ProviderDisplayName], [a].[UserId]
+FROM [AspNetUserLogins] AS [a]
+WHERE [a].[LoginProvider] = @__loginProvider_0 AND [a].[ProviderKey] = @__providerKey_1
+2025-01-14 10:01:53.921 +01:00 [INF] Executed DbCommand (27ms) [Parameters=[@__loginProvider_0='?' (Size = 450), @__providerKey_1='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[LoginProvider], [a].[ProviderKey], [a].[ProviderDisplayName], [a].[UserId]
+FROM [AspNetUserLogins] AS [a]
+WHERE [a].[LoginProvider] = @__loginProvider_0 AND [a].[ProviderKey] = @__providerKey_1
+2025-01-14 10:01:53.930 +01:00 [DBG] Closing data reader to 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.935 +01:00 [DBG] A data reader for 'GBHTdb' on server '(localdb)\MSSQLLocalDB' is being disposed after spending 9ms reading results.
+2025-01-14 10:01:53.937 +01:00 [DBG] Closing connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.940 +01:00 [DBG] Closed connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB' (3ms).
+2025-01-14 10:01:53.945 +01:00 [DBG] Compiling query expression: 
+'DbSet<User>()
+    .SingleOrDefault(u => u.NormalizedEmail == __normalizedEmail_0)'
+2025-01-14 10:01:53.951 +01:00 [DBG] Generated query execution expression: 
+'queryContext => ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<User>(
+    asyncEnumerable: new SingleQueryingEnumerable<User>(
+        (RelationalQueryContext)queryContext, 
+        RelationalCommandCache.QueryExpression(
+            Projection Mapping:
+                EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: User.Id (Guid) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: User.AccessFailedCount (int) Required, 1], [Property: User.ConcurrencyStamp (string) Concurrency, 2], [Property: User.Email (string) MaxLength(256), 3], [Property: User.EmailConfirmed (bool) Required, 4], [Property: User.ImageUrl (string), 5], [Property: User.LockoutEnabled (bool) Required, 6], [Property: User.LockoutEnd (DateTimeOffset?), 7], [Property: User.NormalizedEmail (string) Index MaxLength(256), 8], [Property: User.NormalizedUserName (string) Index MaxLength(256), 9], [Property: User.PasswordHash (string), 10], [Property: User.PhoneNumber (string), 11], [Property: User.PhoneNumberConfirmed (bool) Required, 12], [Property: User.SecurityStamp (string), 13], [Property: User.TwoFactorEnabled (bool) Required, 14], [Property: User.UserName (string) MaxLength(256), 15] }
+            SELECT TOP(2) a.Id, a.AccessFailedCount, a.ConcurrencyStamp, a.Email, a.EmailConfirmed, a.ImageUrl, a.LockoutEnabled, a.LockoutEnd, a.NormalizedEmail, a.NormalizedUserName, a.PasswordHash, a.PhoneNumber, a.PhoneNumberConfirmed, a.SecurityStamp, a.TwoFactorEnabled, a.UserName
+            FROM AspNetUsers AS a
+            WHERE a.NormalizedEmail == @__normalizedEmail_0), 
+        null, 
+        Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, User>, 
+        GoodBadHabitsTracker.Infrastructure.Persistance.HabitsDbContext, 
+        False, 
+        False, 
+        True
+    ), 
+    cancellationToken: queryContext.CancellationToken)'
+2025-01-14 10:01:53.956 +01:00 [DBG] Opening connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.957 +01:00 [DBG] Opened connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.958 +01:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2025-01-14 10:01:53.959 +01:00 [DBG] Created DbCommand for 'ExecuteReader' (0ms).
+2025-01-14 10:01:53.960 +01:00 [DBG] Initialized DbCommand for 'ExecuteReader' (1ms).
+2025-01-14 10:01:53.962 +01:00 [DBG] Executing DbCommand [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[ImageUrl], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-01-14 10:01:53.967 +01:00 [INF] Executed DbCommand (5ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[ImageUrl], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-01-14 10:01:53.968 +01:00 [DBG] Closing data reader to 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.969 +01:00 [DBG] A data reader for 'GBHTdb' on server '(localdb)\MSSQLLocalDB' is being disposed after spending 1ms reading results.
+2025-01-14 10:01:53.970 +01:00 [DBG] Closing connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.971 +01:00 [DBG] Closed connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB' (0ms).
+2025-01-14 10:01:53.976 +01:00 [DBG] Compiling query expression: 
+'DbSet<User>()
+    .FirstOrDefault(u => u.NormalizedUserName == __normalizedUserName_0)'
+2025-01-14 10:01:53.980 +01:00 [DBG] Generated query execution expression: 
+'queryContext => ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<User>(
+    asyncEnumerable: new SingleQueryingEnumerable<User>(
+        (RelationalQueryContext)queryContext, 
+        RelationalCommandCache.QueryExpression(
+            Projection Mapping:
+                EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: User.Id (Guid) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: User.AccessFailedCount (int) Required, 1], [Property: User.ConcurrencyStamp (string) Concurrency, 2], [Property: User.Email (string) MaxLength(256), 3], [Property: User.EmailConfirmed (bool) Required, 4], [Property: User.ImageUrl (string), 5], [Property: User.LockoutEnabled (bool) Required, 6], [Property: User.LockoutEnd (DateTimeOffset?), 7], [Property: User.NormalizedEmail (string) Index MaxLength(256), 8], [Property: User.NormalizedUserName (string) Index MaxLength(256), 9], [Property: User.PasswordHash (string), 10], [Property: User.PhoneNumber (string), 11], [Property: User.PhoneNumberConfirmed (bool) Required, 12], [Property: User.SecurityStamp (string), 13], [Property: User.TwoFactorEnabled (bool) Required, 14], [Property: User.UserName (string) MaxLength(256), 15] }
+            SELECT TOP(1) a.Id, a.AccessFailedCount, a.ConcurrencyStamp, a.Email, a.EmailConfirmed, a.ImageUrl, a.LockoutEnabled, a.LockoutEnd, a.NormalizedEmail, a.NormalizedUserName, a.PasswordHash, a.PhoneNumber, a.PhoneNumberConfirmed, a.SecurityStamp, a.TwoFactorEnabled, a.UserName
+            FROM AspNetUsers AS a
+            WHERE a.NormalizedUserName == @__normalizedUserName_0), 
+        null, 
+        Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, User>, 
+        GoodBadHabitsTracker.Infrastructure.Persistance.HabitsDbContext, 
+        False, 
+        False, 
+        True
+    ), 
+    cancellationToken: queryContext.CancellationToken)'
+2025-01-14 10:01:53.982 +01:00 [DBG] Opening connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.983 +01:00 [DBG] Opened connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:53.983 +01:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2025-01-14 10:01:53.984 +01:00 [DBG] Created DbCommand for 'ExecuteReader' (0ms).
+2025-01-14 10:01:53.985 +01:00 [DBG] Initialized DbCommand for 'ExecuteReader' (1ms).
+2025-01-14 10:01:53.986 +01:00 [DBG] Executing DbCommand [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[ImageUrl], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2025-01-14 10:01:53.988 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[ImageUrl], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2025-01-14 10:01:54.014 +01:00 [DBG] Context 'HabitsDbContext' started tracking 'User' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2025-01-14 10:01:54.032 +01:00 [DBG] Closing data reader to 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:54.033 +01:00 [DBG] A data reader for 'GBHTdb' on server '(localdb)\MSSQLLocalDB' is being disposed after spending 43ms reading results.
+2025-01-14 10:01:54.034 +01:00 [DBG] Closing connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:54.035 +01:00 [DBG] Closed connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB' (0ms).
+2025-01-14 10:01:54.040 +01:00 [DBG] Opening connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:54.041 +01:00 [DBG] Opened connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:54.042 +01:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2025-01-14 10:01:54.042 +01:00 [DBG] Created DbCommand for 'ExecuteReader' (0ms).
+2025-01-14 10:01:54.043 +01:00 [DBG] Initialized DbCommand for 'ExecuteReader' (1ms).
+2025-01-14 10:01:54.044 +01:00 [DBG] Executing DbCommand [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[ImageUrl], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-01-14 10:01:54.045 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[ImageUrl], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-01-14 10:01:54.047 +01:00 [DBG] Closing data reader to 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:54.047 +01:00 [DBG] A data reader for 'GBHTdb' on server '(localdb)\MSSQLLocalDB' is being disposed after spending 0ms reading results.
+2025-01-14 10:01:54.048 +01:00 [DBG] Closing connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:54.049 +01:00 [DBG] Closed connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB' (0ms).
+2025-01-14 10:01:54.051 +01:00 [DBG] User validation failed: DuplicateUserName.
+2025-01-14 10:01:54.058 +01:00 [INF] Executed action GoodBadHabitsTracker.WebApi.Controllers.AuthController.ExternalLogin (GoodBadHabitsTracker.WebApi) in 1902.8827ms
+2025-01-14 10:01:54.059 +01:00 [INF] Executed endpoint 'GoodBadHabitsTracker.WebApi.Controllers.AuthController.ExternalLogin (GoodBadHabitsTracker.WebApi)'
+2025-01-14 10:01:54.060 +01:00 [ERR] HTTP POST /api/auth/external-login responded 500 in 1922.6530 ms
+GoodBadHabitsTracker.Application.Exceptions.AppException: Exception of type 'GoodBadHabitsTracker.Application.Exceptions.AppException' was thrown.
+   at GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin.ExternalLoginCommandHandler.Handle(ExternalLoginCommand command, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.Application\Commands\Auth\ExternalLogin\ExternalLoginCommandHandler.cs:line 109
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestPreProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestPostProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at GoodBadHabitsTracker.Application.Abstractions.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.Application\Abstractions\Behaviors\ValidationBehavior.cs:line 34
+   at GoodBadHabitsTracker.WebApi.Controllers.AuthController.ExternalLogin(ExternalLoginRequest request, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.WebApi\Controllers\AuthController.cs:line 83
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-01-14 10:01:54.067 +01:00 [ERR] Exception occurred: Exception of type 'GoodBadHabitsTracker.Application.Exceptions.AppException' was thrown.
+GoodBadHabitsTracker.Application.Exceptions.AppException: Exception of type 'GoodBadHabitsTracker.Application.Exceptions.AppException' was thrown.
+   at GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin.ExternalLoginCommandHandler.Handle(ExternalLoginCommand command, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.Application\Commands\Auth\ExternalLogin\ExternalLoginCommandHandler.cs:line 109
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestPreProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at MediatR.Pipeline.RequestPostProcessorBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at GoodBadHabitsTracker.Application.Abstractions.Behaviors.ValidationBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.Application\Abstractions\Behaviors\ValidationBehavior.cs:line 34
+   at GoodBadHabitsTracker.WebApi.Controllers.AuthController.ExternalLogin(ExternalLoginRequest request, CancellationToken cancellationToken) in F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.WebApi\Controllers\AuthController.cs:line 83
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at GoodBadHabitsTracker.WebApi.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext httpContext) in F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.WebApi\Middleware\ExceptionHandlingMiddleware.cs:line 19
+2025-01-14 10:01:54.078 +01:00 [DBG] 'HabitsDbContext' disposed.
+2025-01-14 10:01:54.080 +01:00 [DBG] Disposing connection to database 'GBHTdb' on server '(localdb)\MSSQLLocalDB'.
+2025-01-14 10:01:54.081 +01:00 [DBG] Disposed connection to database '' on server '' (1ms).
+2025-01-14 10:01:54.082 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7154/api/auth/external-login - 400 null application/json; charset=utf-8 1948.6535ms
+2025-01-14 10:02:10.729 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:02:39.381 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:03:04.027 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:03:33.820 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:03:51.858 +01:00 [DBG] HttpMessageHandler expired after 120000ms for client ''
+2025-01-14 10:03:58.774 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:04:01.868 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:04:01.870 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0156ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:04:04.063 +01:00 [DBG] Connection id "0HN9KF80UNG4I" is closing.
+2025-01-14 10:04:04.064 +01:00 [DBG] Connection id "0HN9KF80UNG4I" is closed. The last processed stream ID was 3.
+2025-01-14 10:04:04.065 +01:00 [DBG] Connection id "0HN9KF80UNG4I" received FIN.
+2025-01-14 10:04:04.066 +01:00 [DBG] Connection id "0HN9KF80UNG4I" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-01-14 10:04:04.071 +01:00 [DBG] The connection queue processing loop for 0HN9KF80UNG4I completed.
+2025-01-14 10:04:04.072 +01:00 [DBG] Connection id "0HN9KF80UNG4I" stopped.
+2025-01-14 10:04:06.082 +01:00 [DBG] Connection id "0HN9KF80UNG4H" is closing.
+2025-01-14 10:04:06.083 +01:00 [DBG] Connection id "0HN9KF80UNG4H" is closed. The last processed stream ID was 9.
+2025-01-14 10:04:06.084 +01:00 [DBG] The connection queue processing loop for 0HN9KF80UNG4H completed.
+2025-01-14 10:04:06.084 +01:00 [DBG] Connection id "0HN9KF80UNG4H" received FIN.
+2025-01-14 10:04:06.085 +01:00 [DBG] Connection id "0HN9KF80UNG4H" stopped.
+2025-01-14 10:04:06.087 +01:00 [DBG] Connection id "0HN9KF80UNG4H" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-01-14 10:04:11.882 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:04:11.883 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0026ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:04:21.894 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:04:21.896 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.002ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:04:24.793 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:04:31.910 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:04:31.917 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0096ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:04:41.935 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:04:41.935 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0032ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:04:48.320 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:04:51.946 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:04:51.947 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0024ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:05:01.955 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:05:01.955 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0037ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:05:11.964 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:05:11.964 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0027ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:05:14.845 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:05:21.979 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:05:21.980 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.002ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:05:31.983 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:05:31.984 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0028ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:05:41.997 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:05:41.997 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0018ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:05:42.393 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:05:52.004 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:05:52.005 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0019ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:06:02.012 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:06:02.013 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0022ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:06:11.074 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:06:12.023 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:06:12.024 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0032ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:06:22.037 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:06:22.038 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0087ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:06:32.049 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:06:32.050 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0033ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:06:39.748 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:06:42.058 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:06:42.064 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0067ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:06:52.084 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:06:52.085 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0033ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:07:02.094 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:07:02.095 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0024ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:07:08.280 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:07:12.096 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:07:12.097 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0027ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:07:22.111 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:07:22.112 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0676ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:07:32.126 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:07:32.127 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0033ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:07:37.654 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:07:42.141 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:07:42.142 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0023ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:07:52.144 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:07:52.145 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.002ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:08:02.150 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:08:02.151 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0027ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:08:05.641 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:08:12.167 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:08:12.168 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0035ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:08:22.182 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:08:22.183 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0026ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:08:32.190 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:08:32.191 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0026ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:08:32.581 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:08:42.197 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:08:42.198 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0033ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:08:52.204 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:08:52.210 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0031ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:08:56.788 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:09:02.225 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:09:02.226 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0032ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:09:12.237 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:09:12.238 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0021ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:09:22.242 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:09:22.243 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.002ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:09:24.225 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:09:32.255 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:09:32.256 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0022ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:09:42.268 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:09:42.269 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0017ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:09:50.330 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:09:52.282 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:09:52.284 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:10:02.287 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:10:02.288 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0019ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:10:12.295 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:10:12.296 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:10:18.833 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:10:22.308 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:10:22.313 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0038ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:10:32.319 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:10:32.320 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:10:42.336 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:10:42.337 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:10:45.098 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:10:52.351 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:10:52.352 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:11:02.366 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:11:02.366 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:11:12.382 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:11:12.383 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:11:13.669 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:11:22.395 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:11:22.395 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:11:32.406 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:11:32.407 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0017ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:11:38.783 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:11:42.417 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:11:42.418 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0017ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:11:52.422 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:11:52.422 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:12:02.426 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:12:02.427 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0018ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:12:07.176 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:12:12.437 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:12:12.437 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0017ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:12:22.450 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:12:22.451 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:12:32.462 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:12:32.463 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0018ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:12:33.716 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:12:42.475 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:12:42.476 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0018ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:12:52.480 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:12:52.481 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:13:02.496 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:13:02.497 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0191ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:13:02.839 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:13:12.502 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:13:12.508 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0081ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:13:22.522 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:13:22.523 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0615ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:13:28.458 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:13:32.526 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:13:32.527 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:13:42.542 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:13:42.543 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:13:52.559 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:13:52.560 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0025ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:13:52.881 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:14:02.565 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:14:02.566 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0032ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:14:12.569 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:14:12.570 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:14:18.035 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:14:22.571 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:14:22.572 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:14:32.574 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:14:32.574 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0124ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:14:42.585 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:14:42.587 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:14:43.710 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:14:52.601 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:14:52.601 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:15:02.602 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:15:02.604 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:15:10.868 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:15:12.619 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:15:12.619 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:15:22.632 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:15:22.633 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:15:32.639 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:15:32.640 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:15:37.742 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:15:42.642 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:15:42.643 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:15:52.653 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:15:52.653 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:16:02.659 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:16:02.660 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:16:06.602 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:16:12.676 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:16:12.681 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0028ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:16:22.699 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:16:22.700 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:16:32.712 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:16:32.713 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:16:34.474 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:16:42.726 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:16:42.727 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:16:52.742 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:16:52.750 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0026ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:16:58.565 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:17:02.770 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:17:02.772 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:17:12.775 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:17:12.776 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:17:22.787 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:17:22.788 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:17:26.631 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:17:32.796 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:17:32.800 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:17:42.801 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:17:42.802 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0004ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:17:52.813 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:17:52.813 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:17:52.845 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:18:02.820 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:18:02.820 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:18:12.833 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:18:12.834 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:18:18.811 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:18:22.847 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:18:22.853 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0026ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:18:32.859 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:18:32.860 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:18:42.873 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:18:42.873 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:18:45.683 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:18:52.885 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:18:52.886 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:19:02.902 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:19:02.906 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0016ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:19:12.392 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:19:12.909 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:19:12.910 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:19:22.913 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:19:22.914 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:19:32.915 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:19:32.915 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:19:37.411 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:19:42.926 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:19:42.932 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.003ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:19:52.943 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:19:52.944 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:20:02.955 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:20:02.955 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:20:03.253 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:20:12.970 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:20:12.970 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:20:22.979 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:20:22.980 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:20:31.862 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:20:32.983 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:20:32.991 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0031ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:20:43.010 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:20:43.011 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:20:53.026 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:20:53.027 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:20:59.531 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:21:03.039 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:21:03.040 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:21:13.053 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:21:13.058 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0024ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:21:23.078 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:21:23.079 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0004ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:21:24.168 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:21:33.084 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:21:33.085 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:21:43.099 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:21:43.100 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:21:52.425 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:21:53.112 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:21:53.119 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0022ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:22:03.137 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:22:03.138 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:22:13.149 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:22:13.150 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:22:18.446 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:22:23.152 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:22:23.154 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:22:33.168 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:22:33.169 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:22:43.172 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:22:43.173 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:22:47.319 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:22:53.189 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:22:53.189 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:23:03.204 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:23:03.206 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0066ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:23:12.024 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:23:13.215 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:23:13.216 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:23:23.225 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:23:23.229 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0017ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:23:33.250 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:23:33.251 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:23:38.477 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:23:43.261 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:23:43.262 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:23:53.272 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:23:53.273 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:24:03.288 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:24:03.294 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0028ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:24:05.533 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:24:13.315 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:24:13.316 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:24:23.318 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:24:23.319 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:24:33.321 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:24:33.322 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:24:34.031 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:24:43.325 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:24:43.326 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:24:53.339 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:24:53.340 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:25:00.674 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:25:03.356 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:25:03.356 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:25:13.357 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:25:13.357 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:25:23.365 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:25:23.366 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:25:30.368 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:25:33.380 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:25:33.386 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0023ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:25:43.404 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:25:43.405 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:25:53.418 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:25:53.419 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:26:00.336 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:26:03.431 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:26:03.432 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:26:13.445 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:26:13.445 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:26:23.461 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:26:23.462 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0022ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:26:29.799 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:26:33.475 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:26:33.476 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:26:43.484 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:26:43.485 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:26:53.111 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:26:53.493 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:26:53.494 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:27:03.498 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:27:03.501 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0019ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:27:13.517 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:27:13.518 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:27:21.264 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:27:23.531 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:27:23.532 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:27:33.546 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:27:33.546 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:27:43.558 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:27:43.559 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:27:50.222 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:27:53.565 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:27:53.566 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:28:03.579 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:28:03.580 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:28:13.596 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:28:13.596 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:28:13.597 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0016ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:28:23.601 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:28:23.602 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:28:33.613 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:28:33.618 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0034ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:28:42.982 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:28:43.636 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:28:43.637 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:28:53.644 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:28:53.646 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:29:03.649 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:29:03.650 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:29:10.860 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:29:13.650 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:29:13.651 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:29:23.662 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:29:23.663 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:29:33.671 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:29:33.672 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:29:39.112 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:29:43.678 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:29:43.679 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:29:53.682 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:29:53.689 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0029ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:30:03.704 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:30:03.705 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0016ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:30:08.038 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:30:13.708 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:30:13.709 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:30:23.711 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:30:23.712 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:30:33.432 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:30:33.727 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:30:33.727 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:30:43.741 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:30:43.747 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0032ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:30:53.771 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:30:53.771 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0004ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:30:57.334 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:31:03.788 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:31:03.789 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:31:13.796 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:31:13.797 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:31:23.809 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:31:23.811 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:31:24.150 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:31:33.826 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:31:33.827 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:31:43.837 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:31:43.837 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:31:52.517 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:31:53.843 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:31:53.844 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:32:03.850 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:32:03.855 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.002ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:32:13.861 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:32:13.862 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:32:19.728 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:32:23.879 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:32:23.879 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:32:33.895 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:32:33.895 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:32:43.900 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:32:43.900 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:32:44.023 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:32:53.902 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:32:53.908 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0033ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:33:03.917 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:33:03.917 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:33:11.419 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:33:13.929 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:33:13.929 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:33:23.943 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:33:23.944 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:33:33.959 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:33:33.960 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:33:35.328 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:33:43.964 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:33:43.964 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:33:53.967 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:33:53.968 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:34:02.577 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:34:03.968 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:34:03.969 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:34:13.970 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:34:13.976 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0031ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:34:23.992 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:34:23.993 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:34:32.488 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:34:33.994 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:34:33.995 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:34:44.010 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:34:44.011 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0025ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:34:54.012 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:34:54.013 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:35:01.106 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:35:04.018 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:35:04.025 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0039ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:35:14.045 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:35:14.045 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:35:24.055 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:35:24.056 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:35:25.585 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:35:34.068 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:35:34.069 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:35:44.081 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:35:44.087 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0034ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:35:50.988 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:35:54.099 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:35:54.099 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:36:04.109 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:36:04.109 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:36:14.121 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:36:14.122 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:36:19.791 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:36:24.133 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:36:24.140 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0024ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:36:34.146 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:36:34.147 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:36:43.164 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:36:44.162 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:36:44.162 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:36:54.176 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:36:54.176 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:37:04.186 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:37:04.186 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:37:09.068 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:37:14.189 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:37:14.198 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0029ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:37:24.215 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:37:24.215 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:37:33.261 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:37:34.228 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:37:34.229 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:37:44.242 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:37:44.242 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:37:54.253 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:37:54.254 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:38:01.391 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:38:04.266 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:38:04.266 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:38:14.278 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:38:14.279 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:38:24.289 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:38:24.290 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:38:28.439 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:38:34.298 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:38:34.305 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0031ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:38:44.317 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:38:44.318 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:38:51.512 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:38:54.324 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:38:54.325 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:39:04.328 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:39:04.328 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:39:14.339 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:39:14.340 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:39:16.695 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:39:24.355 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:39:24.360 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0029ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:39:34.378 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:39:34.379 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:39:42.983 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:39:44.385 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:39:44.386 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:39:54.400 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:39:54.401 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:40:04.411 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:40:04.414 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:40:07.450 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:40:14.419 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:40:14.420 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:40:24.420 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:40:24.421 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:40:34.425 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:40:34.426 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:40:36.777 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:40:44.431 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:40:44.436 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0028ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:40:54.442 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:40:54.442 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:41:04.451 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:41:04.452 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:41:05.278 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:41:14.456 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:41:14.456 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:41:24.461 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:41:24.462 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:41:31.889 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:41:34.470 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:41:34.476 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0034ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:41:44.497 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:41:44.498 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:41:54.504 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:41:54.506 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:41:55.495 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:42:04.506 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:42:04.507 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:42:14.512 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:42:14.513 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:42:18.537 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:42:24.516 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:42:24.517 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:42:34.520 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:42:34.520 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:42:44.497 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:42:44.529 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:42:44.529 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:42:54.540 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:42:54.545 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0903ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:43:04.559 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:43:04.560 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:43:11.849 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:43:14.562 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:43:14.563 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:43:24.569 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:43:24.570 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0004ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:43:34.577 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:43:34.577 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:43:41.688 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:43:44.589 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:43:44.595 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0032ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:43:54.612 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:43:54.612 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:44:04.620 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:44:04.621 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:44:10.332 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:44:14.627 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:44:14.628 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:44:24.631 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:44:24.639 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0032ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:44:34.655 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:44:34.655 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:44:39.099 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:44:44.666 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:44:44.667 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:44:54.672 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:44:54.673 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:45:04.683 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:45:04.689 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0024ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:45:08.979 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:45:14.699 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:45:14.700 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:45:24.716 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:45:24.717 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:45:34.732 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:45:34.733 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:45:36.204 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:45:44.745 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:45:44.746 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0004ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:45:54.750 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:45:54.755 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:46:01.042 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:46:04.762 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:46:04.763 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:46:14.773 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:46:14.774 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:46:24.781 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:46:24.782 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:46:27.695 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:46:34.784 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:46:34.791 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:46:44.809 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:46:44.809 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:46:51.684 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:46:54.813 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:46:54.814 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:47:04.819 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:47:04.820 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:47:14.834 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:47:14.841 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0024ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:47:15.504 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:47:24.849 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:47:24.850 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:47:34.863 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:47:34.864 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:47:41.618 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:47:44.876 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:47:44.877 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0004ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:47:54.881 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:47:54.882 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:48:04.896 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:48:04.902 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0039ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:48:05.872 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:48:14.923 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:48:14.924 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:48:24.934 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:48:24.935 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:48:29.114 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:48:34.939 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:48:34.939 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:48:44.948 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:48:44.954 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0029ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:48:54.963 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:48:54.964 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:48:56.466 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:49:04.971 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:49:04.972 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:49:14.980 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:49:14.981 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:49:21.184 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:49:24.984 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:49:24.990 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0037ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:49:35.004 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:49:35.004 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:49:45.016 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:49:45.017 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:49:46.967 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:49:55.023 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:49:55.023 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:50:05.035 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:50:05.035 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:50:14.715 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:50:15.040 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:50:15.041 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:50:25.050 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:50:25.051 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:50:35.063 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:50:35.063 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:50:38.018 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:50:45.078 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:50:45.079 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:50:55.087 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:50:55.088 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:51:05.094 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:51:05.095 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:51:07.565 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:51:15.108 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:51:15.109 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:51:25.122 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:51:25.123 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:51:35.126 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:51:35.134 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.003ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:51:36.629 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:51:45.146 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:51:45.146 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.001ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:51:55.149 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:51:55.150 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:51:59.709 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:52:05.152 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:52:05.153 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0012ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:52:15.159 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:52:15.159 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:52:25.174 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:52:25.181 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0029ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:52:26.291 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:52:35.191 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:52:35.192 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:52:45.194 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:52:45.194 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:52:55.166 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:52:55.198 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:52:55.199 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:53:05.214 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:53:05.220 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0028ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:53:15.233 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:53:15.234 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:53:24.307 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:53:25.247 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:53:25.247 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0004ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:53:35.263 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:53:35.264 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:53:45.278 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:53:45.280 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:53:47.859 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:53:55.289 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:53:55.290 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:54:05.292 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:54:05.294 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:54:11.497 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:54:15.302 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:54:15.302 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:54:25.316 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:54:25.317 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0011ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:54:35.323 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:54:35.323 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:54:35.331 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0023ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:54:45.335 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:54:45.336 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:54:55.343 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:54:55.344 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:54:59.898 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:55:05.356 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:55:05.356 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:55:15.358 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:55:15.362 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:55:25.371 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:55:25.372 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:55:25.576 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:55:35.384 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:55:35.385 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:55:45.393 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:55:45.394 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:55:50.151 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:55:55.397 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:55:55.403 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0021ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:56:05.413 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:56:05.413 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:56:15.417 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:56:15.418 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:56:15.541 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:56:25.431 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:56:25.431 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0014ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:56:35.435 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:56:35.436 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:56:43.018 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:56:45.448 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:56:45.450 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0028ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:56:55.460 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:56:55.460 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:57:05.463 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:57:05.463 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:57:06.202 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:57:15.475 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:57:15.475 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:57:25.489 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:57:25.491 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0018ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:57:32.695 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:57:35.508 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:57:35.509 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:57:45.524 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:57:45.525 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:57:55.534 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:57:55.535 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0006ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:57:58.021 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:58:05.549 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:58:05.549 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0004ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:58:15.557 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:58:15.559 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:58:23.932 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:58:25.562 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:58:25.563 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:58:35.572 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:58:35.572 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0005ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:58:45.587 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:58:45.588 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0009ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:58:49.013 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:58:55.595 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:58:55.596 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0013ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:59:05.608 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:59:05.608 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:59:15.615 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:59:15.615 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:59:15.692 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:59:25.634 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:59:25.635 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0015ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:59:35.639 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:59:35.647 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0029ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:59:41.816 +01:00 [DBG] Batch acquisition of 0 triggers
+2025-01-14 10:59:45.659 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:59:45.660 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0008ms - processed: 0 items - remaining: 1 items
+2025-01-14 10:59:55.667 +01:00 [DBG] Starting HttpMessageHandler cleanup cycle with 1 items
+2025-01-14 10:59:55.668 +01:00 [DBG] Ending HttpMessageHandler cleanup cycle after 0.0007ms - processed: 0 items - remaining: 1 items

@@ -29,6 +29,10 @@ namespace GoodBadHabitsTracker.Application.Mappings
                     opt.MapFrom((src, dest) => (bool)src.IsTimeBased! ? src.Quantity * 60 : src.Quantity);
                     opt.Condition(src => src.HabitType != HabitTypes.Quit);
                 })
+                .ForMember(x => x.Quantity, opt =>
+                {
+                    opt.MapFrom((src, dest) => src.HabitType == HabitTypes.Quit ? src.Quantity = null : src.Quantity);
+                })
                 .ForMember(x => x.RepeatMode, opt =>
                 {
                     opt.MapFrom(src =>

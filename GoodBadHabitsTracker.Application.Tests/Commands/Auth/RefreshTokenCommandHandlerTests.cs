@@ -1,15 +1,8 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 using FluentAssertions;
-using GoodBadHabitsTracker.Application.Commands.Auth.Login;
 using GoodBadHabitsTracker.Application.Commands.Auth.RefreshToken;
 using GoodBadHabitsTracker.Application.DTOs.Request;
-using GoodBadHabitsTracker.Application.DTOs.Response;
 using GoodBadHabitsTracker.Application.Exceptions;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
@@ -17,7 +10,7 @@ using GoodBadHabitsTracker.TestMisc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Moq;
-using Xunit;
+
 namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 {
     public class RefreshTokenCommandHandlerTests
@@ -41,8 +34,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         {
             //ARRANGE
 
-            var request = new RefreshTokenRequest { RefreshToken = DataGenerator.SeedRefreshToken() };
-            var command = new RefreshTokenCommand(request, CancellationToken.None);
+            var request = DataGenerator.SeedRefreshToken();
+            var command = new RefreshTokenCommand(request);
             var user = DataGenerator.SeedUser();
             var userRoles = new[] { "User" };
             var accessTokenPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -79,8 +72,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         public async Task Handle_ShouldThrowAppException_WhenAccessTokenIsInvalid()
         {
             //ARRANGE
-            var request = new RefreshTokenRequest { RefreshToken = DataGenerator.SeedRefreshToken() };
-            var command = new RefreshTokenCommand(request, CancellationToken.None);
+            var request = DataGenerator.SeedRefreshToken();
+            var command = new RefreshTokenCommand(request);
 
             _httpContextAccessorMock.Setup(x => x.HttpContext.Request.Headers.Authorization).Returns("Bearer invalidAccessToken");
             _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken("invalidAccessToken")).Returns((ClaimsPrincipal)null);
@@ -97,8 +90,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         public async Task Handle_ShouldThrowAppException_WhenRefreshTokenIsInvalid()
         {
             //ARRANGE
-            var request = new RefreshTokenRequest { RefreshToken = DataGenerator.SeedRefreshToken() };
-            var command = new RefreshTokenCommand(request, CancellationToken.None);
+            var request = DataGenerator.SeedRefreshToken();
+            var command = new RefreshTokenCommand(request);
             var accessTokenPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
                 new Claim("sub", "userId")
@@ -120,9 +113,9 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         public async Task Handle_ShouldThrowAppException_WhenUserNotFound()
         {
             //ARRANGE
-            var request = new RefreshTokenRequest { RefreshToken = DataGenerator.SeedRefreshToken() };
+            var request = DataGenerator.SeedRefreshToken();
             var accessToken = DataGenerator.SeedAccessToken();
-            var command = new RefreshTokenCommand(request, CancellationToken.None);
+            var command = new RefreshTokenCommand(request);
             var accessTokenPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
                 new Claim("sub", "userId")
@@ -134,7 +127,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 
             _httpContextAccessorMock.Setup(x => x.HttpContext.Request.Headers.Authorization).Returns($"Bearer {accessToken}");
             _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(accessToken)).Returns(accessTokenPrincipal);
-            _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(request.RefreshToken)).Returns(refreshTokenPrincipal);
+            _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(request)).Returns(refreshTokenPrincipal);
             _userManagerMock.Setup(x => x.FindByIdAsync("userId")).ReturnsAsync((User?)null);
 
             //ACT
@@ -149,8 +142,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         public async Task Handle_ShouldThrowUnauthorizedAccessException_WhenUserIdsDoNotMatch()
         {
             //ARRANGE
-            var request = new RefreshTokenRequest { RefreshToken = DataGenerator.SeedRefreshToken() };
-            var command = new RefreshTokenCommand(request, CancellationToken.None);
+            var request = DataGenerator.SeedRefreshToken();
+            var command = new RefreshTokenCommand(request);
             var user = DataGenerator.SeedUser();
             var secUser = DataGenerator.SeedUser();
             var accessTokenPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -165,7 +158,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 
             _httpContextAccessorMock.Setup(x => x.HttpContext.Request.Headers.Authorization).Returns("Bearer validAccessToken");
             _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken("validAccessToken")).Returns(accessTokenPrincipal);
-            _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(request.RefreshToken)).Returns(refreshTokenPrincipal);
+            _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(request)).Returns(refreshTokenPrincipal);
             _userManagerMock.Setup(x => x.FindByIdAsync(user.Id.ToString())).ReturnsAsync(user);
             //ACT
             Func<Task> action = async () => await _handler.Handle(command, CancellationToken.None);
@@ -179,8 +172,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         public async Task Handle_ShouldThrowInvalidOperationException_WhenNewAccessTokenIsNull()
         {
             //ARRANGE
-            var request = new RefreshTokenRequest { RefreshToken = DataGenerator.SeedRefreshToken() };
-            var command = new RefreshTokenCommand(request, CancellationToken.None);
+            var request = DataGenerator.SeedRefreshToken();
+            var command = new RefreshTokenCommand(request);
             var user = DataGenerator.SeedUser();
             var userRoles = new[] { "User" };
             var accessTokenPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -195,7 +188,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 
             _httpContextAccessorMock.Setup(x => x.HttpContext.Request.Headers.Authorization).Returns("Bearer validAccessToken");
             _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken("validAccessToken")).Returns(accessTokenPrincipal);
-            _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(request.RefreshToken)).Returns(refreshTokenPrincipal);
+            _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(request)).Returns(refreshTokenPrincipal);
             _userManagerMock.Setup(x => x.FindByIdAsync(user.Id.ToString())).ReturnsAsync(user);
             _userManagerMock.Setup(x => x.GetRolesAsync(user)).ReturnsAsync(userRoles);
             _tokenHandlerMock.Setup(x => x.GenerateAccessToken(It.IsAny<UserSession>(), out It.Ref<string>.IsAny)).Returns((string)null);
@@ -212,8 +205,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         public async Task Handle_ShouldThrowInvalidOperationException_WhenNewRefreshTokenIsNull()
         {
             //ARRANGE
-            var request = new RefreshTokenRequest { RefreshToken = DataGenerator.SeedRefreshToken() };
-            var command = new RefreshTokenCommand(request, CancellationToken.None);
+            var request = DataGenerator.SeedRefreshToken();
+            var command = new RefreshTokenCommand(request);
             var user = DataGenerator.SeedUser();
             var userRoles = new[] { "User" };
             var accessTokenPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -227,7 +220,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 
             _httpContextAccessorMock.Setup(x => x.HttpContext.Request.Headers.Authorization).Returns("Bearer validAccessToken");
             _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken("validAccessToken")).Returns(accessTokenPrincipal);
-            _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(request.RefreshToken)).Returns(refreshTokenPrincipal);
+            _tokenHandlerMock.Setup(x => x.ValidateAndGetPrincipalFromToken(request)).Returns(refreshTokenPrincipal);
             _userManagerMock.Setup(x => x.FindByIdAsync(user.Id.ToString())).ReturnsAsync(user);
             _userManagerMock.Setup(x => x.GetRolesAsync(user)).ReturnsAsync(userRoles);
             _tokenHandlerMock.Setup(x => x.GenerateAccessToken(It.IsAny<UserSession>(), out It.Ref<string>.IsAny)).Returns("newAccessToken");

@@ -1,13 +1,10 @@
 ﻿using MediatR;
-using AutoMapper;
 using GoodBadHabitsTracker.Core.Models;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Application.DTOs.Response;
 using GoodBadHabitsTracker.Application.Exceptions;
 using LanguageExt.Common;
 using System.Net;
-using GoodBadHabitsTracker.Infrastructure.Persistance;
-using Microsoft.Data.SqlClient;
 
 namespace GoodBadHabitsTracker.Application.Commands.Groups.Create
 {

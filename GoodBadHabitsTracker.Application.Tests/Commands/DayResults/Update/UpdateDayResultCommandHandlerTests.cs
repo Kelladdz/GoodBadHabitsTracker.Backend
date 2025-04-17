@@ -39,6 +39,7 @@ public class UpdateDayResultCommandHandlerTests
         var command = new UpdateDayResultCommand(Guid.NewGuid(), request);
 
         _userAccessorMock.Setup(x => x.GetCurrentUser()).ReturnsAsync((User)null);
+
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
@@ -58,6 +59,7 @@ public class UpdateDayResultCommandHandlerTests
 
         _userAccessorMock.Setup(x => x.GetCurrentUser()).ReturnsAsync(user);
         _dbContextMock.Setup(x => x.DayResults.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((DayResult)null);
+
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
@@ -78,7 +80,7 @@ public class UpdateDayResultCommandHandlerTests
         _userAccessorMock.Setup(x => x.GetCurrentUser()).ReturnsAsync(user);
         _dbContextMock.Setup(x => x.DayResults.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(new DayResult { Date = DateOnly.FromDateTime(DateTime.UtcNow), Status = 0});
         _dbContextMock.Setup(x => x.Habits.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((Habit)null);
-        
+
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

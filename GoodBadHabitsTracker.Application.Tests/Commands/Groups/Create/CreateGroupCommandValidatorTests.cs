@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using GoodBadHabitsTracker.Application.Commands.Generic.Insert;
 using GoodBadHabitsTracker.Application.Commands.Groups.Create;
 using GoodBadHabitsTracker.Application.DTOs.Request;
 using FluentValidation.TestHelper;

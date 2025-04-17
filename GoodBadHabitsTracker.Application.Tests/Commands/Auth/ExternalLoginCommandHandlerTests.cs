@@ -23,7 +23,6 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
     public class ExternalLoginCommandHandlerTests
     {
         private readonly Mock<IMapper> _mapperMock;
-        private readonly Mock<IIdTokenHandler> _idTokenHandlerMock;
         private readonly Mock<IJwtTokenHandler> _tokenHandlerMock;
         private readonly Mock<SignInManager<User>> _signInManagerMock;
         private readonly Mock<UserManager<User>> _userManagerMock;
@@ -33,7 +32,6 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
         public ExternalLoginCommandHandlerTests()
         {
             _mapperMock = new Mock<IMapper>();
-            _idTokenHandlerMock = new Mock<IIdTokenHandler>();
             _tokenHandlerMock = new Mock<IJwtTokenHandler>();
 
             var userStoreMock = new Mock<IUserStore<User>>();
@@ -48,25 +46,25 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 
             _handler = new ExternalLoginCommandHandler(
                 _mapperMock.Object,
-                _idTokenHandlerMock.Object,
                 _tokenHandlerMock.Object,
                 _signInManagerMock.Object,
                 _userManagerMock.Object,
                 _roleManagerMock.Object);
         }
         [Fact]
-        public async Task Handle_ShouldReturnSuccessResult_WhenExternalAuthTokensUpdates()
+        public async Task Handle_ShouldReturnTokens_WhenExternalAuthTokensUpdates()
         {
             //ARRANGE
             var email = new Faker<string>().CustomInstantiator(f => f.Internet.Email()).Generate();
             var request = DataGenerator.SeedExternalLoginRequest();
             var command = new ExternalLoginCommand(request);
+            var userFingerprint = "usr_fgp";
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
                 new Claim("sub", "providerKey"),
                 new Claim("email", email)
             }));
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Success);
             _userManagerMock.Setup(x => x.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new User{ Email = email});
@@ -80,30 +78,36 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             var result = await _handler.Handle(command, CancellationToken.None);
 
             //ASSERT
-            result.Succeeded.Should().BeTrue();
+            result.Should().BeEquivalentTo(new
+            {
+                request.AccessToken,
+                request.RefreshToken,
+                userFingerprint
+            });
 
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             _userManagerMock.Verify(x => x.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             _userManagerMock.Verify(x => x.GetRolesAsync(It.IsAny<User>()), Times.Once);
             _signInManagerMock.Verify(x => x.UpdateExternalAuthenticationTokensAsync(It.IsAny<ExternalLoginInfo>()), Times.Once);
         }
         [Fact]
-        public async Task Handle_ShouldReturnFailedResult_WhenRequestIsNull()
+        public async Task Handle_ShouldThrowAppException_WhenRequestIsNull()
         {
             //ARRANGE
             var command = new ExternalLoginCommand(null);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "NullRequest" && e.Description == "Request cannot be null");
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Request cannot be null");
         }
 
         [Fact]
-        public async Task Handle_ShouldReturnFailedResult_WhenProviderIsInvalid()
+        public async Task Handle_ShouldThrowAppException_WhenProviderIsInvalid()
         {
             //ARRANGE
             var request = new ExternalLoginRequest
@@ -113,15 +117,16 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             var command = new ExternalLoginCommand(request);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "InvalidProvider" && e.Description == "Provider is not correct");
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Provider is not correct");
         }
 
         [Fact]
-        public async Task Handle_ShouldReturnFailedResult_WhenIdTokenIsNull()
+        public async Task Handle_ShouldThrowAppException_WhenIdTokenIsNull()
         {
             //ARRANGE
             var request = new ExternalLoginRequest
@@ -132,11 +137,12 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             var command = new ExternalLoginCommand(request);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "NullIdToken" && e.Description == "IdToken cannot be null");
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "IdToken cannot be null");
         }
 
         [Fact]
@@ -153,11 +159,12 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             var command = new ExternalLoginCommand(request);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "NullAccessToken" && e.Description == "Access token cannot be null");
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Access token cannot be null");
         }
 
         [Fact]
@@ -175,11 +182,12 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             var command = new ExternalLoginCommand(request);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
-            // Assert
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "NullRefreshToken" && e.Description == "Google must return refresh token");
+            //ASSERT
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Google must return refresh token");
         }
 
         [Fact]
@@ -189,16 +197,17 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             var request = DataGenerator.SeedExternalLoginRequest();
             var command = new ExternalLoginCommand(request);
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns((ClaimsPrincipal)null);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns((ClaimsPrincipal)null);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "NullClaimsPrincipal" && e.Description == "Claims principal cannot be null");
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Claims principal cannot be null");
 
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -209,16 +218,17 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             var command = new ExternalLoginCommand(request);
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>()));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "NullProviderKey" && e.Description == "Provider key cannot be null");
-        
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Provider key cannot be null");
+
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
         }
         [Fact]
         public async Task Handle_ShouldReturnFailedResult_WhenUserLoginNotFound()
@@ -231,19 +241,20 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
                 new Claim("sub", "providerKey")
             }));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Success);
             _userManagerMock.Setup(x => x.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((User)null);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "UserLoginNotFound" && e.Description == "User not found");
-        
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "User not found");
+
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             _userManagerMock.Verify(x => x.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
@@ -261,7 +272,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
                 new Claim("email", email)
             }));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Success);
             _userManagerMock.Setup(x => x.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new User{ Email = email});
@@ -270,13 +281,14 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             _roleManagerMock.Setup(x => x.CreateAsync(It.IsAny<UserRole>())).ReturnsAsync(IdentityResult.Failed(new IdentityError { Code = "RoleCreationFailed" }));
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "RoleCreationFailed");
-        
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Create role failed");
+
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             _userManagerMock.Verify(x => x.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             _userManagerMock.Verify(x => x.GetRolesAsync(It.IsAny<User>()), Times.Once);
@@ -297,7 +309,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
                 new Claim("email", email)
             }));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Success);
             _userManagerMock.Setup(x => x.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new User { Email = email });
@@ -305,14 +317,16 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             _roleManagerMock.Setup(x => x.RoleExistsAsync(It.IsAny<string>())).ReturnsAsync(false);
             _roleManagerMock.Setup(x => x.CreateAsync(It.IsAny<UserRole>())).ReturnsAsync(IdentityResult.Success);
             _userManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed(new IdentityError { Code = "AddToRoleFailed" }));
+
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "AddToRoleFailed");
-        
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Add role failed");
+
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             _userManagerMock.Verify(x => x.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             _userManagerMock.Verify(x => x.GetRolesAsync(It.IsAny<User>()), Times.Once);
@@ -337,20 +351,21 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 
             }));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Failed);
             _userManagerMock.Setup(x => x.FindByEmailAsync(email)).ReturnsAsync((User)null);
             _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Failed(new IdentityError { Code = "CreateUserFailed" }));
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "CreateUserFailed");
-       
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Create user failed");
+
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             _userManagerMock.Verify(x => x.FindByEmailAsync(email), Times.Once);
             _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<User>()), Times.Once);
@@ -373,20 +388,22 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
                 }
             ));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Failed);
             _userManagerMock.Setup(x => x.FindByEmailAsync(email)).ReturnsAsync((User)null);
             _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
             _userManagerMock.Setup(x => x.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>())).ReturnsAsync(IdentityResult.Failed(new IdentityError { Code = "AddClaimFailed" }));
+
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "AddClaimFailed");
-       
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Add claim failed");
+
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             _userManagerMock.Verify(x => x.FindByEmailAsync(email), Times.Once);
             _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<User>()), Times.Once);
@@ -410,21 +427,23 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
                 }
             ));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Failed);
             _userManagerMock.Setup(x => x.FindByEmailAsync(email)).ReturnsAsync((User)null);
             _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
             _userManagerMock.Setup(x => x.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>())).ReturnsAsync(IdentityResult.Success);
             _userManagerMock.Setup(x => x.AddLoginAsync(It.IsAny<User>(), It.IsAny<ExternalLoginInfo>())).ReturnsAsync(IdentityResult.Failed(new IdentityError { Code = "AddLoginFailed" }));
+
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "AddLoginFailed");
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Add login failed");
 
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             _userManagerMock.Verify(x => x.FindByEmailAsync(email), Times.Once);
             _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<User>()), Times.Once);
@@ -447,7 +466,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 
             }));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Failed);
             _userManagerMock.Setup(x => x.FindByEmailAsync(email)).ReturnsAsync((User)null);
@@ -457,13 +476,14 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
            _userManagerMock.Setup(x => x.GetRolesAsync(It.IsAny<User>())).ReturnsAsync(new List<string>());
             _userManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed(new IdentityError { Code = "AddToRoleFailed" }));
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "AddToRoleFailed");
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Add role failed");
 
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
             _userManagerMock.Verify(x => x.FindByEmailAsync(email), Times.Once);
             _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<User>()), Times.Once);
@@ -489,7 +509,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
 
             }));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Failed);
             _userManagerMock.Setup(x => x.FindByEmailAsync(email)).ReturnsAsync((User)null);
@@ -501,13 +521,14 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Failed);
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
             //ASSERT
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "ExternalLoginFailed" && e.Description == "External Login failed");
-       
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "External Login failed");
+
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Exactly(2));
             _userManagerMock.Verify(x => x.FindByEmailAsync(email), Times.Once);
             _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<User>()), Times.Once);
@@ -527,18 +548,19 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Auth
                 new Claim("sub", "providerKey")
             }));
 
-            _idTokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
+            _tokenHandlerMock.Setup(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>())).Returns(claimsPrincipal);
             _signInManagerMock.Setup(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(SignInResult.Failed);
 
             //ACT
-            var result = await _handler.Handle(command, CancellationToken.None);
+            Func<Task> action = async () =>  await _handler.Handle(command, default);
 
-            // Assert
-            result.Succeeded.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.Code == "NullEmail" && e.Description == "Email cannot be null");
-      
-            _idTokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
+            //ASSERT
+            await action.Should().ThrowAsync<AppException>()
+                .Where(ex => ex.Code == System.Net.HttpStatusCode.BadRequest)
+                .Where(ex => ex.Errors.ToString() == "Email cannot be null");
+
+            _tokenHandlerMock.Verify(x => x.GetClaimsPrincipalFromIdToken(It.IsAny<string>()), Times.Once);
             _signInManagerMock.Verify(x => x.ExternalLoginSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
         }
     }

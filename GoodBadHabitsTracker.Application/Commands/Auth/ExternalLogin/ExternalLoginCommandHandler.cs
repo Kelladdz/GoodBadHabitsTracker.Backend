@@ -63,7 +63,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
                 if (loginResult.Succeeded)
                 {
                     var user = await userManager.FindByLoginAsync(request.Provider, providerKey)
-                        ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, $"User not found" ); ;
+                        ?? throw new AppException(System.Net.HttpStatusCode.BadRequest, "User not found" ); ;
 
                     var getUserRole = await userManager.GetRolesAsync(user);
                     var isRoleExists = await roleManager.RoleExistsAsync("User");
@@ -79,13 +79,13 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
                     {
                         var addRoleResult = await userManager.AddToRoleAsync(user, "User");
                         if (!addRoleResult.Succeeded)
-                            throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Add role failed" );
+                            throw new AppException(System.Net.HttpStatusCode.BadRequest, "Add role failed" );
                     }
 
                     var updateExternalAuthenticationTokenResult = await signInManager.UpdateExternalAuthenticationTokensAsync(userInfo);
                     return updateExternalAuthenticationTokenResult.Succeeded
                         ? new LoginResponse(accessToken, refreshToken, "_usr_fgp")
-                        : throw new AppException(System.Net.HttpStatusCode.BadRequest, $"User not found" );
+                        : throw new AppException(System.Net.HttpStatusCode.BadRequest, "User not found" );
 
                 }
                 else
@@ -106,23 +106,23 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
 
                             var createResult = await userManager.CreateAsync(user);
                             if (!createResult.Succeeded)
-                                throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Create user failed" );
+                                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Create user failed" );
 
                             var addClaimResult = await userManager.AddClaimAsync(user, new Claim("loginProvider", request.Provider));
                             if (!addClaimResult.Succeeded)
-                                throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Add claim failed" );
+                                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Add claim failed" );
                         }
 
                         var addLoginResult = await userManager.AddLoginAsync(user, userInfo);
                         if (!addLoginResult.Succeeded)
-                            throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Add login failed" );
+                            throw new AppException(System.Net.HttpStatusCode.BadRequest, "Add login failed" );
 
                         var getUserRole = await userManager.GetRolesAsync(user);
                         if (getUserRole.Count == 0)
                         {
                             var addRoleResult = await userManager.AddToRoleAsync(user, "User");
                             if (!addRoleResult.Succeeded)
-                                throw new AppException(System.Net.HttpStatusCode.BadRequest, $"Add role failed" );
+                                throw new AppException(System.Net.HttpStatusCode.BadRequest, "Add role failed" );
                         }
 
                         loginResult = await signInManager.ExternalLoginSignInAsync(request.Provider, providerKey, isPersistent: false, bypassTwoFactor: true);
@@ -132,7 +132,7 @@ namespace GoodBadHabitsTracker.Application.Commands.Auth.ExternalLogin
                         var updateExternalAuthenticationTokenResult = await signInManager.UpdateExternalAuthenticationTokensAsync(userInfo);
                         return updateExternalAuthenticationTokenResult.Succeeded
                             ? new LoginResponse(accessToken, refreshToken, "_usr_fgp")
-                            : throw new AppException(System.Net.HttpStatusCode.BadRequest, $"User not found" );
+                            : throw new AppException(System.Net.HttpStatusCode.BadRequest, "User not found" );
                     }
                     throw new AppException(System.Net.HttpStatusCode.BadRequest, "Email cannot be null" );
                 }

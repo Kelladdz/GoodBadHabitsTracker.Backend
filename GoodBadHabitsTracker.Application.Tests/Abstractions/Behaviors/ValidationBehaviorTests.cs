@@ -3,7 +3,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using GoodBadHabitsTracker.Application.Abstractions.Behaviors;
 using GoodBadHabitsTracker.Application.Abstractions.Messaging;
-using GoodBadHabitsTracker.Application.Commands.Generic.Insert;
 using GoodBadHabitsTracker.Application.Commands.Habits.Create;
 using GoodBadHabitsTracker.Application.DTOs.Request;
 using GoodBadHabitsTracker.Application.DTOs.Response;

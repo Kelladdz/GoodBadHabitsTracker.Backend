@@ -60,38 +60,6 @@ namespace GoodBadHabitsTracker.TestMisc
             return habits;
         }
 
-        public static GenericResponse<Habit> SeedHabitResponse()
-        {
-            var habit = SeedHabit();
-            return new GenericResponse<Habit>(habit);
-        }
-
-        public static List<GenericResponse<Habit>> SeedHabitResponseCollection()
-        {
-            var count = random.Next(1, 10);
-            var habitGenerator = new Faker<Habit>()
-                .RuleFor(h => h.Id, f => f.Random.Guid())
-                .RuleFor(h => h.Name, f => f.Name.JobTitle())
-                .RuleFor(h => h.HabitType, f => f.PickRandom(HabitTypes.Good, HabitTypes.Limit, HabitTypes.Quit))
-                .RuleFor(h => h.IconId, f => f.UniqueIndex)
-                .RuleFor(h => h.StartDate, f => f.Date.FutureDateOnly())
-                .RuleFor(h => h.IsTimeBased, (f, h) => h.HabitType == HabitTypes.Quit ? false : f.Random.Bool())
-                .RuleFor(h => h.Quantity, (f, h) => h.HabitType != HabitTypes.Quit ? f.Random.Int(1, 3600) : null)
-                .RuleFor(h => h.Frequency, (f, h) => h.HabitType != HabitTypes.Quit ? f.PickRandom(Frequencies.PerDay, Frequencies.PerWeek, Frequencies.PerMonth) : Frequencies.NonApplicable)
-                .RuleFor(h => h.RepeatMode, (f, h) => h.HabitType == HabitTypes.Good ? f.PickRandom(RepeatModes.Daily, RepeatModes.Monthly, RepeatModes.Interval) : RepeatModes.NonApplicable)
-                .RuleFor(h => h.RepeatDaysOfWeek, (f, h) => h.RepeatMode == RepeatModes.Daily ? Enumerable.Range(1, random.Next(2, 7)).Select(x => f.PickRandom(Enum.GetValues<DayOfWeek>())).ToList() : [])
-                .RuleFor(h => h.RepeatDaysOfMonth, (f, h) => h.RepeatMode == RepeatModes.Monthly ? Enumerable.Range(1, random.Next(2, 28)).Select(x => f.Random.Int(1, 28)).ToList() : [])
-                .RuleFor(h => h.RepeatInterval, (f, h) => h.RepeatMode == RepeatModes.Interval ? f.Random.Int(2, 7) : 0)
-                .RuleFor(h => h.ReminderTimes, (f, h) => h.HabitType == HabitTypes.Good ? Enumerable.Range(0, random.Next(1, 5)).Select(x => f.Date.SoonTimeOnly()).ToList() : []);
-            var habits = habitGenerator.Generate(count);
-
-            var habitsResponse = new List<GenericResponse<Habit>>();
-            foreach(var habit in habits)
-            {
-                habitsResponse.Add(new GenericResponse<Habit>(habit));
-            }
-            return habitsResponse;
-        }
 
         public static HabitRequest SeedHabitRequest()
         {
@@ -253,7 +221,7 @@ namespace GoodBadHabitsTracker.TestMisc
 
                     return h.Operations;
                 });
-                    
+
             var jsonPatchDocument = jsonPatchDocumentGenerator.Generate();
             return jsonPatchDocument;
         }
@@ -501,6 +469,26 @@ namespace GoodBadHabitsTracker.TestMisc
                 .RuleFor(getr => getr.CodeVerifier, f => f.Random.String2(32));
 
             return getExternalTokensRequestGenerator.Generate();
+        }
+
+        public static CreateCommentRequest SeedCreateCommentRequest()
+        {
+            var createCommentRequest = new Faker<CreateCommentRequest>()
+                .RuleFor(ccr => ccr.Body, f => f.Random.String2(32))
+                .RuleFor(ccr => ccr.Date, f => DateOnly.FromDateTime(DateTime.UtcNow));
+
+            return createCommentRequest.Generate();
+        }
+
+        public static UpdateDayResultRequest SeedUpdateDayResultRequest()
+        {
+            var updateDayResultRequest = new Faker<UpdateDayResultRequest>()
+                .RuleFor(udr => udr.Progress, f => f.Random.Int(0, 3600))
+                .RuleFor(udr => udr.Status,
+                    f => f.PickRandom(Statuses.Completed, Statuses.Failed, Statuses.Skipped,
+                    Statuses.InProgress));
+
+            return updateDayResultRequest.Generate();
         }
     }
 }

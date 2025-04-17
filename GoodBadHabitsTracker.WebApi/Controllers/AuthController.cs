@@ -65,7 +65,7 @@ namespace GoodBadHabitsTracker.WebApi.Controllers
 
             AppendCookies(userFingerprint, refreshToken);
 
-            return Ok(new { accessToken });
+            return Ok(accessToken);
         }
 
         [HttpPost("logout")]

@@ -39,9 +39,18 @@ namespace GoodBadHabitsTracker.Application.Commands.Groups.Update
                 document.ApplyTo(groupToUpdate);
                 var validationResult = await validator.ValidateAsync(groupToUpdate, cancellationToken);
 
-                await dbContext.CommitAsync();
-                return new Result<bool>(true);
-            } 
+                if (validationResult.IsValid)
+                {
+                    await dbContext.CommitAsync();
+                    return new Result<bool>(true);
+                }
+                else
+                {
+                    await dbContext.CommitAsync();
+                    return new Result<bool>(new AppException(HttpStatusCode.BadRequest, "Applied group validation failed"));
+                }
+
+            }
             catch (Exception ex)
             {
                 await dbContext.RollbackAsync();

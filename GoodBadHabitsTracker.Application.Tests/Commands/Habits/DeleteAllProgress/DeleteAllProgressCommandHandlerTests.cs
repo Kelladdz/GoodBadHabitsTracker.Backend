@@ -18,15 +18,15 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Habits.DeleteAllProgre
 {
     public class DeleteAllProgressCommandHandlerTests
     {
-        private readonly Mock<IHabitsRepository> _habitsRepositoryMock;
+        private readonly Mock<IHabitsDbContext> _dbContextMock;
         private readonly Mock<IUserAccessor> _userAccessorMock;
         private readonly DeleteAllProgressCommandHandler _handler;
 
         public DeleteAllProgressCommandHandlerTests()
         {
-            _habitsRepositoryMock = new Mock<IHabitsRepository>();
+            _dbContextMock = new Mock<IHabitsDbContext>();
             _userAccessorMock = new Mock<IUserAccessor>();
-            _handler = new DeleteAllProgressCommandHandler(_habitsRepositoryMock.Object, _userAccessorMock.Object);
+            _handler = new DeleteAllProgressCommandHandler(_dbContextMock.Object, _userAccessorMock.Object);
         }
 
         [Fact]
@@ -38,8 +38,8 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Habits.DeleteAllProgre
             var command = new DeleteAllProgressCommand();
 
             _userAccessorMock.Setup(x => x.GetCurrentUser()).ReturnsAsync(user);
-            _habitsRepositoryMock
-                .Setup(x => x.DeleteAllProgressAsync(userId, default))
+            _dbContextMock
+                .Setup(x => x.DeleteAllDayResultsAsync(userId))
                 .Returns(Task.CompletedTask);
 
             //ACT
@@ -49,7 +49,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Habits.DeleteAllProgre
             result.IsSuccess.Should().BeTrue();
 
             _userAccessorMock.Verify(x => x.GetCurrentUser(), Times.Once);
-            _habitsRepositoryMock.Verify(x => x.DeleteAllProgressAsync(userId, default), Times.Once);
+            _dbContextMock.Verify(x => x.DeleteAllDayResultsAsync(userId), Times.Once);
         }
         [Fact]
         public async Task Handle_ShouldReturnFail_WhenUserDoesntExist()

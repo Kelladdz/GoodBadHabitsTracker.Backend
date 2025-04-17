@@ -1,23 +1,14 @@
-﻿using AutoMapper;
-using Bogus;
-using GoodBadHabitsTracker.Application.Commands.Comments.Create;
-using GoodBadHabitsTracker.Application.Commands.Groups.Create;
-using GoodBadHabitsTracker.Application.DTOs.Request;
+﻿using GoodBadHabitsTracker.Application.Commands.Comments.Create;
 using GoodBadHabitsTracker.Application.DTOs.Response;
 using GoodBadHabitsTracker.Application.Exceptions;
 using GoodBadHabitsTracker.Core.Interfaces;
 using GoodBadHabitsTracker.Core.Models;
-using GoodBadHabitsTracker.Infrastructure.Persistance;
 using GoodBadHabitsTracker.TestMisc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
+using AutoMapper;
 using LanguageExt.Common;
-using System.Threading.Tasks;
 using FluentAssertions;
 
 namespace GoodBadHabitsTracker.Application.Tests.Commands.Comments.Create
@@ -27,6 +18,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Comments.Create
         private readonly Mock<IHabitsDbContext> _dbContextMock;
         private readonly Mock<IUserAccessor> _userAccessorMock;
         private readonly Mock<ILogger> _loggerMock;
+        private readonly Mock<IMapper> _mapperMock;
         private readonly CreateCommentCommandHandler _handler;
 
         public CreateCommentCommandHandlerTests()
@@ -34,9 +26,10 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Comments.Create
             _dbContextMock = new Mock<IHabitsDbContext>();
             _userAccessorMock = new Mock<IUserAccessor>();
             _loggerMock = new Mock<ILogger>();
+            _mapperMock = new Mock<IMapper>();
             _handler = new CreateCommentCommandHandler(
                 _dbContextMock.Object, _userAccessorMock.Object,
-                _loggerMock.Object);
+                _loggerMock.Object, _mapperMock.Object);
         }
 
         [Fact]
@@ -61,6 +54,7 @@ namespace GoodBadHabitsTracker.Application.Tests.Commands.Comments.Create
 
             //ACT
             var result = await _handler.Handle(command, default);
+            result.Should().BeEquivalentTo(expectedResult);
 
             //ASSERT
             result.IsSuccess.Should().BeTrue();
