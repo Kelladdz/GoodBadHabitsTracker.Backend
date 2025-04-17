@@ -1,0 +1,1 @@
+2025-04-17 23:00:10.643 +02:00 [DBG] Batch acquisition of 0 triggers

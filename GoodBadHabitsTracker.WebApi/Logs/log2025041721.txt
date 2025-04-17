@@ -1,0 +1,225 @@
+2025-04-17 21:52:44.366 +02:00 [DBG] Initializing Razor view compiler with no compiled views.
+2025-04-17 21:52:44.396 +02:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2025-04-17 21:52:44.447 +02:00 [INF] User profile is available. Using 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-04-17 21:52:44.499 +02:00 [DBG] Hosting starting
+2025-04-17 21:52:44.532 +02:00 [DBG] TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+2025-04-17 21:52:44.540 +02:00 [INF] Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+2025-04-17 21:52:44.541 +02:00 [INF] Quartz Scheduler created
+2025-04-17 21:52:44.543 +02:00 [INF] JobFactory set to: Quartz.Simpl.MicrosoftDependencyInjectionJobFactory
+2025-04-17 21:52:44.544 +02:00 [INF] RAMJobStore initialized.
+2025-04-17 21:52:44.545 +02:00 [INF] Quartz Scheduler 3.13.1.0 - 'QuartzScheduler' with instanceId 'NON_CLUSTERED' initialized
+2025-04-17 21:52:44.547 +02:00 [INF] Using thread pool 'Quartz.Simpl.DefaultThreadPool', size: 10
+2025-04-17 21:52:44.548 +02:00 [INF] Using job store 'Quartz.Simpl.RAMJobStore', supports persistence: False, clustered: False
+2025-04-17 21:52:44.558 +02:00 [INF] Adding 1 jobs, 1 triggers.
+2025-04-17 21:52:44.560 +02:00 [INF] Adding job: DEFAULT.FillPastDaysJob
+2025-04-17 21:52:44.562 +02:00 [DBG] Scheduling job: DEFAULT.FillPastDaysJob with trigger: DEFAULT.aa8811f0-fdac-4c6d-9a76-42d231884ae7
+2025-04-17 21:52:44.574 +02:00 [DBG] Rescheduling job: DEFAULT.FillPastDaysJob with updated trigger: DEFAULT.aa8811f0-fdac-4c6d-9a76-42d231884ae7
+2025-04-17 21:52:44.579 +02:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-1434bc25-6ff4-4324-8370-43172b9d7698.xml'.
+2025-04-17 21:52:44.587 +02:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-d3fee60e-e7e4-485b-8db6-37af50a0aecc.xml'.
+2025-04-17 21:52:44.589 +02:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-e7aa74ae-f476-4764-abd9-badb7430c27e.xml'.
+2025-04-17 21:52:44.590 +02:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-eb6f3840-36fe-478f-ada1-2b77b6e1e7b2.xml'.
+2025-04-17 21:52:44.595 +02:00 [DBG] Found key {1434bc25-6ff4-4324-8370-43172b9d7698}.
+2025-04-17 21:52:44.600 +02:00 [DBG] Found key {d3fee60e-e7e4-485b-8db6-37af50a0aecc}.
+2025-04-17 21:52:44.601 +02:00 [DBG] Found key {e7aa74ae-f476-4764-abd9-badb7430c27e}.
+2025-04-17 21:52:44.602 +02:00 [DBG] Found key {eb6f3840-36fe-478f-ada1-2b77b6e1e7b2}.
+2025-04-17 21:52:44.607 +02:00 [DBG] Considering key {1434bc25-6ff4-4324-8370-43172b9d7698} with expiration date 2025-07-10 20:44:01Z as default key.
+2025-04-17 21:52:44.609 +02:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-04-17 21:52:44.611 +02:00 [DBG] Decrypting secret element using Windows DPAPI.
+2025-04-17 21:52:44.613 +02:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-04-17 21:52:44.617 +02:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2025-04-17 21:52:44.619 +02:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2025-04-17 21:52:44.621 +02:00 [DBG] Using key {1434bc25-6ff4-4324-8370-43172b9d7698} as the default key.
+2025-04-17 21:52:44.623 +02:00 [DBG] Key ring with default key {1434bc25-6ff4-4324-8370-43172b9d7698} was loaded during application startup.
+2025-04-17 21:52:44.738 +02:00 [INF] Now listening on: https://localhost:7154
+2025-04-17 21:52:44.739 +02:00 [DBG] Loaded hosting startup assembly GoodBadHabitsTracker.WebApi
+2025-04-17 21:52:44.740 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-17 21:52:44.741 +02:00 [INF] Hosting environment: Development
+2025-04-17 21:52:44.742 +02:00 [INF] Content root path: F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.WebApi
+2025-04-17 21:52:44.743 +02:00 [INF] Scheduler QuartzScheduler_$_NON_CLUSTERED started.
+2025-04-17 21:52:44.744 +02:00 [DBG] Hosting started
+2025-04-17 21:52:44.744 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:52:45.061 +02:00 [DBG] Connection id "0HNBTT5M18RID" received FIN.
+2025-04-17 21:52:45.064 +02:00 [DBG] Connection id "0HNBTT5M18RID" accepted.
+2025-04-17 21:52:45.065 +02:00 [DBG] Connection id "0HNBTT5M18RID" started.
+2025-04-17 21:52:45.072 +02:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2025-04-17 21:52:45.084 +02:00 [DBG] Connection id "0HNBTT5M18RID" stopped.
+2025-04-17 21:52:45.087 +02:00 [DBG] Connection id "0HNBTT5M18RID" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-17 21:52:45.185 +02:00 [DBG] Connection id "0HNBTT5M18RIE" accepted.
+2025-04-17 21:52:45.186 +02:00 [DBG] Connection id "0HNBTT5M18RIE" started.
+2025-04-17 21:52:45.216 +02:00 [DBG] Connection 0HNBTT5M18RIE established using the following protocol: "Tls13"
+2025-04-17 21:52:45.247 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger - null null
+2025-04-17 21:52:45.250 +02:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2025-04-17 21:52:45.271 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger - 301 0 null 24.3189ms
+2025-04-17 21:52:45.286 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/index.html - null null
+2025-04-17 21:52:45.328 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/index.html - 200 null text/html;charset=utf-8 42.1887ms
+2025-04-17 21:52:45.349 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/swagger-ui.css - null null
+2025-04-17 21:52:45.360 +02:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-04-17 21:52:45.362 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/swagger-ui.css - 200 143943 text/css 13.4645ms
+2025-04-17 21:52:45.383 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/swagger-ui-bundle.js - null null
+2025-04-17 21:52:45.383 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/swagger-ui-standalone-preset.js - null null
+2025-04-17 21:52:45.398 +02:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-04-17 21:52:45.401 +02:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-04-17 21:52:45.408 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/swagger-ui-bundle.js - 200 1096145 text/javascript 23.8899ms
+2025-04-17 21:52:45.409 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/swagger-ui-standalone-preset.js - 200 339486 text/javascript 25.7931ms
+2025-04-17 21:52:46.421 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - null null
+2025-04-17 21:52:46.550 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 128.7057ms
+2025-04-17 21:53:06.643 +02:00 [DBG] Connection id "0HNBTT5M18RIF" accepted.
+2025-04-17 21:53:06.644 +02:00 [DBG] Connection id "0HNBTT5M18RIF" started.
+2025-04-17 21:53:06.649 +02:00 [DBG] Connection 0HNBTT5M18RIF established using the following protocol: "Tls13"
+2025-04-17 21:53:06.650 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - null null
+2025-04-17 21:53:06.653 +02:00 [DBG] OPTIONS requests are not supported
+2025-04-17 21:53:06.657 +02:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2025-04-17 21:53:06.673 +02:00 [DBG] 1 candidate(s) found for the request path '/api/auth/token'
+2025-04-17 21:53:06.675 +02:00 [DBG] Request matched endpoint '405 HTTP Method Not Supported'
+2025-04-17 21:53:06.677 +02:00 [DBG] The request has an origin header: 'https://localhost:8080'.
+2025-04-17 21:53:06.678 +02:00 [INF] CORS policy execution failed.
+2025-04-17 21:53:06.679 +02:00 [INF] Request origin https://localhost:8080 does not have permission to access the resource.
+2025-04-17 21:53:06.681 +02:00 [INF] HTTP OPTIONS /api/auth/token responded 204 in 25.2702 ms
+2025-04-17 21:53:06.683 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - 204 null null 32.3501ms
+2025-04-17 21:53:08.827 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:53:21.680 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - null null
+2025-04-17 21:53:21.682 +02:00 [DBG] OPTIONS requests are not supported
+2025-04-17 21:53:21.683 +02:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2025-04-17 21:53:21.684 +02:00 [DBG] 1 candidate(s) found for the request path '/api/auth/token'
+2025-04-17 21:53:21.685 +02:00 [DBG] Request matched endpoint '405 HTTP Method Not Supported'
+2025-04-17 21:53:21.686 +02:00 [DBG] The request has an origin header: 'https://localhost:8080'.
+2025-04-17 21:53:21.687 +02:00 [INF] CORS policy execution failed.
+2025-04-17 21:53:21.687 +02:00 [INF] Request origin https://localhost:8080 does not have permission to access the resource.
+2025-04-17 21:53:21.688 +02:00 [INF] HTTP OPTIONS /api/auth/token responded 204 in 5.7007 ms
+2025-04-17 21:53:21.689 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - 204 null null 9.6247ms
+2025-04-17 21:53:38.816 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:54:07.559 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:54:34.033 +02:00 [INF] Application is shutting down...
+2025-04-17 21:54:34.033 +02:00 [DBG] Hosting stopping
+2025-04-17 21:54:34.036 +02:00 [DBG] Connection id "0HNBTT5M18RIE" is closing.
+2025-04-17 21:54:34.036 +02:00 [DBG] Connection id "0HNBTT5M18RIF" is closing.
+2025-04-17 21:54:34.038 +02:00 [DBG] Connection id "0HNBTT5M18RIF" is closed. The last processed stream ID was 3.
+2025-04-17 21:54:34.038 +02:00 [DBG] Connection id "0HNBTT5M18RIE" is closed. The last processed stream ID was 11.
+2025-04-17 21:54:34.039 +02:00 [DBG] Connection id "0HNBTT5M18RIF" received FIN.
+2025-04-17 21:54:34.040 +02:00 [DBG] Connection id "0HNBTT5M18RIE" received FIN.
+2025-04-17 21:54:34.040 +02:00 [DBG] Connection id "0HNBTT5M18RIF" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-17 21:54:34.040 +02:00 [DBG] The connection queue processing loop for 0HNBTT5M18RIE completed.
+2025-04-17 21:54:34.040 +02:00 [DBG] The connection queue processing loop for 0HNBTT5M18RIF completed.
+2025-04-17 21:54:34.041 +02:00 [DBG] Connection id "0HNBTT5M18RIE" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-17 21:54:34.043 +02:00 [DBG] Connection id "0HNBTT5M18RIF" stopped.
+2025-04-17 21:54:34.056 +02:00 [DBG] Connection id "0HNBTT5M18RIE" stopped.
+2025-04-17 21:54:34.059 +02:00 [INF] Scheduler QuartzScheduler_$_NON_CLUSTERED shutting down.
+2025-04-17 21:54:34.060 +02:00 [INF] Scheduler QuartzScheduler_$_NON_CLUSTERED paused.
+2025-04-17 21:54:34.061 +02:00 [DBG] Shutting down threadpool...
+2025-04-17 21:54:34.062 +02:00 [DBG] Waiting for 0 threads to complete.
+2025-04-17 21:54:34.063 +02:00 [DBG] No executing jobs remaining, all threads stopped.
+2025-04-17 21:54:34.063 +02:00 [DBG] Shutdown of threadpool complete.
+2025-04-17 21:54:34.064 +02:00 [INF] Scheduler QuartzScheduler_$_NON_CLUSTERED Shutdown complete.
+2025-04-17 21:54:34.065 +02:00 [DBG] Hosting stopped
+2025-04-17 21:54:37.543 +02:00 [DBG] Initializing Razor view compiler with no compiled views.
+2025-04-17 21:54:37.570 +02:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2025-04-17 21:54:37.586 +02:00 [INF] User profile is available. Using 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-04-17 21:54:37.613 +02:00 [DBG] Hosting starting
+2025-04-17 21:54:37.638 +02:00 [DBG] TaskSchedulingThreadPool configured with max concurrency of 10 and TaskScheduler ThreadPoolTaskScheduler.
+2025-04-17 21:54:37.641 +02:00 [INF] Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl
+2025-04-17 21:54:37.642 +02:00 [INF] Quartz Scheduler created
+2025-04-17 21:54:37.643 +02:00 [INF] JobFactory set to: Quartz.Simpl.MicrosoftDependencyInjectionJobFactory
+2025-04-17 21:54:37.643 +02:00 [INF] RAMJobStore initialized.
+2025-04-17 21:54:37.644 +02:00 [INF] Quartz Scheduler 3.13.1.0 - 'QuartzScheduler' with instanceId 'NON_CLUSTERED' initialized
+2025-04-17 21:54:37.645 +02:00 [INF] Using thread pool 'Quartz.Simpl.DefaultThreadPool', size: 10
+2025-04-17 21:54:37.645 +02:00 [INF] Using job store 'Quartz.Simpl.RAMJobStore', supports persistence: False, clustered: False
+2025-04-17 21:54:37.651 +02:00 [INF] Adding 1 jobs, 1 triggers.
+2025-04-17 21:54:37.652 +02:00 [INF] Adding job: DEFAULT.FillPastDaysJob
+2025-04-17 21:54:37.653 +02:00 [DBG] Scheduling job: DEFAULT.FillPastDaysJob with trigger: DEFAULT.72fbaf60-e280-4986-8c76-f81869b0c5be
+2025-04-17 21:54:37.661 +02:00 [DBG] Rescheduling job: DEFAULT.FillPastDaysJob with updated trigger: DEFAULT.72fbaf60-e280-4986-8c76-f81869b0c5be
+2025-04-17 21:54:37.665 +02:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-1434bc25-6ff4-4324-8370-43172b9d7698.xml'.
+2025-04-17 21:54:37.668 +02:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-d3fee60e-e7e4-485b-8db6-37af50a0aecc.xml'.
+2025-04-17 21:54:37.668 +02:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-e7aa74ae-f476-4764-abd9-badb7430c27e.xml'.
+2025-04-17 21:54:37.669 +02:00 [DBG] Reading data from file 'C:\Users\dobre\AppData\Local\ASP.NET\DataProtection-Keys\key-eb6f3840-36fe-478f-ada1-2b77b6e1e7b2.xml'.
+2025-04-17 21:54:37.672 +02:00 [DBG] Found key {1434bc25-6ff4-4324-8370-43172b9d7698}.
+2025-04-17 21:54:37.674 +02:00 [DBG] Found key {d3fee60e-e7e4-485b-8db6-37af50a0aecc}.
+2025-04-17 21:54:37.674 +02:00 [DBG] Found key {e7aa74ae-f476-4764-abd9-badb7430c27e}.
+2025-04-17 21:54:37.675 +02:00 [DBG] Found key {eb6f3840-36fe-478f-ada1-2b77b6e1e7b2}.
+2025-04-17 21:54:37.678 +02:00 [DBG] Considering key {1434bc25-6ff4-4324-8370-43172b9d7698} with expiration date 2025-07-10 20:44:01Z as default key.
+2025-04-17 21:54:37.680 +02:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-04-17 21:54:37.681 +02:00 [DBG] Decrypting secret element using Windows DPAPI.
+2025-04-17 21:54:37.682 +02:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-04-17 21:54:37.684 +02:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2025-04-17 21:54:37.685 +02:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2025-04-17 21:54:37.686 +02:00 [DBG] Using key {1434bc25-6ff4-4324-8370-43172b9d7698} as the default key.
+2025-04-17 21:54:37.687 +02:00 [DBG] Key ring with default key {1434bc25-6ff4-4324-8370-43172b9d7698} was loaded during application startup.
+2025-04-17 21:54:37.742 +02:00 [INF] Now listening on: https://localhost:7154
+2025-04-17 21:54:37.742 +02:00 [DBG] Loaded hosting startup assembly GoodBadHabitsTracker.WebApi
+2025-04-17 21:54:37.743 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-17 21:54:37.744 +02:00 [INF] Hosting environment: Development
+2025-04-17 21:54:37.744 +02:00 [INF] Content root path: F:\Programowanie\PROJEKTY\gbht\GoodBadHabitsTracker.Backend\GoodBadHabitsTracker.WebApi
+2025-04-17 21:54:37.745 +02:00 [DBG] Hosting started
+2025-04-17 21:54:37.745 +02:00 [INF] Scheduler QuartzScheduler_$_NON_CLUSTERED started.
+2025-04-17 21:54:37.746 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:54:38.104 +02:00 [DBG] Connection id "0HNBTT6NNATNO" received FIN.
+2025-04-17 21:54:38.107 +02:00 [DBG] Connection id "0HNBTT6NNATNO" accepted.
+2025-04-17 21:54:38.108 +02:00 [DBG] Connection id "0HNBTT6NNATNO" started.
+2025-04-17 21:54:38.112 +02:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2025-04-17 21:54:38.119 +02:00 [DBG] Connection id "0HNBTT6NNATNO" stopped.
+2025-04-17 21:54:38.121 +02:00 [DBG] Connection id "0HNBTT6NNATNO" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-17 21:54:38.190 +02:00 [DBG] Connection id "0HNBTT6NNATNP" accepted.
+2025-04-17 21:54:38.191 +02:00 [DBG] Connection id "0HNBTT6NNATNP" started.
+2025-04-17 21:54:38.210 +02:00 [DBG] Connection 0HNBTT6NNATNP established using the following protocol: "Tls13"
+2025-04-17 21:54:38.238 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/index.html - null null
+2025-04-17 21:54:38.241 +02:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2025-04-17 21:54:38.299 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/index.html - 200 null text/html;charset=utf-8 62.223ms
+2025-04-17 21:54:39.010 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - null null
+2025-04-17 21:54:39.083 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7154/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 73.1588ms
+2025-04-17 21:54:42.462 +02:00 [DBG] Connection id "0HNBTT6NNATNQ" accepted.
+2025-04-17 21:54:42.463 +02:00 [DBG] Connection id "0HNBTT6NNATNQ" started.
+2025-04-17 21:54:42.466 +02:00 [DBG] Connection 0HNBTT6NNATNQ established using the following protocol: "Tls13"
+2025-04-17 21:54:42.467 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - null null
+2025-04-17 21:54:42.470 +02:00 [DBG] OPTIONS requests are not supported
+2025-04-17 21:54:42.471 +02:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2025-04-17 21:54:42.483 +02:00 [DBG] 1 candidate(s) found for the request path '/api/auth/token'
+2025-04-17 21:54:42.484 +02:00 [DBG] Request matched endpoint '405 HTTP Method Not Supported'
+2025-04-17 21:54:42.486 +02:00 [DBG] The request has an origin header: 'https://localhost:8080'.
+2025-04-17 21:54:42.487 +02:00 [INF] CORS policy execution failed.
+2025-04-17 21:54:42.488 +02:00 [INF] Request origin https://localhost:8080 does not have permission to access the resource.
+2025-04-17 21:54:42.490 +02:00 [INF] HTTP OPTIONS /api/auth/token responded 204 in 18.8244 ms
+2025-04-17 21:54:42.493 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - 204 null null 25.4146ms
+2025-04-17 21:55:03.398 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:55:29.453 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:55:57.232 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:56:23.925 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:56:48.338 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:56:51.495 +02:00 [DBG] Connection id "0HNBTT6NNATNP" is closing.
+2025-04-17 21:56:51.502 +02:00 [DBG] Connection id "0HNBTT6NNATNP" is closed. The last processed stream ID was 3.
+2025-04-17 21:56:51.503 +02:00 [DBG] Connection id "0HNBTT6NNATNP" received FIN.
+2025-04-17 21:56:51.504 +02:00 [DBG] Connection id "0HNBTT6NNATNP" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-17 21:56:51.504 +02:00 [DBG] The connection queue processing loop for 0HNBTT6NNATNP completed.
+2025-04-17 21:56:51.506 +02:00 [DBG] Connection id "0HNBTT6NNATNP" stopped.
+2025-04-17 21:56:54.514 +02:00 [DBG] Connection id "0HNBTT6NNATNQ" is closing.
+2025-04-17 21:56:54.517 +02:00 [DBG] Connection id "0HNBTT6NNATNQ" is closed. The last processed stream ID was 1.
+2025-04-17 21:56:54.521 +02:00 [DBG] The connection queue processing loop for 0HNBTT6NNATNQ completed.
+2025-04-17 21:56:54.521 +02:00 [DBG] Connection id "0HNBTT6NNATNQ" received FIN.
+2025-04-17 21:56:54.523 +02:00 [DBG] Connection id "0HNBTT6NNATNQ" stopped.
+2025-04-17 21:56:54.527 +02:00 [DBG] Connection id "0HNBTT6NNATNQ" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-17 21:57:12.909 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:57:38.951 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:58:04.957 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:58:32.627 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:59:00.453 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:59:24.951 +02:00 [DBG] Batch acquisition of 0 triggers
+2025-04-17 21:59:42.909 +02:00 [DBG] Connection id "0HNBTT6NNATNR" accepted.
+2025-04-17 21:59:42.910 +02:00 [DBG] Connection id "0HNBTT6NNATNR" started.
+2025-04-17 21:59:42.913 +02:00 [DBG] Connection 0HNBTT6NNATNR established using the following protocol: "Tls13"
+2025-04-17 21:59:42.914 +02:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - null null
+2025-04-17 21:59:42.915 +02:00 [DBG] OPTIONS requests are not supported
+2025-04-17 21:59:42.916 +02:00 [DBG] The host 'localhost' is excluded. Skipping HSTS header.
+2025-04-17 21:59:42.918 +02:00 [DBG] 1 candidate(s) found for the request path '/api/auth/token'
+2025-04-17 21:59:42.919 +02:00 [DBG] Request matched endpoint '405 HTTP Method Not Supported'
+2025-04-17 21:59:42.919 +02:00 [DBG] The request has an origin header: 'https://localhost:8080'.
+2025-04-17 21:59:42.920 +02:00 [INF] CORS policy execution failed.
+2025-04-17 21:59:42.920 +02:00 [INF] Request origin https://localhost:8080 does not have permission to access the resource.
+2025-04-17 21:59:42.921 +02:00 [INF] HTTP OPTIONS /api/auth/token responded 204 in 5.0483 ms
+2025-04-17 21:59:42.922 +02:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:7154/api/auth/token?provider=Google - 204 null null 8.0539ms
+2025-04-17 21:59:50.758 +02:00 [DBG] Batch acquisition of 0 triggers

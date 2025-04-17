@@ -94,10 +94,6 @@ namespace GoodBadHabitsTracker.Application.Commands.DayResults.Update
             {
                 errors.Add(new ValidationError("Progress", "For limit habits, progress can't be equal or more than habit quantity when status is complete"));
             }
-            else if (habit.HabitType == HabitTypes.Quit && request.Progress is not null)
-            {
-                errors.Add(new ValidationError("Progress", "For quit habits, progres must be null"));
-            }
 
             if (errors.Count != 0)
             {

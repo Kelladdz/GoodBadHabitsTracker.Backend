@@ -56,7 +56,7 @@ builder.Services.AddControllers()
     {
          options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
          options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-        
+
     })
     .AddJsonOptions(options =>
     {
@@ -108,13 +108,13 @@ var mvcBuilder = builder.Services
     .AddNewtonsoftJson();
 
 builder.Services.AddCors(options =>
-{ 
+{
     options.AddDefaultPolicy(b =>
     {
         var allowedOrigins = builder.Configuration["CorsSettings:AllowedOrigins"];
         if (string.IsNullOrEmpty(allowedOrigins))
         {
-            throw new ArgumentNullException("CorsSettings:AllowedOrigins", "AllowedOrigins cannot be null or empty.");
+            throw new ArgumentNullException(allowedOrigins, "AllowedOrigins cannot be null or empty.");
         }
         b.WithOrigins(allowedOrigins.Split(',')).AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("Set-Cookie");
     });
@@ -143,4 +143,3 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.Run();
-
